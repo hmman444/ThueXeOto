@@ -14,7 +14,7 @@
 - **Database:** MySQL
 - **ORM:** Spring Data JPA (Hibernate)
 - **API:** RESTful API
-- **Bảo mật:** Spring Security (JWT nếu cần)
+- **Bảo mật:** Spring Security
 - **Test API:** Postman
 
 ### 🎮 Frontend (Android App):
@@ -28,29 +28,29 @@
 ---
 
 ## 📝 Tiến độ thực hiện
-### 📅 Tuần 1-2: Khởi tạo dự án
-- [x] Xây dựng tài liệu yêu cầu
+### 📅 Tuần 7: Khởi tạo dự án
 - [x] Tạo repo Git & cấu hình `.gitignore`
-- [x] Cài đặt môi trường phát triển
-- [x] Thiết kế database MySQL
+- [x] Làm UI trang Login/Register
+- [x] Làm UI trang main application
+- [x] Viết API Login/Register bằng java mail gửi OTP
 
-### 📅 Tuần 3-4: Xây dựng Backend
-- [x] Khởi tạo dự án Spring Boot
-- [x] Cấu hình MySQL & JPA
-- [ ] Xây dựng API cho thuê xe hơi (đang làm)
-- [ ] Viết tài liệu API (Swagger/Postman)
+### 📅 Tuần 8: Xây dựng Backend
+- [x] Hoàn thiện cơ bản cơ sở dữ liệu cho hệ thống
+- [x] Viết API cho các tính năng cơ bản hệ thống (lấy thông tin 1 xe, list xe, user, list users)
+- [ ] 
+- [ ] 
 
-### 📅 Tuần 5-6: Xây dựng Android App
-- [ ] Thiết kế giao diện (XML)
-- [ ] Kết nối API bằng Retrofit2
-- [ ] Xây dựng chức năng đăng nhập & quản lý tài khoản
-- [ ] Tích hợp bản đồ & định vị
+### 📅 Tuần 9: Xây dựng Android App
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
 
-### 📅 Tuần 7-8: Hoàn thiện & Deploy
-- [ ] Kiểm thử ứng dụng
-- [ ] Tối ưu hiệu suất
-- [ ] Đưa API lên hosting (Google Cloud Run)
-- [ ] Xuất file APK & demo ứng dụng
+### 📅 Tuần 10: Hoàn thiện & Deploy
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
 
 ---
 
@@ -66,19 +66,20 @@ cd LTDD/backend
 
 # Chạy ứng dụng Spring Boot
 mvn spring-boot:run
+```
+---
 
 ## 👨‍🎓 Thành viên nhóm
 
 | STT | Họ và Tên     | MSSV    | Vai trò             |
 |-----|--------------|--------|--------------------|
-| 1   | Nguyễn Văn A | 123456 | Backend Developer  |
-| 2   | Trần Thị B   | 234567 | Android Developer  |
-| 3   | Lê Văn C     | 345678 | UI/UX Designer     |
+| 1   | Huỳnh Minh Mẫn | 22110377 | Backend/Frontend  |
+| 2   | Đỗ Phú Luân   | 22110372 | Backend/Frontend  |
 
 ---
 
 ## 📊 Liên hệ
 
-- **Email:** example@gmail.com  
-- **GitHub:** [YourRepo](https://github.com/yourusername/LTDD)  
-- **Facebook Group:** [Nhóm LTDD](https://facebook.com/yourgroup)  
+- **Email:** nsndman0404@gmail.com  
+- **GitHub:** [LTDD](https://github.com/Huynh-Minh-Man-04042004/LTDD)  
+- **Facebook:** [Mẫn](https://www.facebook.com/man.huynh.5283)  
