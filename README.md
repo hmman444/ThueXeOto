@@ -66,3 +66,19 @@ cd LTDD/backend
 
 # Chạy ứng dụng Spring Boot
 mvn spring-boot:run
+
+## 👨‍🎓 Thành viên nhóm
+
+| STT | Họ và Tên     | MSSV    | Vai trò             |
+|-----|--------------|--------|--------------------|
+| 1   | Nguyễn Văn A | 123456 | Backend Developer  |
+| 2   | Trần Thị B   | 234567 | Android Developer  |
+| 3   | Lê Văn C     | 345678 | UI/UX Designer     |
+
+---
+
+## 📊 Liên hệ
+
+- **Email:** example@gmail.com  
+- **GitHub:** [YourRepo](https://github.com/yourusername/LTDD)  
+- **Facebook Group:** [Nhóm LTDD](https://facebook.com/yourgroup)  
