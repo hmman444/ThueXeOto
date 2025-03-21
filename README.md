@@ -58,14 +58,8 @@
 ### 1️⃣ Cài đặt Backend
 ```bash
 # Clone repo
-git clone https://github.com/yourusername/LTDD.git
-cd LTDD/backend
-
-# Cấu hình database (MySQL)
-# Sửa file application.properties với thông tin database của bạn
-
-# Chạy ứng dụng Spring Boot
-mvn spring-boot:run
+git clone https://github.com/Huynh-Minh-Man-04042004/LTDD
+...
 ```
 ---
 
