@@ -8,11 +8,15 @@
 
     <!-- Mục 1: Tài khoản của tôi -->
     <LinearLayout
+        android:id="@+id/account_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -43,11 +47,15 @@
 
     <!-- Mục 2: Đăng ký cho thuê xe -->
     <LinearLayout
+        android:id="@+id/register_rent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -78,11 +86,15 @@
 
     <!-- Mục 3: Xe yêu thích -->
     <LinearLayout
+        android:id="@+id/favorite_cars_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -111,13 +123,17 @@
         android:layout_height="1dp"
         android:background="#E0E0E0"/>
 
-    <!-- Mục 3: Xe yêu thích -->
+    <!-- Mục 4: Địa chỉ của tôi -->
     <LinearLayout
+        android:id="@+id/my_address_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -146,13 +162,17 @@
         android:layout_height="1dp"
         android:background="#E0E0E0"/>
 
-    <!-- Mục 3: Xe yêu thích -->
+    <!-- Mục 5: Giấy phép lái xe -->
     <LinearLayout
+        android:id="@+id/license_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -181,13 +201,17 @@
         android:layout_height="1dp"
         android:background="#E0E0E0"/>
 
-    <!-- Mục 3: Xe yêu thích -->
+    <!-- Mục 6: Thẻ của tôi -->
     <LinearLayout
+        android:id="@+id/my_card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -210,18 +234,22 @@
             app:tint="#888888" />
     </LinearLayout>
 
-    <!-- Hàng trống (cùng chiều cao với mục thông thường) -->
+    <!-- Hàng trống -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="48dp"/>
+        android:layout_height="64dp"/>
 
-    <!-- Mục 3: Xe yêu thích -->
+    <!-- Mục 7: Quà tặng -->
     <LinearLayout
+        android:id="@+id/gift_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -250,13 +278,17 @@
         android:layout_height="1dp"
         android:background="#E0E0E0"/>
 
-    <!-- Mục 3: Xe yêu thích -->
+    <!-- Mục 8: Giới thiệu bạn mới -->
     <LinearLayout
+        android:id="@+id/invite_friend_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"

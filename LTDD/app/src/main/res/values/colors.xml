@@ -6,4 +6,5 @@
     <color name="light_green_custom">#E1F4E8</color> <!-- Màu xanh lá nhạt -->
     <color name="green_700">#388E3C</color> <!-- Màu xanh lá đậm -->
     <color name="holo_light_orange">#FFCCBC</color>
+    <color name="bright_orange">#FF8C00</color>
 </resources>
