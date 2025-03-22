@@ -1,4 +1,6 @@
 package com.hcmute.ltdd.ui;
 
-public class RegisterActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class RegisterActivity extends AppCompatActivity {
 }

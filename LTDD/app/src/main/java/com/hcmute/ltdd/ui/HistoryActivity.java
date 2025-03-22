@@ -1,4 +1,6 @@
 package com.hcmute.ltdd.ui;
 
-public class HistoryActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class HistoryActivity extends AppCompatActivity {
 }
