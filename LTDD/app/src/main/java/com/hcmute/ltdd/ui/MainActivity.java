@@ -44,42 +44,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startTextAnimation() {
+        // Dòng "Chào mừng" lên xuống
         ObjectAnimator animator1 = ObjectAnimator.ofFloat(tvWelcome, "translationY", -10f, 10f);
         animator1.setDuration(1500);
         animator1.setRepeatMode(ObjectAnimator.REVERSE);
         animator1.setRepeatCount(ObjectAnimator.INFINITE);
 
+        // Dòng "Bạn đến với ứng dụng thuê xe số 1 VN" - trễ 500ms
         ObjectAnimator animator2 = ObjectAnimator.ofFloat(tvSubtitle, "translationY", -15f, 15f);
-        animator2.setDuration(1800);
+        animator2.setDuration(1500);
         animator2.setRepeatMode(ObjectAnimator.REVERSE);
         animator2.setRepeatCount(ObjectAnimator.INFINITE);
+        animator2.setStartDelay(500); // Bắt đầu sau 500ms
 
-        ObjectAnimator animator3 = ObjectAnimator.ofFloat(tvLotom, "scaleX", 1f, 1.1f);
-        animator3.setDuration(1000);
+        // Dòng "LOTOM" - trễ 1000ms (sau 1 giây)
+        ObjectAnimator animator3 = ObjectAnimator.ofFloat(tvLotom, "translationY", -12f, 12f);
+        animator3.setDuration(1500);
         animator3.setRepeatMode(ObjectAnimator.REVERSE);
         animator3.setRepeatCount(ObjectAnimator.INFINITE);
+        animator3.setStartDelay(1000); // Bắt đầu sau 1 giây
 
-        ObjectAnimator animator4 = ObjectAnimator.ofFloat(tvLotom, "scaleY", 1f, 1.1f);
-        animator4.setDuration(1000);
-        animator4.setRepeatMode(ObjectAnimator.REVERSE);
-        animator4.setRepeatCount(ObjectAnimator.INFINITE);
-
+        // Gom tất cả vào 1 nhóm animation
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animator1, animator2, animator3, animator4);
+        animatorSet.playTogether(animator1, animator2, animator3);
         animatorSet.start();
     }
 
     private void startCarAnimation() {
         // Lùi lại một chút
-        ObjectAnimator moveBack = ObjectAnimator.ofFloat(carImage, "translationX", -30f);
-        moveBack.setDuration(200);
+        ObjectAnimator moveBack = ObjectAnimator.ofFloat(carImage, "translationX", -100f);
+        moveBack.setDuration(800);
 
         // Lướt qua bên phải
         ObjectAnimator moveRight = ObjectAnimator.ofFloat(carImage, "translationX", 1000f);
-        moveRight.setDuration(800);
+        moveRight.setDuration(1200);
 
         // Hiệu ứng fade khói
         smokeEffect.setVisibility(View.VISIBLE);
+        smokeEffect.setSpeed(0.5f);
         smokeEffect.playAnimation();
 
         // Chạy animation
