@@ -1,4 +1,6 @@
 package com.hcmute.ltdd.ui;
 
-public class CarDetailActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class CarDetailActivity extends AppCompatActivity {
 }

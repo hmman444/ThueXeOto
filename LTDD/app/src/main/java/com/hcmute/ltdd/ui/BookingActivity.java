@@ -1,4 +1,6 @@
 package com.hcmute.ltdd.ui;
 
-public class BookingActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class BookingActivity extends AppCompatActivity {
 }

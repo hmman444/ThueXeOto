@@ -1,4 +1,6 @@
 package com.hcmute.ltdd.ui;
 
-public class ProfileActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ProfileActivity extends AppCompatActivity {
 }
