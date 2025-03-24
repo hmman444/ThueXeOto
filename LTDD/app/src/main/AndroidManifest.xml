@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,10 +13,12 @@
         android:theme="@style/Theme.LTDD"
         tools:targetApi="31">
         <activity
-            android:name=".ui.AccountActivity"
-            android:exported="false" />
+            android:name=".ui.AccountActivity"/>
+        <activity
+            android:name=".ui.RegisterActivity"/>
         <activity
             android:name=".ui.MainActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.HomeActivity" />
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.HomeActivity"/>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

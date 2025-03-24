@@ -1,6 +1,9 @@
 package com.hcmute.ltdd.ui;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ViewFlipper;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -45,6 +48,8 @@ public class HomeActivity extends AppCompatActivity {
             }
             return true;
         });
+
+
     }
 
     private void loadFragment(Fragment fragment) {

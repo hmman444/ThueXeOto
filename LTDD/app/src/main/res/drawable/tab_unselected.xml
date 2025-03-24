@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+
+        <!-- Màu nền khi tab chưa được chọn -->
+        <solid android:background="@android:color/white" />
+
+        <!-- Bo góc chỉ ở trên cùng bên trái và bên phải -->
+        <corners android:topLeftRadius="16dp" android:topRightRadius="16dp" />
+
+    </shape>
+</selector>

@@ -3,14 +3,14 @@
     <!-- Màu khi nhấn -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#4CAF6E"/>
+            <solid android:color="#FFA726"/>
             <corners android:radius="50dp"/>
         </shape>
     </item>
     <!-- Màu bình thường -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#5ece84"/>
+            <solid android:color="@android:color/holo_orange_light"/>
             <corners android:radius="50dp"/>
         </shape>
     </item>
