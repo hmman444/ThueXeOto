@@ -6,6 +6,7 @@
         <!-- Màu nền của khung -->
         <stroke
             android:width="3dp"
+            android:color="@color/black"
             />
         <!-- Bo tròn 4 góc -->
         <corners android:radius="20dp" />

@@ -1,5 +1,6 @@
 package com.hcmute.ltdd.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.hcmute.ltdd.R;
+import com.hcmute.ltdd.ui.CarListActivity;
+import com.hcmute.ltdd.ui.HomeActivity;
+import com.hcmute.ltdd.ui.LoginActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -24,6 +28,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        view.findViewById(R.id.btnFindCar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CarListActivity.class);
+                startActivity(intent);
+            }
+        });
         // Ánh xạ các thành phần giao diện
         btnSelfDrive = view.findViewById(R.id.btnSelfDrive);
         btnWithDriver = view.findViewById(R.id.btnWithDriver);
