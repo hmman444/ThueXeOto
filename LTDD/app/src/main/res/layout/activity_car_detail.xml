@@ -120,492 +120,60 @@
             <!-- Container cho Thời gian thuê + Rental Details -->
             <include layout="@layout/item_rental_time_place" />
 
-
             <!-- Insurance Info -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_shield"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bảo hiểm thuê xe"
-                    android:textColor="#00C853"
-                    android:textStyle="bold"
-                    android:layout_marginStart="8dp"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chuyến đi có mua bảo hiểm. Khách thuê bồi thường tối đa 2.000.000 VNĐ trong trường hợp có sự cố ngoài ý muốn."
-                android:textColor="#555555"
-                android:layout_marginTop="4dp"
-                android:textSize="14sp"/>
-
-            <include
-                layout="@layout/item_see_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
+            <include layout="@layout/item_insurance_info" />
             <include layout="@layout/item_divider" />
 
-
             <!-- Supplement Insurance -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bảo hiểm bổ sung"
-                android:textStyle="bold"
-                android:textSize="17sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <CheckBox
-                    android:id="@+id/chkExtraInsurance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bảo hiểm người trên xe"
-                    android:textSize="16sp"
-                    android:layout_marginStart="8dp" />
-
-                <!-- Label Mới -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mới"
-                    android:textColor="@android:color/white"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp"
-                    android:textSize="12sp"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="2dp"/>
-
-                <!-- Price -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="40.000đ /ngày"
-                    android:textStyle="bold"
-                    android:textColor="#00C853"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:textSize="15sp"/>
-            </LinearLayout>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Trường hợp xảy ra sự cố ngoài ý muốn, tài xế và người ngồi trên xe được bảo hiểm với giá trị tối đa 300.000.000 VNĐ/người."
-                android:textSize="14sp"
-                android:textColor="#555555"
-                android:layout_marginTop="4dp" />
-
-            <include
-                layout="@layout/item_see_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+            <include layout="@layout/item_extra_insurance" />
             <include layout="@layout/item_divider" />
 
             <!-- Car Features -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đặc điểm"
-                android:textSize="18sp"
-                android:layout_marginBottom="4dp"
-                android:textStyle="bold"/>
-
             <include layout="@layout/item_car_specs" />
-
             <include layout="@layout/item_divider" />
 
             <!-- Car Description -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mô tả"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Mitsubishi mirage 2017 xe sạch sẽ, tiết kiệm xăng, máy lạnh tốt, bản đồ vietmaps dẫn đường, camera 360, cam hành trình, màn android xem youtube nghe nhạc"
-                android:textSize="14sp"
-                android:textColor="#555555"
-                android:layout_marginTop="6dp" />
+            <include layout="@layout/item_description" />
             <include layout="@layout/item_divider" />
-
 
             <!-- car amenities -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Các tiện nghi"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
             <include layout="@layout/item_car_amenities" />
-
             <include layout="@layout/item_divider" />
-
 
             <!-- Car location-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Vị trí xe"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_location"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="123 Lê Văn Sỹ, Phường 13, Quận 3, TP.HCM"
-                    android:textSize="14sp" />
-
-                <!-- Optional: Button hoặc Icon để xem bản đồ -->
-                <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_map"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="Xem bản đồ"
-                    android:scaleType="centerInside"
-                    android:padding="12dp"
-                    android:layout_marginStart="8dp" />
-
-            </LinearLayout>
+            <include layout="@layout/item_location" />
             <include layout="@layout/item_divider" />
-
 
             <!-- Info User -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chủ xe"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
             <include layout="@layout/item_owner_info" />
-
             <include layout="@layout/item_divider" />
-
 
             <!-- reviews -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Đánh giá"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:layout_marginStart="16dp"/>
-
-            <!-- Danh sách đánh giá -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- Item đánh giá (tái sử dụng) -->
-                <include layout="@layout/item_review" />
-                <include layout="@layout/item_review" />
-                <include layout="@layout/item_review" />
-
-                <!-- Xem thêm -->
-                <Button
-                    android:text="Xem thêm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_button_outline"
-                    android:backgroundTint="@android:color/holo_orange_light"
-                    android:textColor="#000000"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="8dp"
-                    android:foreground="?android:attr/selectableItemBackground" />
-
-            </LinearLayout>
+            <include layout="@layout/item_review_section" />
             <include layout="@layout/item_divider" />
-
 
             <!--vehicle registration -->
             <include layout="@layout/item_rental_documents" />
             <include layout="@layout/item_divider" />
 
-
             <!--asset -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:text="Tài sản thế chấp  "
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:textColor="#000000"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_question"
-                        android:layout_marginStart="4dp" />
-                </LinearLayout>
-
-
-                <TextView
-                    android:text="Không yêu cầu khách thuê thế chấp Tiền mặt hoặc Xe máy"
-                    android:textSize="14sp"
-                    android:textColor="#666666"
-                    android:layout_marginTop="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <include layout="@layout/item_collateral" />
             <include layout="@layout/item_divider" />
-
 
             <!--term -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:text="Điều khoản"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="Quy định khác:"
-                    android:textSize="14sp"
-                    android:textColor="#444444"
-                    android:layout_marginTop="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="○ Sử dụng xe đúng mục đích.\n○ Không sử dụng xe thuê vào mục đích phi pháp, trái pháp luật.\n○ Không sử dụng xe thuê để cầm cố, thế chấp.\n○ Không hút thuốc, nhả kẹo cao su, xả rác trong xe.\n○ Không chở hàng quốc cấm dễ cháy nổ...."
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#666666"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    layout="@layout/item_see_more"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-            <include layout="@layout/item_divider" />
-
+            <include layout="@layout/item_terms"/>
+            <include layout="@layout/item_divider"/>
 
             <!-- Phụ phí có thể phát sinh -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phụ phí có thể phát sinh"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="#000000"/>
-            <!-- Phí vượt giới hạn -->
-            <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="Phí vượt giới hạn"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3.000đ /km"
-                    android:textColor="#00C853"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
-            </LinearLayout>
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phụ phí phát sinh nếu lộ trình di chuyển vượt quá 300km khi thuê xe 1 ngày"
-                android:textColor="#666666"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp" />
-            <!-- Phí quá giờ -->
-            <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="Phí quá giờ"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="60.000đ /giờ"
-                    android:textColor="#00C853"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
-            </LinearLayout>
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phụ phí phát sinh nếu hoàn trả xe trễ giờ. Trường hợp trễ quá 4 giờ, phụ phí thêm 1 ngày thuê"
-                android:textColor="#666666"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp" />
-            <!-- Phụ phí khác -->
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phụ phí khác"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginTop="16dp" />
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phụ phí phát sinh nếu trả xe không đảm bảo vệ sinh hoặc bị ám mùi"
-                android:textColor="#666666"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp" />
-            <include
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
-                layout="@layout/item_see_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <include layout="@layout/item_divider" />
-
+            <include layout="@layout/item_extra_fee"/>
+            <include layout="@layout/item_divider"/>
 
             <!-- Chính sách hủy chuyến -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chính sách hủy chuyến"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="#000000"/>
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="An tâm thuê xe, không lo bị huỷ chuyến với chính sách huỷ chuyến của Mioto!"
-                android:textColor="#666666"
-                android:textSize="13sp"
-                android:layout_marginTop="4dp" />
-            <include
-                android:layout_marginLeft="10dp"
-                layout="@layout/item_see_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- report -->
+            <include layout="@layout/item_cancel_policy" />
             <include layout="@layout/item_divider" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_warning"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Báo cáo xe này"
-                    android:textSize="14sp"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
+            <!-- report -->
+            <include layout="@layout/item_report_button" />
         </LinearLayout>
     </ScrollView>
     <!-- Button cố định ở dưới -->
