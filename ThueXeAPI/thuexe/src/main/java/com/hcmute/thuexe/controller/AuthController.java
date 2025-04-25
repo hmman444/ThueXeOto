@@ -1,11 +1,20 @@
 package com.hcmute.thuexe.controller;
 
-import com.hcmute.thuexe.dto.request.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hcmute.thuexe.dto.request.ForgotPasswordRequest;
+import com.hcmute.thuexe.dto.request.LoginRequest;
+import com.hcmute.thuexe.dto.request.RegisterRequest;
+import com.hcmute.thuexe.dto.request.ResetPasswordRequest;
+import com.hcmute.thuexe.dto.request.VerifyOtpRequest;
 import com.hcmute.thuexe.payload.ApiResponse;
 import com.hcmute.thuexe.service.AuthService;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
