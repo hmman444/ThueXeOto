@@ -131,7 +131,7 @@ public class AuthService {
         if (!passwordEncoder.matches(password, account.getPassword())) {
             return "Mật khẩu không đúng";
         }
-
+        
         Optional<User> userOpt = userRepo.findAll().stream()
             .filter(u -> u.getAccount().getUsername().equals(username))
             .findFirst();
@@ -200,16 +200,25 @@ public class AuthService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-            helper.setFrom("nsndman0404@gmail.com");
+    
             helper.setTo(toEmail);
             helper.setSubject("Mã OTP Xác Thực Tài Khoản");
-            helper.setText("Xin chào,\n\nMã OTP của bạn là: " + otpCode +
-                    "\nMã OTP có hiệu lực trong 1 phút.\n\nCảm ơn!");
-
+    
+            String htmlContent = "<html><body style='font-family: Arial, sans-serif;'>"
+                + "<h2 style='color: #2e6c80;'>Xác thực tài khoản</h2>"
+                + "<p>Xin chào,</p>"
+                + "<p>Mã OTP của bạn là: <strong style='color: #d9534f; font-size: 20px;'>" + otpCode + "</strong></p>"
+                + "<p>Mã OTP có hiệu lực trong vòng <strong>1 phút</strong>.</p>"
+                + "<hr>"
+                + "<p style='font-size: 12px; color: gray;'>Đây là email tự động, vui lòng không trả lời email này.</p>"
+                + "</body></html>";
+    
+            helper.setText(htmlContent, true); // ⚡ true để mail hiểu đây là HTML
+    
             mailSender.send(message);
         } catch (MessagingException | MailException e) {
             e.printStackTrace();
         }
     }
+    
 }

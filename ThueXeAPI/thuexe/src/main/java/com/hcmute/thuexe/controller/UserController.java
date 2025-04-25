@@ -20,15 +20,8 @@ public class UserController {
         String username = authentication.getName(); // Lấy username từ token đã giải mã
         return userService.getProfileByUsername(username);
     }
-    @GetMapping("/check-role")
-    public String checkRole(Authentication authentication) {
-        return "Role của bạn là: " + authentication.getAuthorities();
-    }
-    @GetMapping("/debug-token")
-    public String testToken(Authentication auth) {
-        if (auth == null) return "Authentication is null";
-        return "Username: " + auth.getName() + ", Role: " + auth.getAuthorities();
-    }
+
+    
 
 }
 
