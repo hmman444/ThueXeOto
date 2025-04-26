@@ -172,7 +172,6 @@
 
             <!--asset -->
             <include layout="@layout/item_collateral" />
-            <include layout="@layout/item_divider" />
 
         </LinearLayout>
 

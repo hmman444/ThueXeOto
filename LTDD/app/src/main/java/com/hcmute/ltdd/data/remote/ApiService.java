@@ -1,4 +1,15 @@
 package com.hcmute.ltdd.data.remote;
 
-public class ApiService {
+import com.hcmute.ltdd.model.User;
+
+import retrofit2.Call;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+
+public interface ApiService {
+
+    @POST("/api/auth/login")
+    Call<User> login(@Query("username") String username, @Query("password") String password);
+
+    // Các phương thức khác như đăng ký, quên mật khẩu, v.v.
 }

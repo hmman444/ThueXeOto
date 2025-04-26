@@ -42,6 +42,13 @@ public class CarDetailActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btnRentCar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CarDetailActivity.this, BookingActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
