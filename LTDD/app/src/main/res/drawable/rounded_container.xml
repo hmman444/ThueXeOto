@@ -1,17 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <shape xmlns:android="http://schemas.android.com/apk/res/android"
-        android:shape="rectangle">
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu nền của background -->
+    <solid android:color="@android:color/white"/>
 
-        <!-- Màu nền của khung -->
-        <stroke
-            android:width="3dp"
-            />
-        <!-- Bo tròn 4 góc -->
-        <corners android:radius="20dp" />
+    <!-- Bo góc -->
+    <corners android:radius="16dp"/>
 
-        <!-- Đổ bóng (nếu có thể) -->
-        <padding android:left="4dp" android:right="4dp" android:top="4dp" android:bottom="4dp"/>
-    </shape>
-
-</selector>
+    <!-- Viền cho background -->
+    <stroke android:color="#A2A2A2" android:width="0.5dp"/> <!-- Đổi màu viền sang màu xám nhạt -->
+</shape>

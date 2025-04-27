@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.HomeActivity">
-
+    tools:context=".ui.fragments.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,27 +13,29 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Profile Section -->
-        <LinearLayout
+        <!-- Profile Section with rounded background -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
+            android:background="@drawable/rounded_background"
+            android:padding="16dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_social_button"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_user" />
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_user"
+                android:layout_centerVertical="true"
+                android:padding="4dp"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/imageViewAvatar"
                 android:orientation="vertical"
-                android:paddingStart="8dp">
+                android:layout_marginStart="55dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/tvUsername"
@@ -52,18 +53,28 @@
                     android:textColor="@android:color/darker_gray"/>
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_heart"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_gift"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_heart"/>
 
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_gift"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Booking Options Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,20 +82,21 @@
             android:background="@drawable/rounded_container"
             android:padding="16dp">
 
-            <!-- Booking Options (Tab Buttons) -->
+            <!-- Tab buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:background="@color/white"
-                android:padding="8dp"
-                android:gravity="center">
+                android:padding="8dp">
 
                 <Button
                     android:id="@+id/btnSelfDrive"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:backgroundTint="@null"
                     android:text="Xe tự lái"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"
@@ -95,13 +107,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:backgroundTint="@null"
                     android:text="Xe có tài xế"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"
                     android:background="@drawable/tab_unselected"/>
             </LinearLayout>
 
-            <!-- Nội dung -->
+            <!-- View Flipper to change content based on tab -->
             <ViewFlipper
                 android:id="@+id/viewFlipper"
                 android:layout_width="match_parent"
@@ -142,14 +155,14 @@
                         android:id="@+id/tvRentalTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21:00 T7, 22/03 - 20:00 CN, 23/03"
+                        android:text="21:00 T7, 12/04 - 20:00 CN, 13/04"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
             </ViewFlipper>
 
-            <!-- Nút "Tìm xe" -->
+            <!-- Tìm xe button -->
             <Button
                 android:id="@+id/btnFindCar"
                 android:layout_width="match_parent"
@@ -162,99 +175,6 @@
                 android:background="@drawable/orange_button"
                 android:layout_marginTop="12dp"/>
         </LinearLayout>
-
-
-        <!-- Notification -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_social_button"
-            android:padding="12dp"
-            android:layout_marginTop="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_facebook"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Tính năng nhận thông báo đang tắt. Bật cho phép thông báo ngay để không bỏ lỡ tin cập nhật chuyến và các ưu đãi hấp dẫn."
-                android:textSize="14sp"
-                android:layout_marginStart="8dp"/>
-
-            <TextView
-                android:id="@+id/tvEnableNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mở lại"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
-
-        <!-- Promotions Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chương trình khuyến mãi"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPromotions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <!-- Insurance Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bảo hiểm"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvInsurance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
-
-        <!-- Featured Places Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Địa điểm nổi bật"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFeaturedPlaces"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
-        <!-- Benefits Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ưu điểm của Mioto"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
