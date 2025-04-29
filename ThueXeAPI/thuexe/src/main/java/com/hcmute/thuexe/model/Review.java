@@ -1,7 +1,7 @@
 package com.hcmute.thuexe.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 public class Review {
@@ -20,7 +20,7 @@ public class Review {
 
     private Integer rating;
     private String comment;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     public Long getReviewId() {
         return reviewId;
@@ -62,11 +62,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }

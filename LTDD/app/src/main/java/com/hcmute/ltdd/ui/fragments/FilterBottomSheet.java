@@ -75,33 +75,30 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     private String getSelectedSafe(Object selectedItem) {
         if (selectedItem == null) return null;
         String value = selectedItem.toString().trim();
-        if (value.equalsIgnoreCase("Tất cả")) return null;
-        return value.isEmpty() ? null : value;
+        if (value.isEmpty() || value.startsWith("Chọn")) return null;
+        return value;
     }
 
     private void setupSpinners() {
-        String[] brandOptions = {"Tất cả", "Toyota", "Honda", "Ford", "Hyundai", "Kia", "Mazda", "Mercedes-Benz", "BMW", "VinFast"};
+        String[] brandOptions = {"Chọn hãng xe", "Toyota", "Honda", "Ford", "Hyundai", "Kia", "Mazda", "Mercedes-Benz", "BMW", "VinFast"};
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, brandOptions);
         brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerBrand.setAdapter(brandAdapter);
-        binding.spinnerBrand.setPrompt("Chọn hãng xe");
 
-        String[] seatOptions = {"Tất cả", "2", "4", "5", "7"};
+        String[] seatOptions = {"Chọn số chỗ", "2", "4", "5", "7"};
         ArrayAdapter<String> seatAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, seatOptions);
         seatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerSeats.setAdapter(seatAdapter);
-        binding.spinnerSeats.setPrompt("Chọn số chỗ");
 
-        String[] gearOptions = {"Tất cả", "Số sàn", "Số tự động"};
+        String[] gearOptions = {"Chọn hộp số", "Số sàn", "Số tự động"};
         ArrayAdapter<String> gearAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, gearOptions);
         gearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerGearType.setAdapter(gearAdapter);
-        binding.spinnerGearType.setPrompt("Chọn hộp số");
 
-        String[] fuelOptions = {"Tất cả", "Xăng", "Dầu Diesel", "Điện"};
+        String[] fuelOptions = {"Chọn nhiên liệu", "Xăng", "Dầu Diesel", "Điện"};
         ArrayAdapter<String> fuelAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, fuelOptions);
         fuelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerFuelType.setAdapter(fuelAdapter);
-        binding.spinnerFuelType.setPrompt("Chọn nhiên liệu");
     }
+
 }

@@ -1,4 +1,4 @@
-package com.hcmute.thuexe.dto.responese;
+package com.hcmute.thuexe.dto.response;
 
 import com.hcmute.thuexe.model.Car;
 

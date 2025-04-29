@@ -70,6 +70,10 @@ public class CarListActivity extends AppCompatActivity {
         actvDistrict.setOnClickListener(v -> actvDistrict.showDropDown());
         actvDistrict.setText(districts[0], true);
 
+        SearchCarRequest initRequest = new SearchCarRequest();
+        initRequest.setLocation(districts[0]);
+        searchCars(initRequest);
+
         actvDistrict.setOnItemClickListener((parent, view, position, id) -> {
             String selectedDistrict = (String) parent.getItemAtPosition(position);
 
@@ -114,22 +118,7 @@ public class CarListActivity extends AppCompatActivity {
                     carList.addAll(response.body().getData());
                     carAdapter.notifyDataSetChanged();
                 } else {
-                    try {
-                        if (response.errorBody() != null) {
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(response.errorBody().byteStream()));
-                            StringBuilder sb = new StringBuilder();
-                            String line;
-                            while ((line = reader.readLine()) != null) {
-                                sb.append(line);
-                            }
-                            Log.e("API_Error_Raw", "Raw error: " + sb.toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d("API_Status", "Code: " + response.code());
-                    Log.d("API_Status", "Message: " + response.message());
-
+                    carList.clear();
                     Toast.makeText(CarListActivity.this, "Không tìm thấy xe phù hợp", Toast.LENGTH_SHORT).show();
                 }
             }

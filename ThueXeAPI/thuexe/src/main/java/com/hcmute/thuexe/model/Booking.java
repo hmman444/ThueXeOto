@@ -1,7 +1,8 @@
 package com.hcmute.thuexe.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Entity
 public class Booking {
@@ -18,13 +19,32 @@ public class Booking {
     @JoinColumn(name = "car_id", referencedColumnName = "carId")
     private Car car;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    @OneToOne
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
+
+    public Voucher getVoucher() {
+        return voucher;
+    }
+
+    public void setVoucher(Voucher voucher) {
+        this.voucher = voucher;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Double totalPrice;
     private String pickupLocation;
     private String dropoffLocation;
     private String status; // pending, confirmed, cancelled, completed
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     public Long getBookingId() {
         return bookingId;
@@ -50,19 +70,19 @@ public class Booking {
         this.car = car;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -98,11 +118,34 @@ public class Booking {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
+
+    @Column(name = "cancel_reason")
+    private String cancelReason;
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
+    public void setDeliverySelected(boolean deliverySelected) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDeliverySelected'");
+    }
+
+    public void setInsuranceSelected(boolean insuranceSelected) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setInsuranceSelected'");
     }
 }
