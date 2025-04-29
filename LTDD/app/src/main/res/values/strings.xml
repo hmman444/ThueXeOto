@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LTDD</string>
+    <string name="desc_huong_dan_dat_xe">Hướng dẫn đặt xe</string>
+
 </resources>

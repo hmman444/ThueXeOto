@@ -6,6 +6,9 @@ android {
     namespace = "com.hcmute.ltdd"
     compileSdk = 35
 
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.hcmute.ltdd"
         minSdk = 24

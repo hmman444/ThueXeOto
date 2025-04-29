@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.api.ApiClient;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.api.AuthApiService;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.RegisterRequest;
@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         backButton = findViewById(R.id.btnBack);
 
         // Khởi tạo Retrofit Service
-        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
 
         registerButton.setOnClickListener(v -> register());
 

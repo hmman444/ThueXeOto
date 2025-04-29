@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.api.ApiClient;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.api.AuthApiService;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
@@ -45,7 +45,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         resetPasswordButton = findViewById(R.id.btnResetPassword);
         otpCountdownTextView = findViewById(R.id.tvOtpCountdown);
 
-        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
 
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);

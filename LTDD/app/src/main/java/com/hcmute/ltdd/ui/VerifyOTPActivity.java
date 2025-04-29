@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.api.ApiClient;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.api.AuthApiService;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
@@ -41,7 +41,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
         verifyTitleTextView = findViewById(R.id.tvVerifyTitle);
 
         // Khởi tạo Retrofit Service
-        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
 
         // Lấy email từ Intent
         email = getIntent().getStringExtra("email");

@@ -170,6 +170,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/desc_huong_dan_dat_xe"
                         android:src="@drawable/huongdandatxe"
                         android:scaleType="centerCrop" />
                 </androidx.cardview.widget.CardView>

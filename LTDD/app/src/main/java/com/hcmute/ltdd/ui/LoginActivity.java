@@ -11,10 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.api.ApiClient;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.api.AuthApiService;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.LoginRequest;
+import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister = findViewById(R.id.tvRegister);
 
         // Khởi tạo Retrofit Service
-        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
 
         loginButton.setOnClickListener(v -> login());
 
@@ -71,7 +72,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<String> apiResponse = response.body();
+                    Log.d("LoginActivity", "API Response: " + response.body());
                     if (apiResponse.isSuccess()) {
+                        String token = apiResponse.getData();  // Lấy token từ response
+                        SharedPrefManager.getInstance(LoginActivity.this).saveToken(token);
+
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
