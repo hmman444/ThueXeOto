@@ -15,6 +15,7 @@ import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.LoginRequest;
+import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +72,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<String> apiResponse = response.body();
                     if (apiResponse.isSuccess()) {
+                        // ✅ Lưu token vào SharedPreferences
+                        String token = apiResponse.getData();
+                        SharedPrefManager.getInstance(getApplicationContext()).saveToken(token);
+                        Log.d("LoginActivity", "Đã lưu token = " + token);
+
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);

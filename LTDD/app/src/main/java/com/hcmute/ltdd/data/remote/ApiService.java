@@ -3,13 +3,21 @@ package com.hcmute.ltdd.data.remote;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.LoginRequest;
+import com.hcmute.ltdd.model.request.MessageRequest;
 import com.hcmute.ltdd.model.request.RegisterRequest;
 import com.hcmute.ltdd.model.request.ResetPasswordRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
+import com.hcmute.ltdd.model.response.ConversationResponse;
+import com.hcmute.ltdd.model.response.MessageResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
@@ -27,4 +35,13 @@ public interface ApiService {
 
     @POST("/api/auth/reset-password")
     Call<ApiResponse<String>> resetPassword(@Body ResetPasswordRequest request);
+
+    @GET("/api/user/conversations")
+    Call<List<ConversationResponse>> getConversations(@Header("Authorization") String token);
+
+    @GET("/api/user/messages/{conversationId}")
+    Call<List<MessageResponse>> getMessagesByConversation(@Path("conversationId") Long conversationId, @Header("Authorization") String token);
+
+    @POST("/api/user/message")
+    Call<MessageResponse> sendMessage(@Body MessageRequest messageRequest, @Header("Authorization") String token);
 }
