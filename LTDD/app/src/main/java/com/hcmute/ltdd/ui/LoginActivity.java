@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                         // ✅ Lưu token vào SharedPreferences
                         String token = apiResponse.getData();
                         SharedPrefManager.getInstance(getApplicationContext()).saveToken(token);
-                        Log.d("LoginActivity", "Đã lưu token = " + token);
 
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

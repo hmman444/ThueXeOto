@@ -32,4 +32,15 @@ public class SharedPrefManager {
         String token = sharedPreferences.getString("token", "");  // Đảm bảo dùng đúng key
         return token;
     }
+    public void saveUserId(long userId) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("userId", userId);
+        editor.apply();
+    }
+
+    public long getUserId() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1); // -1 nếu chưa có
+    }
 }
