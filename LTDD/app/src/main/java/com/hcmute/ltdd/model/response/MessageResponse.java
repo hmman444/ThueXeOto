@@ -15,6 +15,19 @@ public class MessageResponse {
         return messageId;
     }
 
+    public MessageResponse(Long messageId, Long conversationId, Long senderId, Long receiverId,
+                           String content, Long sharedPostId, String messageType, String status, String timestamp) {
+        this.messageId = messageId;
+        this.conversationId = conversationId;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.content = content;
+        this.sharedPostId = sharedPostId;
+        this.messageType = messageType;
+        this.status = status;
+        this.timestamp = timestamp;
+    }
+
     public void setMessageId(Long messageId) {
         this.messageId = messageId;
     }

@@ -16,6 +16,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.adapter.MessageAdapter;
 import com.hcmute.ltdd.data.remote.ApiService;
+import com.hcmute.ltdd.data.remote.ChatWebSocketClient;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.response.MessageResponse;
 import com.hcmute.ltdd.model.request.MessageRequest;
@@ -44,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private String receiverName;
 
     private ApiService apiService;
+    private ChatWebSocketClient socketClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,35 @@ public class ChatActivity extends AppCompatActivity {
         recyclerMessages.setAdapter(adapter);
 
         loadMessages();
+
+        socketClient = new ChatWebSocketClient(conversationId, json -> {
+            runOnUiThread(() -> {
+                try {
+                    // Parse từ JSON và thêm vào danh sách
+                    long msgId = json.getLong("messageId");
+                    String content = json.getString("content");
+                    long senderId = json.getLong("senderId");
+
+                    MessageResponse newMsg = new MessageResponse(
+                            msgId,
+                            conversationId,
+                            senderId,
+                            receiverId,
+                            content,
+                            null,
+                            "TEXT",
+                            "SENDING",
+                            json.getString("timestamp")
+                    );
+
+                    messageList.add(newMsg);
+                    adapter.notifyItemInserted(messageList.size() - 1);
+                    recyclerMessages.scrollToPosition(messageList.size() - 1);
+                } catch (Exception e) {
+                    Log.e("ChatActivity", "Lỗi parse tin nhắn WebSocket", e);
+                }
+            });
+        });
 
         btnSend.setOnClickListener(v -> sendMessage());
     }
