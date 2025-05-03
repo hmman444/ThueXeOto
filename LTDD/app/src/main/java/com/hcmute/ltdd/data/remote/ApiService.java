@@ -9,6 +9,7 @@ import com.hcmute.ltdd.model.request.ResetPasswordRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
+import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.model.response.UserSearchResponse;
 
 import java.util.List;
@@ -22,6 +23,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
+
+    @GET("/api/user/profile")
+    Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token);
 
     @POST("/api/auth/register")
     Call<ApiResponse<String>> register(@Body RegisterRequest request);

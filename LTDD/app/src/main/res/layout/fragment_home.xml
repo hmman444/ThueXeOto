@@ -43,7 +43,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- Tên người dùng + điểm -->
+            <!-- Tên người dùng + email -->
             <LinearLayout
                 android:id="@+id/layoutUserInfo"
                 android:layout_width="0dp"
@@ -65,10 +65,10 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:id="@+id/tvPoints"
+                    android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Khách hàng thân thiết"
+                    android:text="nsndman0404@gmail.com"
                     android:textSize="14sp"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
