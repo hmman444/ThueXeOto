@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -15,13 +16,16 @@ import androidx.fragment.app.Fragment;
 
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.ui.CarListActivity;
+import com.hcmute.ltdd.ui.FavoritesActivity;
 import com.hcmute.ltdd.ui.HomeActivity;
 import com.hcmute.ltdd.ui.LoginActivity;
+import com.hcmute.ltdd.ui.RewardsActivity;
 
 public class HomeFragment extends Fragment {
 
     private Button btnSelfDrive, btnWithDriver;
     private ViewFlipper viewFlipper;
+    private ImageView iconHeart, iconGift;
 
     @Nullable
     @Override
@@ -39,6 +43,8 @@ public class HomeFragment extends Fragment {
         btnSelfDrive = view.findViewById(R.id.btnSelfDrive);
         btnWithDriver = view.findViewById(R.id.btnWithDriver);
         viewFlipper = view.findViewById(R.id.viewFlipper);
+        iconHeart = view.findViewById(R.id.iconHeart);
+        iconGift = view.findViewById(R.id.iconGift);
 
         // Xử lý sự kiện khi bấm vào nút "Xe tự lái"
         btnSelfDrive.setOnClickListener(v -> {
@@ -52,6 +58,15 @@ public class HomeFragment extends Fragment {
             setActiveTab(btnWithDriver, btnSelfDrive);
         });
 
+        iconHeart.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), FavoritesActivity.class);
+            startActivity(intent);
+        });
+
+        iconGift.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), RewardsActivity.class);
+            startActivity(intent);
+        });
         // Mặc định chọn tab "Xe tự lái"
         setActiveTab(btnSelfDrive, btnWithDriver);
 
