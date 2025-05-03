@@ -7,4 +7,5 @@
     <color name="green_700">#388E3C</color> <!-- Màu xanh lá đậm -->
     <color name="holo_light_orange">#FFCCBC</color>
     <color name="bright_orange">#FF8C00</color>
+    <color name="green_active">#4CAF50</color>
 </resources>

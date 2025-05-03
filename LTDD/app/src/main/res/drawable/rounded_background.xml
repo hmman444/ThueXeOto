@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!-- Màu nền của background -->
-    <solid android:color="@android:color/white"
-        />
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Bo góc -->
-    <corners android:radius="16dp"/>
+    <!-- Nền trắng -->
+    <solid android:color="@android:color/white" />
 
-    <!-- Viền cho background -->
-    <stroke android:color="@android:color/darker_gray" android:width="1dp"/>
+    <!-- Viền mềm, màu sáng hơn để đỡ gắt -->
+    <stroke
+        android:width="3dp"
+        android:color="#E0E0E0" /> <!-- Màu xám nhạt hơn để không bị quá đậm -->
+
+    <!-- Bo góc mềm -->
+    <corners android:radius="16dp" />
+
+    <!-- Padding nhẹ giúp viền không bị cắt khi clip -->
+    <padding
+        android:left="1dp"
+        android:top="1dp"
+        android:right="1dp"
+        android:bottom="1dp" />
 </shape>
