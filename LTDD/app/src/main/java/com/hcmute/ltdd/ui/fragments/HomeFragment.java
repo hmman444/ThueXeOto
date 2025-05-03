@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
 
     private Button btnSelfDrive, btnWithDriver;
     private ViewFlipper viewFlipper;
-    private ImageView iconHeart, iconGift;
+    private ImageView iconHeart, iconNotify;
     private TextView tvUsername, tvEmail;
     private ApiService apiService;
 
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
         btnWithDriver = view.findViewById(R.id.btnWithDriver);
         viewFlipper = view.findViewById(R.id.viewFlipper);
         iconHeart = view.findViewById(R.id.iconHeart);
-        iconGift = view.findViewById(R.id.iconGift);
+        iconNotify = view.findViewById(R.id.iconNotify);
         tvUsername = view.findViewById(R.id.tvUsername);
         tvEmail = view.findViewById(R.id.tvEmail);
 
@@ -79,13 +79,13 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        iconGift.setOnClickListener(v -> {
+        iconNotify.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), RewardsActivity.class);
             startActivity(intent);
         });
         // Mặc định chọn tab "Xe tự lái"
         setActiveTab(btnSelfDrive, btnWithDriver);
-        
+
         loadUserProfile();
 
         return view;
