@@ -9,6 +9,7 @@ import com.hcmute.ltdd.model.request.ResetPasswordRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
+import com.hcmute.ltdd.model.response.UserSearchResponse;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -44,4 +46,7 @@ public interface ApiService {
 
     @POST("/api/user/message")
     Call<MessageResponse> sendMessage(@Body MessageRequest messageRequest, @Header("Authorization") String token);
+
+    @GET("api/user/search")
+    Call<List<UserSearchResponse>> searchUsers(@Query("keyword") String keyword, @Header("Authorization") String token);
 }

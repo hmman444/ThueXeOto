@@ -8,6 +8,19 @@ public class ConversationResponse {
     private String lastMessageContent;
     private String lastMessageTimestamp;
 
+    public ConversationResponse(){
+
+    }
+    public ConversationResponse(Long conversationId, Long receiverId, String receiverName,
+                                String receiverImage, String lastMessageContent, String lastMessageTimestamp) {
+        this.conversationId = conversationId;
+        this.receiverId = receiverId;
+        this.receiverName = receiverName;
+        this.receiverImage = receiverImage;
+        this.lastMessageContent = lastMessageContent;
+        this.lastMessageTimestamp = lastMessageTimestamp;
+    }
+
     public Long getConversationId() {
         return conversationId;
     }
