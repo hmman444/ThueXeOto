@@ -20,7 +20,7 @@
             android:name=".ui.NotifyActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.RewardsActivity"
+            android:name=".ui.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.FavoritesActivity"

@@ -15,15 +15,15 @@ import com.hcmute.ltdd.ui.AccountActivity;
 
 public class ProfileFragment extends Fragment {
 
+    private View accountLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Lấy tham chiếu đến phần tử "Tài khoản của tôi"
-        View accountLayout = view.findViewById(R.id.account_layout);
+        accountLayout = view.findViewById(R.id.account_layout);
 
-        // Bắt sự kiện click để mở AccountActivity
         accountLayout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AccountActivity.class);
             startActivity(intent);

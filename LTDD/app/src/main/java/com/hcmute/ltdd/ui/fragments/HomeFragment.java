@@ -22,9 +22,7 @@ import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.CarListActivity;
 import com.hcmute.ltdd.ui.FavoritesActivity;
-import com.hcmute.ltdd.ui.HomeActivity;
-import com.hcmute.ltdd.ui.LoginActivity;
-import com.hcmute.ltdd.ui.RewardsActivity;
+import com.hcmute.ltdd.ui.NotifyActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import retrofit2.Call;
@@ -80,7 +78,7 @@ public class HomeFragment extends Fragment {
         });
 
         iconNotify.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), RewardsActivity.class);
+            Intent intent = new Intent(getActivity(), NotifyActivity.class);
             startActivity(intent);
         });
         // Mặc định chọn tab "Xe tự lái"

@@ -148,9 +148,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    messageList.add(response.body());
-                    adapter.notifyItemInserted(messageList.size() - 1);
-                    recyclerMessages.scrollToPosition(messageList.size() - 1);
                     edtMessage.setText("");
                 } else {
                     Toast.makeText(ChatActivity.this, "Gửi tin nhắn thất bại", Toast.LENGTH_SHORT).show();
