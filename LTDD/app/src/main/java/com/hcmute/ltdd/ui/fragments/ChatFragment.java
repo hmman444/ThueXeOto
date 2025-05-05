@@ -61,6 +61,12 @@ public class ChatFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadConversations(); // Tự động gọi lại API mỗi khi fragment hiện lên
+    }
+
     private void initSearch(View view) {
         layoutSearch = view.findViewById(R.id.layoutSearch);
         edtSearch = view.findViewById(R.id.edtSearchUser);

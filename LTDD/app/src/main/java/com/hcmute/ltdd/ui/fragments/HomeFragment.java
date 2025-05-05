@@ -22,9 +22,7 @@ import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.CarListActivity;
 import com.hcmute.ltdd.ui.FavoritesActivity;
-import com.hcmute.ltdd.ui.HomeActivity;
-import com.hcmute.ltdd.ui.LoginActivity;
-import com.hcmute.ltdd.ui.RewardsActivity;
+import com.hcmute.ltdd.ui.NotifyActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import retrofit2.Call;
@@ -35,7 +33,7 @@ public class HomeFragment extends Fragment {
 
     private Button btnSelfDrive, btnWithDriver;
     private ViewFlipper viewFlipper;
-    private ImageView iconHeart, iconGift;
+    private ImageView iconHeart, iconNotify;
     private TextView tvUsername, tvEmail;
     private ApiService apiService;
 
@@ -56,7 +54,7 @@ public class HomeFragment extends Fragment {
         btnWithDriver = view.findViewById(R.id.btnWithDriver);
         viewFlipper = view.findViewById(R.id.viewFlipper);
         iconHeart = view.findViewById(R.id.iconHeart);
-        iconGift = view.findViewById(R.id.iconGift);
+        iconNotify = view.findViewById(R.id.iconNotify);
         tvUsername = view.findViewById(R.id.tvUsername);
         tvEmail = view.findViewById(R.id.tvEmail);
 
@@ -79,13 +77,13 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        iconGift.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), RewardsActivity.class);
+        iconNotify.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotifyActivity.class);
             startActivity(intent);
         });
         // Mặc định chọn tab "Xe tự lái"
         setActiveTab(btnSelfDrive, btnWithDriver);
-        
+
         loadUserProfile();
 
         return view;

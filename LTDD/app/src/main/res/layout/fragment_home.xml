@@ -99,10 +99,10 @@
                     android:background="#BDBDBD" />
 
                 <ImageView
-                    android:id="@+id/iconGift"
+                    android:id="@+id/iconNotify"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_gift" />
+                    android:src="@drawable/ic_notify" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

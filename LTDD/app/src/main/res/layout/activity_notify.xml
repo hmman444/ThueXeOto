@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Quà của tôi"
+                android:text="Thông báo"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"/>
@@ -51,23 +51,23 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/tabActive"
+            android:id="@+id/tabUnread"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Hiện hữu"
+            android:text="Chưa đọc"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/tabExpired"
+            android:id="@+id/tabRead"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Hết hiệu lực"
+            android:text="Đã đọc"
             android:textColor="#A0A0A0"
             android:textSize="20sp"/>
     </LinearLayout>
@@ -79,14 +79,14 @@
         android:orientation="horizontal">
 
         <View
-            android:id="@+id/underlineActive"
+            android:id="@+id/underlineUnread"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@color/green_active"/>
 
         <View
-            android:id="@+id/underlineExpired"
+            android:id="@+id/underlineRead"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -106,13 +106,13 @@
             android:layout_width="322dp"
             android:layout_height="370dp"
             android:src="@drawable/nogift"
-            android:contentDescription="Không có quà"
+            android:contentDescription="Không có thông báo"
             android:layout_marginBottom="100dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bạn chưa có quà"
+            android:text="Bạn chưa có thông báo"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"

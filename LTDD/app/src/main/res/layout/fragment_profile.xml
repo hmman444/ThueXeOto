@@ -30,7 +30,7 @@
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Huỳnh Minh Mẫn"
+                android:text="Tên user"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
 
@@ -38,7 +38,7 @@
                 android:id="@+id/tv_numberphone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+84 377179132"
+                android:text="SDT user"
                 android:textSize="16sp" />
         </LinearLayout>
 
