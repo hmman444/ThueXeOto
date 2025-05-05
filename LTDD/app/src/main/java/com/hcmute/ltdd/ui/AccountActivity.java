@@ -1,12 +1,15 @@
 package com.hcmute.ltdd.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
@@ -29,6 +32,8 @@ public class AccountActivity extends AppCompatActivity {
     private ImageView iconBirth, iconGender, iconPhone;
     private TextView statusBirth, statusGender, statusPhone;
 
+    private String valueBirth, valueGender, valuePhone, valueEmail;
+
     private ApiService apiService;
 
     @Override
@@ -36,15 +41,12 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        // Nút quay lại
         backButton = findViewById(R.id.btn_back);
         backButton.setOnClickListener(v -> finish());
 
-        // Thông tin tên và ngày tạo
         tvUsername = findViewById(R.id.tv_username);
         tvJoinDate = findViewById(R.id.tv_join_date);
 
-        // Các icon + text trạng thái theo ID đã sửa trong XML
         iconBirth = findViewById(R.id.iconBirth);
         statusBirth = findViewById(R.id.statusBirth);
 
@@ -54,9 +56,13 @@ public class AccountActivity extends AppCompatActivity {
         iconPhone = findViewById(R.id.iconPhone);
         statusPhone = findViewById(R.id.statusPhone);
 
-        // Gọi API
         apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
         loadUserProfile();
+
+        findViewById(R.id.account_Birth).setOnClickListener(v -> showDetailDialog(valueBirth, "Chưa liên kết ngày sinh"));
+        findViewById(R.id.account_Gender).setOnClickListener(v -> showDetailDialog(valueGender, "Chưa liên kết giới tính"));
+        findViewById(R.id.account_Phone).setOnClickListener(v -> showDetailDialog(valuePhone, "Chưa liên kết số điện thoại"));
+        findViewById(R.id.account_Email).setOnClickListener(v -> showDetailDialog(valueEmail, "Email tạm thời bị lỗi"));
     }
 
     private void loadUserProfile() {
@@ -67,16 +73,17 @@ public class AccountActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfileResponse user = response.body();
 
-                    // Tên và ngày tham gia
                     tvUsername.setText(user.getName());
                     tvJoinDate.setText("Ngày tham gia: " + formatDate(user.getCreatedAt()));
 
+                    valueBirth = user.getBirthdate();
+                    valueGender = user.getGender();
+                    valuePhone = user.getPhone();
+                    valueEmail = user.getEmail();
 
-                    // Các trường thông tin khác
-                    updateVerification(iconBirth, statusBirth, user.getBirthdate());
-                    updateVerification(iconGender, statusGender, user.getGender());
-                    updateVerification(iconPhone, statusPhone, user.getPhone());
-
+                    updateVerification(iconBirth, statusBirth, valueBirth);
+                    updateVerification(iconGender, statusGender, valueGender);
+                    updateVerification(iconPhone, statusPhone, valuePhone);
                 } else {
                     Toast.makeText(AccountActivity.this, "Không tải được thông tin", Toast.LENGTH_SHORT).show();
                 }
@@ -100,13 +107,11 @@ public class AccountActivity extends AppCompatActivity {
             statusView.setTextColor(getResources().getColor(R.color.bright_orange));
         }
     }
+
     private String formatDate(String isoDateTime) {
         try {
-            // ISO 8601 -> Date
             SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
             Date date = isoFormat.parse(isoDateTime);
-
-            // Date -> dd/MM/yyyy
             SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
             return outputFormat.format(date);
         } catch (ParseException e) {
@@ -115,4 +120,12 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    private void showDetailDialog(String value, String fallback) {
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_detail_info, null);
+        TextView tvInfo = view.findViewById(R.id.tv_info);
+        tvInfo.setText((value != null && !value.isEmpty()) ? value : fallback);
+        dialog.setContentView(view);
+        dialog.show();
+    }
 }
