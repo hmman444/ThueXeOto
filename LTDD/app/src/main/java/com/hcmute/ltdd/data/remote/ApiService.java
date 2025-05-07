@@ -1,6 +1,7 @@
 package com.hcmute.ltdd.data.remote;
 
 import com.hcmute.ltdd.model.ApiResponse;
+import com.hcmute.ltdd.model.request.EditProfileRequest;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.LoginRequest;
 import com.hcmute.ltdd.model.request.MessageRequest;
@@ -53,4 +54,8 @@ public interface ApiService {
 
     @GET("api/user/search")
     Call<List<UserSearchResponse>> searchUsers(@Query("keyword") String keyword, @Header("Authorization") String token);
+
+    @POST("/api/user/edit-profile")
+    Call<ApiResponse<String>> editProfile(@Body EditProfileRequest request, @Header("Authorization") String token);
+
 }
