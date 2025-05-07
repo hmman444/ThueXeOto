@@ -1,25 +1,24 @@
 package com.hcmute.thuexe.dto.request;
 
-
 import java.time.LocalDateTime;
 
-public class BookingRequest {
-    private Long carId;
+public class BookingUpdateRequest {
+    private Long bookingId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String pickupLocation;
     private String dropoffLocation;
-    private boolean insuranceSelected;
-    private boolean deliverySelected;
+    private Boolean insuranceSelected;
+    private Boolean deliverySelected;
     private String voucherCode;
 
-    // Getters & Setters
-    public Long getCarId() {
-        return carId;
+    // Getters and Setters
+    public Long getBookingId() {
+        return bookingId;
     }
 
-    public void setCarId(Long carId) {
-        this.carId = carId;
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
     public LocalDateTime getStartDate() {
@@ -54,19 +53,19 @@ public class BookingRequest {
         this.dropoffLocation = dropoffLocation;
     }
 
-    public boolean isInsuranceSelected() {
+    public Boolean getInsuranceSelected() {
         return insuranceSelected;
     }
 
-    public void setInsuranceSelected(boolean insuranceSelected) {
+    public void setInsuranceSelected(Boolean insuranceSelected) {
         this.insuranceSelected = insuranceSelected;
     }
 
-    public boolean isDeliverySelected() {
+    public Boolean getDeliverySelected() {
         return deliverySelected;
     }
 
-    public void setDeliverySelected(boolean deliverySelected) {
+    public void setDeliverySelected(Boolean deliverySelected) {
         this.deliverySelected = deliverySelected;
     }
 

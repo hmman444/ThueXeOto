@@ -2,7 +2,7 @@ package com.hcmute.thuexe.model;
 
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Promotion {
@@ -12,11 +12,11 @@ public class Promotion {
 
     private String code;
     private double discountAmount;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String status;
 
-    public boolean isValid(LocalDate checkDate) {
+    public boolean isValid(LocalDateTime checkDate) {
         return (startDate == null || !checkDate.isBefore(startDate)) &&
                (endDate == null || !checkDate.isAfter(endDate)) &&
                "active".equalsIgnoreCase(status);

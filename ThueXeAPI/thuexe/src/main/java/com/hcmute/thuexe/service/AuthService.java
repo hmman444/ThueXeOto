@@ -139,7 +139,7 @@ public class AuthService {
         if (userOpt.isEmpty()) return "Không tìm thấy thông tin người dùng";
 
         String role = userOpt.get().getRole();
-        String token = jwtService.generateToken(username, role);
+        String token = jwtService.generateToken(username, role, userOpt.get().getUserId());
 
         return token;
     }

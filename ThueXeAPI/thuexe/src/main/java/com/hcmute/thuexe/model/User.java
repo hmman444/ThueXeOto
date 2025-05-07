@@ -1,7 +1,7 @@
 package com.hcmute.thuexe.model;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,8 +16,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
     private String name;
+    private String imageUrl;
     private String phone;
     private String address;
     private LocalDate birthdate;
@@ -25,12 +25,10 @@ public class User {
 
     private String role = "customer";
 
-    private LocalDate createdAt = LocalDate.now();
-
-    private int sumPoints = 0;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 
     // ====== Getters and Setters ======
@@ -50,7 +48,14 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    
     public String getPhone() {
         return phone;
     }
@@ -91,20 +96,12 @@ public class User {
         this.role = role;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public int getSumPoints() {
-        return sumPoints;
-    }
-
-    public void setSumPoints(int sumPoints) {
-        this.sumPoints = sumPoints;
     }
 
     public Account getAccount() {

@@ -1,7 +1,7 @@
 package com.hcmute.thuexe.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Voucher {
@@ -16,11 +16,11 @@ public class Voucher {
     private Double minOrderValue;
     private Integer usageLimit;
     private Integer usedCount;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String status;
 
-    public boolean isValid(LocalDate date, double total) {
+    public boolean isValid(LocalDateTime date, double total) {
         return (startDate == null || !date.isBefore(startDate)) &&
                (endDate == null || !date.isAfter(endDate)) &&
                "active".equalsIgnoreCase(status) &&
@@ -28,8 +28,11 @@ public class Voucher {
                (usageLimit == null || usedCount < usageLimit);
     }
 
+    public Voucher() {
+    }
+    
     public Voucher(Long voucherId, String code, Double discountAmount, Double discountPercentage, Double maxDiscount,
-            Double minOrderValue, Integer usageLimit, Integer usedCount, LocalDate startDate, LocalDate endDate,
+            Double minOrderValue, Integer usageLimit, Integer usedCount, LocalDateTime startDate, LocalDateTime endDate,
             String status) {
         this.voucherId = voucherId;
         this.code = code;
@@ -108,19 +111,19 @@ public class Voucher {
         this.usedCount = usedCount;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

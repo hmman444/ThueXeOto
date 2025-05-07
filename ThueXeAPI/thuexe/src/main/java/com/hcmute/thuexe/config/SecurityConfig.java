@@ -26,8 +26,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/ws-chat/**").permitAll() // ✅ chỉ cho phép connect WebSocket
             .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_CUSTOMER", "ROLE_ADMIN")
-            .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // 🚨 Chặn customer truy cập admin
+            .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
             .anyRequest().authenticated()
         )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
