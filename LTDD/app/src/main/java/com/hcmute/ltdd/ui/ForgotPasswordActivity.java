@@ -12,8 +12,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.api.ApiClient;
-import com.hcmute.ltdd.api.AuthApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.model.ApiResponse;
@@ -31,7 +29,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private Button resetPasswordButton;
     private TextView otpCountdownTextView;
 
-    private AuthApiService authApiService;
     private ApiService apiService;
     private CountDownTimer countDownTimer;
 
@@ -48,7 +45,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         resetPasswordButton = findViewById(R.id.btnResetPassword);
         otpCountdownTextView = findViewById(R.id.tvOtpCountdown);
 
-        authApiService = ApiClient.getClient().create(AuthApiService.class);
         apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
 
         backButton.setOnClickListener(v -> {
@@ -71,7 +67,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         ForgotPasswordRequest request = new ForgotPasswordRequest(email);
 
-        authApiService.forgotPassword(request).enqueue(new Callback<ApiResponse<String>>() {
         apiService.forgotPassword(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
@@ -127,7 +122,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         ResetPasswordRequest request = new ResetPasswordRequest(email, otpCode, newPassword);
 
-        authApiService.resetPassword(request).enqueue(new Callback<ApiResponse<String>>() {
         apiService.resetPassword(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {

@@ -39,7 +39,7 @@ public interface ApiService {
     Call<User> login(@Query("username") String username, @Query("password") String password);
     Call<ApiResponse<String>> login(@Body LoginRequest request);
 
-    // Các phuong th?c khác nhu dang ký, quên m?t kh?u, v.v.
+    // Cï¿½c phuong th?c khï¿½c nhu dang kï¿½, quï¿½n m?t kh?u, v.v.
 
     @POST("/api/auth/forgot-password")
     Call<ApiResponse<String>> forgotPassword(@Body ForgotPasswordRequest request);

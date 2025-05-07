@@ -11,8 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.api.ApiClient;
-import com.hcmute.ltdd.api.AuthApiService;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.ApiResponse;
@@ -29,7 +27,6 @@ public class VerifyOTPActivity extends AppCompatActivity {
     private Button verifyOtpButton;
     private TextView verifyTitleTextView;
 
-    private AuthApiService authApiService;
     private ApiService apiService;
     private String email; // Email truyền từ RegisterActivity qua
 
@@ -43,10 +40,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
         verifyOtpButton = findViewById(R.id.btnVerifyOtp);
         verifyTitleTextView = findViewById(R.id.tvVerifyTitle);
 
-        // Khởi tạo Retrofit Service
-        authApiService = ApiClient.getClient().create(AuthApiService.class);
         apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
-
 
         // Lấy email từ Intent
         email = getIntent().getStringExtra("email");
@@ -73,7 +67,6 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
         VerifyOtpRequest request = new VerifyOtpRequest(email, otpCode);
 
-        authApiService.verifyOtp(request).enqueue(new Callback<ApiResponse<String>>() {
         apiService.verifyOtp(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
