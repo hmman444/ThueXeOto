@@ -12,8 +12,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.api.ApiClient;
 import com.hcmute.ltdd.api.AuthApiService;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.ResetPasswordRequest;
@@ -30,6 +32,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private TextView otpCountdownTextView;
 
     private AuthApiService authApiService;
+    private ApiService apiService;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -45,7 +48,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         resetPasswordButton = findViewById(R.id.btnResetPassword);
         otpCountdownTextView = findViewById(R.id.tvOtpCountdown);
 
-        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
+        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
 
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
@@ -68,6 +72,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ForgotPasswordRequest request = new ForgotPasswordRequest(email);
 
         authApiService.forgotPassword(request).enqueue(new Callback<ApiResponse<String>>() {
+        apiService.forgotPassword(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -123,6 +128,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ResetPasswordRequest request = new ResetPasswordRequest(email, otpCode, newPassword);
 
         authApiService.resetPassword(request).enqueue(new Callback<ApiResponse<String>>() {
+        apiService.resetPassword(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
                 if (response.isSuccessful() && response.body() != null) {

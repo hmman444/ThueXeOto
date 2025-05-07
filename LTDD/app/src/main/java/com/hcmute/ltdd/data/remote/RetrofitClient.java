@@ -3,6 +3,7 @@ package com.hcmute.ltdd.data.remote;
 import android.content.Context;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -19,8 +20,8 @@ public class RetrofitClient {
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())  // Chuyển đổi JSON thành đối tượng Java
+					.client(client)
+                    .addConverterFactory(GsonConverterFactory.create())  // Chuy?n d?i JSON th�nh d?i tu?ng Java
                     .build();
         }
         return retrofit;

@@ -17,10 +17,10 @@
 
             <!-- Nút đóng nằm bên trái -->
             <ImageView
-                android:id="@+id/btn_close"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_close"/>
+                android:id="@+id/btn_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_back"/>
 
             <!-- Khoảng trống để đẩy nút Edit sang phải -->
             <View
@@ -30,17 +30,17 @@
 
             <!-- Nút Edit nằm bên phải -->
             <ImageView
-                android:id="@+id/btn_edit"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/modify"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_pencil"/>
         </LinearLayout>
 
         <!-- Ảnh đại diện -->
         <ImageView
             android:id="@+id/img_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:src="@drawable/avatar"
             android:scaleType="centerCrop"/>
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Tên người dùng"
+            android:text="Tên user"
             android:textSize="24sp"
             android:textStyle="bold"/>
 
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Ngày tham gia: 21/03/2025"
+            android:text="Ngày tham gia: ..."
             android:textSize="16sp"
             android:textColor="@android:color/darker_gray"/>
 

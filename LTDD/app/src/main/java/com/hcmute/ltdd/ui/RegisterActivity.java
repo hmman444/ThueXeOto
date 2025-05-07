@@ -10,8 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.api.ApiClient;
 import com.hcmute.ltdd.api.AuthApiService;
+import com.hcmute.ltdd.data.remote.ApiService;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.RegisterRequest;
 
@@ -26,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageButton backButton;
 
     private AuthApiService authApiService;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
         backButton = findViewById(R.id.btnBack);
 
         // Khởi tạo Retrofit Service
-        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
+        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
+
 
         registerButton.setOnClickListener(v -> register());
 
@@ -65,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
         RegisterRequest request = new RegisterRequest(username, email, password, confirmPassword);
 
         authApiService.register(request).enqueue(new Callback<ApiResponse<String>>() {
+        apiService.register(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
                 if (response.isSuccessful() && response.body() != null) {

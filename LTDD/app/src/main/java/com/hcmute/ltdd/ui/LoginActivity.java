@@ -11,8 +11,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.api.ApiClient;
 import com.hcmute.ltdd.api.AuthApiService;
+import com.hcmute.ltdd.data.remote.ApiService;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.LoginRequest;
 import com.hcmute.ltdd.utils.SharedPrefManager;
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvForgotPassword, tvRegister;
 
     private AuthApiService authApiService;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,9 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister = findViewById(R.id.tvRegister);
 
         // Khởi tạo Retrofit Service
-        authApiService = RetrofitClient.getRetrofit(this).create(AuthApiService.class);
+        authApiService = ApiClient.getClient().create(AuthApiService.class);
+        apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
+
 
         loginButton.setOnClickListener(v -> login());
 
@@ -68,14 +73,17 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest request = new LoginRequest(username, password);
 
         authApiService.login(request).enqueue(new Callback<ApiResponse<String>>() {
+        apiService.login(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<String> apiResponse = response.body();
-                    Log.d("LoginActivity", "API Response: " + response.body());
                     if (apiResponse.isSuccess()) {
-                        String token = apiResponse.getData();  // Lấy token từ response
-                        SharedPrefManager.getInstance(LoginActivity.this).saveToken(token);
+
+
+                        // ✅ Lưu token vào SharedPreferences
+                        String token = apiResponse.getData();
+                        SharedPrefManager.getInstance(getApplicationContext()).saveToken(token);
 
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -92,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponse<String>> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
