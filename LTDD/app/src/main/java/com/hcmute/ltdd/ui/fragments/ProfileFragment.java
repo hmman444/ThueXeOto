@@ -17,6 +17,7 @@ import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.AccountActivity;
+import com.hcmute.ltdd.ui.AddCarActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
-    private View accountLayout;
+    private View accountLayout, registerRentLayout;
     private TextView tvUsername, tvPhone;
     private ApiService apiService;
 
@@ -35,6 +36,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         accountLayout = view.findViewById(R.id.account_layout);
+        registerRentLayout = view.findViewById(R.id.register_rent_layout);
         tvUsername = view.findViewById(R.id.tv_username);
         tvPhone = view.findViewById(R.id.tv_numberphone);
 
@@ -44,6 +46,10 @@ public class ProfileFragment extends Fragment {
 
         accountLayout.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), AccountActivity.class));
+        });
+
+        registerRentLayout.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), AddCarActivity.class));
         });
 
         return view;

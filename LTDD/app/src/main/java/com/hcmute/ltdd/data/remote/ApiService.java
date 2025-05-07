@@ -1,6 +1,7 @@
 package com.hcmute.ltdd.data.remote;
 
 import com.hcmute.ltdd.model.ApiResponse;
+import com.hcmute.ltdd.model.request.AddCarRequest;
 import com.hcmute.ltdd.model.request.EditProfileRequest;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.LoginRequest;
@@ -57,5 +58,8 @@ public interface ApiService {
 
     @POST("/api/user/edit-profile")
     Call<ApiResponse<String>> editProfile(@Body EditProfileRequest request, @Header("Authorization") String token);
+
+    @POST("/api/user/add-car")
+    Call<ApiResponse<String>> addCar(@Body AddCarRequest request, @Header("Authorization") String token);
 
 }
