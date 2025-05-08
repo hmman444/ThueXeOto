@@ -1,4 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -154,7 +155,7 @@
         android:textSize="14sp"
         app:layout_constraintTop_toTopOf="@id/tvFuelType"
         app:layout_constraintStart_toEndOf="@id/tvFuelType"
-        android:layout_marginStart="150dp"/>
+        android:layout_marginStart="140dp"/>
 
     <!-- Loại nhiên liệu và Tiêu thụ năng lượng trong cùng một hàng -->
     <LinearLayout
@@ -185,9 +186,9 @@
         <!-- Tiêu thụ năng lượng -->
         <EditText
             android:id="@+id/edtEnergyConsumption"
-            android:layout_width="120dp"
+            android:layout_width="130dp"
             android:layout_height="50dp"
-            android:hint="kWh/100km"
+            android:hint="Mức tiêu thụ"
             android:background="@drawable/bg_edittext"
             android:padding="12dp"
             android:inputType="numberDecimal"/>
@@ -219,7 +220,7 @@
         <TextView
             android:id="@+id/tvSelectedFeatures"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bg_edittext"
             android:padding="12dp"
