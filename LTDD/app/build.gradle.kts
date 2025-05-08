@@ -16,6 +16,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    viewBinding{
+        enable = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -46,4 +50,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation ("com.airbnb.android:lottie:5.2.0")
     implementation("com.auth0:java-jwt:3.19.2")
+    implementation("com.cloudinary:cloudinary-android:1.26.0") {
+        exclude(group = "com.android.support")
+        exclude(group = "androidx.versionedparcelable")
+    }
 }
