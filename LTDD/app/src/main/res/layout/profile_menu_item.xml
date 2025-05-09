@@ -84,7 +84,46 @@
         android:layout_height="1dp"
         android:background="#E0E0E0"/>
 
-    <!-- Mục 3: Xe yêu thích -->
+    <!-- Mục 3: Xe đã đăng ký-->
+    <LinearLayout
+        android:id="@+id/register_car_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_car"
+            app:tint="#000000" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Xe đã đăng ký"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_right_arrow"
+            app:tint="#888888" />
+    </LinearLayout>
+
+    <!-- Dòng kẻ phân cách -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"/>
+
+    <!-- Mục 4: Xe yêu thích -->
     <LinearLayout
         android:id="@+id/favorite_cars_layout"
         android:layout_width="match_parent"
@@ -123,46 +162,7 @@
         android:layout_height="1dp"
         android:background="#E0E0E0"/>
 
-    <!-- Mục 4: Địa chỉ của tôi -->
-    <LinearLayout
-        android:id="@+id/my_address_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_address"
-            app:tint="#000000" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:text="Địa chỉ của tôi"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_right_arrow"
-            app:tint="#888888" />
-    </LinearLayout>
-
-    <!-- Dòng kẻ phân cách -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0"/>
-
-    <!-- Mục 5: Thẻ của tôi -->
+    <!-- Mục 5: Lịch sử thuê xe-->
     <LinearLayout
         android:id="@+id/my_history_booking_layout"
         android:layout_width="match_parent"
@@ -186,39 +186,6 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp"
             android:text="Lịch sử thuê xe"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_right_arrow"
-            app:tint="#888888" />
-    </LinearLayout>
-
-    <!-- Mục 6: Quà tặng -->
-    <LinearLayout
-        android:id="@+id/my_gift_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_password"
-            app:tint="#000000" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:text="Mật khẩu"
             android:textSize="16sp" />
 
         <ImageView

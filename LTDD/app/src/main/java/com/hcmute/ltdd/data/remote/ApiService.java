@@ -9,6 +9,7 @@ import com.hcmute.ltdd.model.request.MessageRequest;
 import com.hcmute.ltdd.model.request.RegisterRequest;
 import com.hcmute.ltdd.model.request.ResetPasswordRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
+import com.hcmute.ltdd.model.response.CarResponse;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
@@ -61,5 +62,8 @@ public interface ApiService {
 
     @POST("/api/user/add-car")
     Call<ApiResponse<String>> addCar(@Body AddCarRequest request, @Header("Authorization") String token);
+
+    @GET("/api/user/my-cars")
+    Call<List<CarResponse>> getMyCars(@Header("Authorization") String token);
 
 }

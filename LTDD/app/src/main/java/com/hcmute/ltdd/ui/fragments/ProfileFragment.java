@@ -11,14 +11,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.hcmute.ltdd.R;
+import com.hcmute.ltdd.adapter.MyCarsAdapter;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.response.CarResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.AccountActivity;
 import com.hcmute.ltdd.ui.AddCarActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +33,7 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
-    private View accountLayout, registerRentLayout;
+    private View accountLayout, registerRentLayout, registerCarLayout;
     private TextView tvUsername, tvPhone;
     private ApiService apiService;
 
@@ -37,6 +44,7 @@ public class ProfileFragment extends Fragment {
 
         accountLayout = view.findViewById(R.id.account_layout);
         registerRentLayout = view.findViewById(R.id.register_rent_layout);
+        registerCarLayout = view.findViewById(R.id.register_car_layout);
         tvUsername = view.findViewById(R.id.tv_username);
         tvPhone = view.findViewById(R.id.tv_numberphone);
 
@@ -51,6 +59,8 @@ public class ProfileFragment extends Fragment {
         registerRentLayout.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), AddCarActivity.class));
         });
+
+        registerCarLayout.setOnClickListener(v -> showMyCarsDialog());
 
         return view;
     }
@@ -84,5 +94,35 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showMyCarsDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_my_cars, null);
+
+        RecyclerView rvMyCars = dialogView.findViewById(R.id.rv_my_cars);
+        rvMyCars.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        String token = "Bearer " + SharedPrefManager.getInstance(requireContext()).getToken();
+        apiService.getMyCars(token).enqueue(new Callback<List<CarResponse>>() {
+            @Override
+            public void onResponse(Call<List<CarResponse>> call, Response<List<CarResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<CarResponse> carList = response.body();
+                    MyCarsAdapter adapter = new MyCarsAdapter(carList);
+                    rvMyCars.setAdapter(adapter);
+                } else {
+                    Toast.makeText(requireContext(), "Không tải được danh sách xe", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CarResponse>> call, Throwable t) {
+                Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialog.setContentView(dialogView);
+        dialog.show();
     }
 }
