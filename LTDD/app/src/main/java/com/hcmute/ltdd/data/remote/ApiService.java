@@ -1,5 +1,4 @@
 package com.hcmute.ltdd.data.remote;
-
 import com.hcmute.ltdd.model.User;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
@@ -36,10 +35,7 @@ public interface ApiService {
     Call<ApiResponse<String>> register(@Body RegisterRequest request);
 
     @POST("/api/auth/login")
-    Call<User> login(@Query("username") String username, @Query("password") String password);
     Call<ApiResponse<String>> login(@Body LoginRequest request);
-
-    // C�c phuong th?c kh�c nhu dang k�, qu�n m?t kh?u, v.v.
 
     @POST("/api/auth/forgot-password")
     Call<ApiResponse<String>> forgotPassword(@Body ForgotPasswordRequest request);
@@ -62,7 +58,7 @@ public interface ApiService {
     @GET("api/user/search")
     Call<List<UserSearchResponse>> searchUsers(@Query("keyword") String keyword, @Header("Authorization") String token);
 
-	@POST("/api/user/cars/list")
+    @POST("/api/user/cars/list")
     Call<ApiResponse<List<CarListResponse>>> searchCars(@Body SearchCarRequest request);
 
     @GET("/api/user/car/{id}")

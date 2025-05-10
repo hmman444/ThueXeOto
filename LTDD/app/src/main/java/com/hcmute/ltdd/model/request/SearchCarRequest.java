@@ -8,8 +8,17 @@ public class SearchCarRequest {
     private Double priceTo;
     private String gearType;
     private String fuelType;
+    private Boolean driverRequired;
 
-    public SearchCarRequest(String location, Integer seats, String brand, Double priceFrom, Double priceTo, String gearType, String fuelType) {
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
+
+    public SearchCarRequest(String location, Integer seats, String brand, Double priceFrom, Double priceTo, String gearType, String fuelType, Boolean driverRequired) {
         this.location = location;
         this.seats = seats;
         this.brand = brand;
@@ -17,6 +26,7 @@ public class SearchCarRequest {
         this.priceTo = priceTo;
         this.gearType = gearType;
         this.fuelType = fuelType;
+        this.driverRequired = driverRequired;
     }
 
     public SearchCarRequest() {

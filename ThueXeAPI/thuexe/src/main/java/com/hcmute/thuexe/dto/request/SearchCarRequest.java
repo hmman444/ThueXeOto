@@ -8,7 +8,14 @@ public class SearchCarRequest {
     private Double priceTo;
     private String gearType;
     private String fuelType;
+    private Boolean driverRequired;
     
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
     public String getLocation() {
         return location;
     }

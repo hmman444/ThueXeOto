@@ -44,6 +44,7 @@ public class UserService {
             user.getName(),
             account.getEmail(),
             user.getPhone(),
+            user.getAddress(),
             user.getGender(),
             user.getBirthdate() != null ? user.getBirthdate().toString() : null,
             user.getImageUrl(),

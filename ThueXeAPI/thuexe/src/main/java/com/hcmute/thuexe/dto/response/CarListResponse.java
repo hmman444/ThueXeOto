@@ -15,6 +15,15 @@ public class CarListResponse {
     private Long ownerId;
     private Double avgRating;
     private Long tripCount;
+    private Boolean driverRequired;
+
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
 
     public CarListResponse(Car car, Double avgRating, Long tripCount) {
         this.carId = car.getCarId();
@@ -26,6 +35,7 @@ public class CarListResponse {
         this.location = car.getLocation();
         this.imageUrl = car.getImageUrl();
         this.price = car.getPrice();
+        this.driverRequired = car.isDriverRequired();
         this.ownerId = car.getOwner() != null ? car.getOwner().getUserId() : null;
         this.avgRating = avgRating;
         this.tripCount = tripCount;

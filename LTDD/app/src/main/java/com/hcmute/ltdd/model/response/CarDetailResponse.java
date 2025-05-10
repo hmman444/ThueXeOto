@@ -1,32 +1,42 @@
 package com.hcmute.ltdd.model.response;
 
+import java.util.List;
+
 public class CarDetailResponse {
-    private Long carId;
+    private Long id;
     private String name;
-    private String imageUrl;
+    private String brand;
     private String description;
+    private String gearType;
+    private int seats;
+    private String fuelType;
+    private double energyConsumption;
+    private List<String> hasEtc;
     private String location;
-    private Double price;
-    private Double avgRating;
-    private Long tripCount;
+    private double price;
+    private String imageUrl;
+    private String status;
+    private boolean driverRequired;
+    private String createdAt;
 
-    public CarDetailResponse(Long carId, String name, String imageUrl, String description, String location, Double price, Double avgRating, Long tripCount) {
-        this.carId = carId;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.location = location;
-        this.price = price;
-        this.avgRating = avgRating;
-        this.tripCount = tripCount;
+    // Car stats
+    private double avgRating;
+    private long tripCount;
+
+    // Owner stats
+    private String ownerName;
+    private double ownerAvgRating;
+    private long ownerTripCount;
+
+    // Reviews
+    private List<ReviewDTO> reviews;
+
+    public Long getId() {
+        return id;
     }
 
-    public Long getCarId() {
-        return carId;
-    }
-
-    public void setCarId(Long carId) {
-        this.carId = carId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,12 +47,12 @@ public class CarDetailResponse {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getDescription() {
@@ -53,6 +63,46 @@ public class CarDetailResponse {
         this.description = description;
     }
 
+    public String getGearType() {
+        return gearType;
+    }
+
+    public void setGearType(String gearType) {
+        this.gearType = gearType;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public double getEnergyConsumption() {
+        return energyConsumption;
+    }
+
+    public void setEnergyConsumption(double energyConsumption) {
+        this.energyConsumption = energyConsumption;
+    }
+
+    public List<String> getHasEtc() {
+        return hasEtc;
+    }
+
+    public void setHasEtc(List<String> hasEtc) {
+        this.hasEtc = hasEtc;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -61,27 +111,91 @@ public class CarDetailResponse {
         this.location = location;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Double getAvgRating() {
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public boolean isDriverRequired() {
+        return driverRequired;
+    }
+
+    public void setDriverRequired(boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public double getAvgRating() {
         return avgRating;
     }
 
-    public void setAvgRating(Double avgRating) {
+    public void setAvgRating(double avgRating) {
         this.avgRating = avgRating;
     }
 
-    public Long getTripCount() {
+    public long getTripCount() {
         return tripCount;
     }
 
-    public void setTripCount(Long tripCount) {
+    public void setTripCount(long tripCount) {
         this.tripCount = tripCount;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public double getOwnerAvgRating() {
+        return ownerAvgRating;
+    }
+
+    public void setOwnerAvgRating(double ownerAvgRating) {
+        this.ownerAvgRating = ownerAvgRating;
+    }
+
+    public long getOwnerTripCount() {
+        return ownerTripCount;
+    }
+
+    public void setOwnerTripCount(long ownerTripCount) {
+        this.ownerTripCount = ownerTripCount;
+    }
+
+    public List<ReviewDTO> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDTO> reviews) {
+        this.reviews = reviews;
     }
 }

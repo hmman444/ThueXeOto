@@ -15,7 +15,7 @@
 
     <!-- Nội dung mô tả -->
     <TextView
-        android:id="@+id/txtDescription"
+        android:id="@+id/txtDescription_cardetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Mitsubishi mirage 2017 xe sạch sẽ, tiết kiệm xăng, máy lạnh tốt, bản đồ vietmaps dẫn đường, camera 360, cam hành trình, màn android xem youtube nghe nhạc"

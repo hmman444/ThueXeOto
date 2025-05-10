@@ -12,12 +12,21 @@ public class BookingPreviewResponse {
 
     private double depositAmount;
     private double payLaterAmount;
+    private double driverRequired;
+    public double getDriverRequired() {
+        return driverRequired;
+    }
+
+    public void setDriverRequired(double driverRequired) {
+        this.driverRequired = driverRequired;
+    }
 
     private String policyNote;
 
+
     public BookingPreviewResponse(double rentalPricePerDay, double insuranceFeePerDay, double deliveryFee,
             int totalDays, double totalBeforeDiscount, double discountAmount, double totalPrice, double depositAmount,
-            double payLaterAmount, String policyNote) {
+            double payLaterAmount, double driverRequired, String policyNote) {
         this.rentalPricePerDay = rentalPricePerDay;
         this.insuranceFeePerDay = insuranceFeePerDay;
         this.deliveryFee = deliveryFee;
@@ -27,6 +36,7 @@ public class BookingPreviewResponse {
         this.totalPrice = totalPrice;
         this.depositAmount = depositAmount;
         this.payLaterAmount = payLaterAmount;
+        this.driverRequired = driverRequired;
         this.policyNote = policyNote;
     }
 

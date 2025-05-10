@@ -16,13 +16,17 @@ import com.hcmute.thuexe.dto.request.BookingRequest;
 import com.hcmute.thuexe.dto.request.BookingUpdateRequest;
 import com.hcmute.thuexe.dto.request.CancelBookingRequest;
 import com.hcmute.thuexe.dto.request.MessageRequest;
+import com.hcmute.thuexe.dto.request.ReviewRequest;
 import com.hcmute.thuexe.dto.request.SearchCarRequest;
 import com.hcmute.thuexe.dto.response.*;
 import com.hcmute.thuexe.model.Car;
+import com.hcmute.thuexe.model.Review;
 import com.hcmute.thuexe.model.User;
 import com.hcmute.thuexe.payload.ApiResponse;
 import com.hcmute.thuexe.repository.UserRepository;
 import com.hcmute.thuexe.service.*;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/user")
@@ -45,6 +49,9 @@ public class UserController {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    private ReviewService reviewService;
 
     /**
      * API: GET /api/user/profile
@@ -122,9 +129,17 @@ public class UserController {
      * Lấy chi tiết xe
      */
     @GetMapping("/car/{id}")
-    public ResponseEntity<CarDetailResponse> getCarDetail(@PathVariable Long id) {
-        return ResponseEntity.ok(carService.getCarDetail(id));
+    public ResponseEntity<ApiResponse<CarDetailResponse>> getCarDetail(@PathVariable Long id) {
+        CarDetailResponse carDetail = carService.getCarDetail(id);
+        if (carDetail == null) {
+            ApiResponse<CarDetailResponse> response = new ApiResponse<>(false, "Không tìm thấy xe với ID: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        ApiResponse<CarDetailResponse> response = new ApiResponse<>(true, "Lấy chi tiết xe thành công", carDetail);
+        return ResponseEntity.ok(response);
     }
+
 
     /**
      * API: POST /api/user/booking/preview
@@ -249,5 +264,40 @@ public class UserController {
         }
     }
 
+    @GetMapping("/booking-history")
+    public List<BookingHistoryResponse> getBookingHistory(Authentication authentication) {
+        String username = authentication.getPrincipal().toString();
+        User user = userRepository.findByAccount_Username(username)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+        return bookingService.getBookingHistoryByUserId(user.getUserId());
+    }
 
+    @PostMapping("/reviews/add")
+    public ApiResponse<String> addReview(@Valid @RequestBody ReviewRequest reviewRequest, Authentication authentication) {
+        reviewService.addReview(authentication, reviewRequest);
+        return new ApiResponse<>(true, "Đánh giá thành công");
+    }
+
+    @PutMapping("/review/update/{reviewId}")
+    public ApiResponse<String> updateReview(@PathVariable Long reviewId,
+                                            @Valid @RequestBody ReviewRequest reviewRequest,
+                                            Authentication authentication) {
+        reviewService.updateReview(authentication, reviewId, reviewRequest);
+        return new ApiResponse<>(true, "Sửa đánh giá thành công");
+    }
+
+    @DeleteMapping("/review/delete/{reviewId}")
+    public ApiResponse<String> deleteReview(@PathVariable Long reviewId, Authentication authentication) {
+        reviewService.deleteReview(authentication, reviewId);
+        return new ApiResponse<>(true, "Xóa đánh giá thành công");
+    }
+
+    @GetMapping("/review/car/{carId}")
+    public ApiResponse<List<Review>> getReviewsByCarId(@PathVariable Long carId) {
+        List<Review> reviews = reviewService.getReviewsByCarId(carId);
+        if (reviews.isEmpty()) {
+            return new ApiResponse<>(false, "Không có review cho xe này", null);
+        }
+        return new ApiResponse<>(true, "Lấy danh sách review thành công", reviews);
+    }
 }

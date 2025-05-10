@@ -16,6 +16,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     private FragmentFilterBottomSheetBinding binding;
     private FilterListener filterListener;
+    private String location;
+    private Boolean driverRequired;
 
     public interface FilterListener {
         void onFilterApplied(SearchCarRequest request);
@@ -23,6 +25,11 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     public void setFilterListener(FilterListener listener) {
         this.filterListener = listener;
+    }
+
+    public void setInitialValues(String location, Boolean driverRequired) {
+        this.location = location;
+        this.driverRequired = driverRequired;
     }
 
     @Nullable
@@ -40,13 +47,14 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             Double priceTo = parseDoubleSafe(toStringSafe(binding.etPriceTo.getText()));
 
             SearchCarRequest request = new SearchCarRequest(
-                    null,
+                    location,
                     seats,
                     brand,
                     priceFrom,
                     priceTo,
                     gearType,
-                    fuelType
+                    fuelType,
+                    driverRequired
             );
 
             if (filterListener != null) {
@@ -75,8 +83,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     private String getSelectedSafe(Object selectedItem) {
         if (selectedItem == null) return null;
         String value = selectedItem.toString().trim();
-        if (value.isEmpty() || value.startsWith("Chọn")) return null;
-        return value;
+        return value.isEmpty() || value.startsWith("Chọn") ? null : value;
     }
 
     private void setupSpinners() {
@@ -100,5 +107,4 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         fuelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerFuelType.setAdapter(fuelAdapter);
     }
-
 }

@@ -1,5 +1,7 @@
 package com.hcmute.ltdd.ui;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
@@ -65,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         LoginRequest request = new LoginRequest(username, password);
-
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
         apiService.login(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {

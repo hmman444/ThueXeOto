@@ -29,6 +29,8 @@ public class Car {
     private double price;
     private String imageUrl;
     private String status;
+
+    @Column(name = "driver_required")
     private boolean driverRequired;
     
     @Column(name = "created_at")

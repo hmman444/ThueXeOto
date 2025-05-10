@@ -5,6 +5,16 @@ public class UserProfileResponse {
     private String name;
     private String email;
     private String phone;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     private String gender;
     private String birthdate;
     private String imageUrl;

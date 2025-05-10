@@ -17,13 +17,18 @@ public class BookingDetailResponse {
     private String cancelReason;
     private Boolean insuranceSelected;
     private Boolean deliverySelected;
+    private Boolean driverRequired;
 
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
     private String carName;
     private String carImageUrl;
     private Double carPrice;
 
-    private String voucherCode;
-    private Double voucherDiscount;
     public Long getBookingId() {
         return bookingId;
     }
@@ -114,18 +119,5 @@ public class BookingDetailResponse {
     public void setCarPrice(Double carPrice) {
         this.carPrice = carPrice;
     }
-    public String getVoucherCode() {
-        return voucherCode;
-    }
-    public void setVoucherCode(String voucherCode) {
-        this.voucherCode = voucherCode;
-    }
-    public Double getVoucherDiscount() {
-        return voucherDiscount;
-    }
-    public void setVoucherDiscount(Double voucherDiscount) {
-        this.voucherDiscount = voucherDiscount;
-    }
-
     
 }

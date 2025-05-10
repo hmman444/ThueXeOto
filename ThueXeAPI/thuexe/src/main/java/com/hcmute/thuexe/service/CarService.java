@@ -25,14 +25,38 @@ public class CarService {
     private ReviewRepository reviewRepository;
 
     public List<Car> searchCars(SearchCarRequest searchCarRequest) {
+        String location = (searchCarRequest.getLocation() != null && !searchCarRequest.getLocation().isEmpty())
+                ? searchCarRequest.getLocation()
+                : null;
+
+        Integer seats = searchCarRequest.getSeats();
+
+        String brand = (searchCarRequest.getBrand() != null && !searchCarRequest.getBrand().isEmpty())
+                ? searchCarRequest.getBrand()
+                : null;
+
+        Double priceFrom = searchCarRequest.getPriceFrom();
+        Double priceTo = searchCarRequest.getPriceTo();
+
+        String gearType = (searchCarRequest.getGearType() != null && !searchCarRequest.getGearType().isEmpty())
+                ? searchCarRequest.getGearType()
+                : null;
+
+        String fuelType = (searchCarRequest.getFuelType() != null && !searchCarRequest.getFuelType().isEmpty())
+                ? searchCarRequest.getFuelType()
+                : null;
+
+        Boolean driverRequired = searchCarRequest.getDriverRequired();
+
         return carRepository.searchCars(
-                searchCarRequest.getLocation(),
-                searchCarRequest.getSeats(),
-                searchCarRequest.getBrand(),
-                searchCarRequest.getPriceFrom(),
-                searchCarRequest.getPriceTo(),
-                searchCarRequest.getGearType(),
-                searchCarRequest.getFuelType()
+                location,
+                seats,
+                brand,
+                priceFrom,
+                priceTo,
+                gearType,
+                fuelType,
+                driverRequired
         );
     }
 
@@ -58,12 +82,14 @@ public class CarService {
         Long ownerTripCount = bookingRepository.countCompletedTripsByOwnerId(ownerId);
 
         // Danh sách đánh giá
-        List<ReviewDTO> reviews = reviewRepository.findByCar_CarId(carId)
+        List<ReviewDTO> reviews = reviewRepository.findByCar_CarId_dto(carId)
             .stream()
             .map(r -> new ReviewDTO(
+                r.getReviewId(),
+                carId,
                 r.getRating(),
                 r.getComment(),
-                r.getUser().getUserId(),
+                r.getUserId(),
                 r.getCreatedAt()
             ))
             .collect(Collectors.toList());
@@ -83,6 +109,7 @@ public class CarService {
         response.setLocation(car.getLocation());
         response.setPrice(car.getPrice());
         response.setImageUrl(car.getImageUrl());
+        response.setDriverRequired(car.isDriverRequired());
         response.setStatus(car.getStatus());
         response.setDriverRequired(car.isDriverRequired());
         response.setCreatedAt(car.getCreatedAt());

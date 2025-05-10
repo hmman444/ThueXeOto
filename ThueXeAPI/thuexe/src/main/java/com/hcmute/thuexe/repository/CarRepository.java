@@ -15,12 +15,14 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             "(:priceFrom IS NULL OR c.price >= :priceFrom) AND " +
             "(:priceTo IS NULL OR c.price <= :priceTo) AND " +
             "(:gearType IS NULL OR c.gearType = :gearType) AND " +
-            "(:fuelType IS NULL OR c.fuelType = :fuelType)")
+            "(:fuelType IS NULL OR c.fuelType = :fuelType) AND " + 
+            "(:driverRequired = c.driverRequired)")
     List<Car> searchCars(@Param("location") String location,
                          @Param("seats") Integer seats,
                          @Param("brand") String brand,
                          @Param("priceFrom") Double priceFrom,
                          @Param("priceTo") Double priceTo,
                          @Param("gearType") String gearType,
-                         @Param("fuelType") String fuelType);
+                         @Param("fuelType") String fuelType,
+                         @Param("driverRequired") Boolean driverRequired);
 }

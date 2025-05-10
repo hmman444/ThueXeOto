@@ -10,7 +10,15 @@ public class BookingUpdateRequest {
     private String dropoffLocation;
     private Boolean insuranceSelected;
     private Boolean deliverySelected;
-    private String voucherCode;
+    private Boolean driverRequired;
+
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
 
     // Getters and Setters
     public Long getBookingId() {
@@ -69,11 +77,4 @@ public class BookingUpdateRequest {
         this.deliverySelected = deliverySelected;
     }
 
-    public String getVoucherCode() {
-        return voucherCode;
-    }
-
-    public void setVoucherCode(String voucherCode) {
-        this.voucherCode = voucherCode;
-    }
 }

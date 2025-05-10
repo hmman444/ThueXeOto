@@ -19,18 +19,6 @@ public class Booking {
     @JoinColumn(name = "car_id", referencedColumnName = "carId")
     private Car car;
 
-    @OneToOne
-    @JoinColumn(name = "voucher_id")
-    private Voucher voucher;
-
-    public Voucher getVoucher() {
-        return voucher;
-    }
-
-    public void setVoucher(Voucher voucher) {
-        this.voucher = voucher;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -47,6 +35,14 @@ public class Booking {
     private LocalDateTime createdAt;
     private boolean insuranceSelected;
     private boolean deliverySelected;
+    private Boolean driverRequired;
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
 
     public boolean isInsuranceSelected() {
         return insuranceSelected;
