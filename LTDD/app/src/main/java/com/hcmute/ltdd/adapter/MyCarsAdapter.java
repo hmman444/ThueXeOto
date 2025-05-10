@@ -18,9 +18,15 @@ import java.util.List;
 public class MyCarsAdapter extends RecyclerView.Adapter<MyCarsAdapter.ViewHolder> {
 
     private List<CarResponse> carList;
+    private OnCarSelectedListener onCarSelectedListener;
 
-    public MyCarsAdapter(List<CarResponse> carList) {
+    public interface OnCarSelectedListener {
+        void onCarSelected(CarResponse car);
+    }
+
+    public MyCarsAdapter(List<CarResponse> carList, OnCarSelectedListener onCarSelectedListener) {
         this.carList = carList;
+        this.onCarSelectedListener = onCarSelectedListener;
     }
 
     @NonNull
@@ -33,12 +39,19 @@ public class MyCarsAdapter extends RecyclerView.Adapter<MyCarsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CarResponse car = carList.get(position);
+
         holder.tvCarName.setText(car.getName());
 
         Glide.with(holder.itemView.getContext())
                 .load(car.getImageUrl())
                 .placeholder(R.drawable.ic_car)
                 .into(holder.imgCar);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onCarSelectedListener != null) {
+                onCarSelectedListener.onCarSelected(car);
+            }
+        });
     }
 
     @Override

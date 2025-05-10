@@ -23,6 +23,7 @@ import com.hcmute.ltdd.model.response.CarResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.AccountActivity;
 import com.hcmute.ltdd.ui.AddCarActivity;
+import com.hcmute.ltdd.ui.PostActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import java.util.List;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
-    private View accountLayout, registerRentLayout, registerCarLayout;
+    private View accountLayout, registerRentLayout, registerCarLayout, registerPostLayout;
     private TextView tvUsername, tvPhone;
     private ApiService apiService;
 
@@ -45,6 +46,7 @@ public class ProfileFragment extends Fragment {
         accountLayout = view.findViewById(R.id.account_layout);
         registerRentLayout = view.findViewById(R.id.register_rent_layout);
         registerCarLayout = view.findViewById(R.id.register_car_layout);
+        registerPostLayout = view.findViewById(R.id.register_post_layout);
         tvUsername = view.findViewById(R.id.tv_username);
         tvPhone = view.findViewById(R.id.tv_numberphone);
 
@@ -61,6 +63,10 @@ public class ProfileFragment extends Fragment {
         });
 
         registerCarLayout.setOnClickListener(v -> showMyCarsDialog());
+
+        registerPostLayout.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), PostActivity.class));
+        });
 
         return view;
     }
@@ -109,8 +115,14 @@ public class ProfileFragment extends Fragment {
             public void onResponse(Call<List<CarResponse>> call, Response<List<CarResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<CarResponse> carList = response.body();
-                    MyCarsAdapter adapter = new MyCarsAdapter(carList);
+
+                    MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
+                        Toast.makeText(requireContext(), "Đã chọn xe: " + car.getName(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    });
+
                     rvMyCars.setAdapter(adapter);
+
                 } else {
                     Toast.makeText(requireContext(), "Không tải được danh sách xe", Toast.LENGTH_SHORT).show();
                 }
