@@ -5,13 +5,15 @@ public class User {
     private String email;
     private String password;
     private String confirmPassword;
+    private String address;
 
     // Constructor
-    public User(String username, String email, String password, String confirmPassword) {
+    public User(String username, String email, String password, String confirmPassword, String address) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.address = address;
     }
 
     // Getter and Setter methods
@@ -45,5 +47,13 @@ public class User {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getAddress() {
+        return address;  // Getter cho address
+    }
+
+    public void setAddress(String address) {
+        this.address = address;  // Setter cho address
     }
 }
