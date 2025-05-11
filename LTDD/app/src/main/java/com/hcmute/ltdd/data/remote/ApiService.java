@@ -6,11 +6,14 @@ import com.hcmute.ltdd.model.request.EditProfileRequest;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.LoginRequest;
 import com.hcmute.ltdd.model.request.MessageRequest;
+import com.hcmute.ltdd.model.request.PostRequest;
 import com.hcmute.ltdd.model.request.RegisterRequest;
 import com.hcmute.ltdd.model.request.ResetPasswordRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
+import com.hcmute.ltdd.model.response.CarResponse;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
+import com.hcmute.ltdd.model.response.PostResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.model.response.UserSearchResponse;
 
@@ -28,6 +31,9 @@ public interface ApiService {
 
     @GET("/api/user/profile")
     Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token);
+
+    @GET("/api/user/{userId}")
+    Call<UserProfileResponse> getUserById(@Path("userId") Long userId, @Header("Authorization") String token);
 
     @POST("/api/auth/register")
     Call<ApiResponse<String>> register(@Body RegisterRequest request);
@@ -62,4 +68,12 @@ public interface ApiService {
     @POST("/api/user/add-car")
     Call<ApiResponse<String>> addCar(@Body AddCarRequest request, @Header("Authorization") String token);
 
+    @GET("/api/user/my-cars")
+    Call<List<CarResponse>> getMyCars(@Header("Authorization") String token);
+
+    @POST("/api/user/create-post")
+    Call<ApiResponse<String>> createPost(@Body PostRequest request, @Header("Authorization") String token);
+
+    @GET("/api/user/posts")
+    Call<List<PostResponse>> getAllPosts(@Header("Authorization") String token);
 }

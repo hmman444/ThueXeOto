@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     private ImageView iconHeart, iconNotify;
     private TextView tvUsername, tvEmail;
     private ApiService apiService;
+    private boolean isSelfDrive = true;  // Biến để xác định loại xe (xe tự lái hay có tài xế)
 
     @Nullable
     @Override
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CarListActivity.class);
+                intent.putExtra("driverRequired", isSelfDrive);  // Gửi thông tin về lựa chọn xe
                 startActivity(intent);
             }
         });
@@ -64,12 +66,14 @@ public class HomeFragment extends Fragment {
         btnSelfDrive.setOnClickListener(v -> {
             viewFlipper.setDisplayedChild(0); // Hiển thị tab đầu tiên
             setActiveTab(btnSelfDrive, btnWithDriver);
+            isSelfDrive = true;  // Chọn xe tự lái
         });
 
         // Xử lý sự kiện khi bấm vào nút "Xe có tài xế"
         btnWithDriver.setOnClickListener(v -> {
             viewFlipper.setDisplayedChild(1); // Hiển thị tab thứ hai
             setActiveTab(btnWithDriver, btnSelfDrive);
+            isSelfDrive = false;  // Chọn xe có tài xế
         });
 
         iconHeart.setOnClickListener(v -> {
@@ -81,6 +85,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), NotifyActivity.class);
             startActivity(intent);
         });
+
         // Mặc định chọn tab "Xe tự lái"
         setActiveTab(btnSelfDrive, btnWithDriver);
 
@@ -97,6 +102,7 @@ public class HomeFragment extends Fragment {
         inactive.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.tab_unselected));
         inactive.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
     }
+
     private void loadUserProfile() {
         apiService.getUserProfile("Bearer " + SharedPrefManager.getInstance(requireContext()).getToken())
                 .enqueue(new Callback<UserProfileResponse>() {
@@ -116,6 +122,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-
 }
+
 

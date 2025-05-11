@@ -1,79 +1,141 @@
 package com.hcmute.ltdd.ui;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.adapter.CarAdapter;
-import com.hcmute.ltdd.model.Car;
-
+import com.hcmute.ltdd.data.remote.ApiService;
+import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.response.PostResponse;
+import com.hcmute.ltdd.model.response.UserProfileResponse;
+import com.hcmute.ltdd.utils.SharedPrefManager;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CarListActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private CarAdapter carAdapter;
+    private List<PostResponse> postList;
+    private ApiService apiService;
+    private boolean isSelfDrive;
+    private ImageView backButton;
+
+    private static final String TAG = "CarListActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_list);
 
-        // Thiết lập AutoCompleteTextView cho danh sách quận
-        AutoCompleteTextView actvDistrict = findViewById(R.id.actv_district);
-        String[] districts = {"Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6", "Quận 7", "Quận 8", "Quận 9",
-                "Quận 10", "Quận 11", "Quận 12", "Bình Thạnh", "Gò Vấp", "Phú Nhuận", "Tân Bình", "Tân Phú", "Thủ Đức"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, districts);
-        actvDistrict.setAdapter(adapter);
-        actvDistrict.setOnClickListener(v -> actvDistrict.showDropDown());
+        Log.d(TAG, "onCreate: CarListActivity started");
+
+        backButton = findViewById(R.id.btn_back);
+        backButton.setOnClickListener(v -> finish());
+
+        // Nhận thông tin lựa chọn xe tự lái hay xe có tài xế từ Intent
+        isSelfDrive = getIntent().getBooleanExtra("driverRequired", true);
+        Log.d(TAG, "onCreate: isSelfDrive = " + isSelfDrive);
 
         // Khởi tạo RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rc_listCar);
+        recyclerView = findViewById(R.id.rc_listCar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Tạo danh sách xe
-        List<Car> carList = new ArrayList<>();
-        carList.add(new Car(
-                1,  // carId
-                101, // ownerId
-                "FORD RANGER XLS 4x2 2022",
-                "Xe bán tải mạnh mẽ, tiết kiệm nhiên liệu.",
-                "Manual",
-                4,
-                "Diesel",
-                7,
-                new String[]{"Điều hòa", "Bluetooth", "Camera lùi"},
-                "Huyện Đức Hòa, Long An",
-                1090.0,
-                "https://fordlongbien.com/wp-content/uploads/2022/08/ford-ranger-wildtrak-mau-do-cam-icon-fordlongbien.jpg",
-                "available",
-                false,
-                new Date()
-        ));
-
-        carList.add(new Car(
-                2,
-                102,
-                "TOYOTA VIOS 2023",
-                "Dòng sedan phổ thông, tiết kiệm xăng.",
-                "Automatic",
-                5,
-                "Gasoline",
-                6,
-                new String[]{"Điều hòa", "Cửa sổ trời", "Cảm biến lùi"},
-                "Quận Bình Thạnh, TP.HCM",
-                850.0,
-                "https://fordlongbien.com/wp-content/uploads/2022/08/ford-ranger-wildtrak-mau-do-cam-icon-fordlongbien.jpg",
-                "booked",
-                true,
-                new Date()
-        ));
-
-        // Gán Adapter
-        CarAdapter carAdapter = new CarAdapter(this, carList);
+        // Khởi tạo danh sách bài viết
+        postList = new ArrayList<>();
+        carAdapter = new CarAdapter(this, postList);
         recyclerView.setAdapter(carAdapter);
+
+        // Lấy token và khởi tạo ApiService
+        String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
+        Log.d(TAG, "onCreate: Token = " + token);
+
+        apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
+
+        // Gọi API để lấy danh sách bài viết
+        getPosts(token);
+    }
+
+    private void getPosts(String token) {
+        Log.d(TAG, "getPosts: Fetching posts...");
+        apiService.getAllPosts(token).enqueue(new Callback<List<PostResponse>>() {
+            @Override
+            public void onResponse(Call<List<PostResponse>> call, Response<List<PostResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    postList.clear();
+                    List<PostResponse> allPosts = response.body();
+
+                    Log.d(TAG, "onResponse: Total posts received = " + allPosts.size());
+
+                    // Lọc danh sách bài viết theo driverRequired (tự lái hay có tài xế)
+                    filterPostsByDriverRequired(allPosts);
+
+                    // Cập nhật lại RecyclerView
+                    carAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e(TAG, "onResponse: Failed to load posts, response code = " + response.code());
+                    Toast.makeText(CarListActivity.this, "Không thể tải bài viết", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostResponse>> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error fetching posts - " + t.getMessage());
+                Toast.makeText(CarListActivity.this, "Lỗi tải bài viết: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void filterPostsByDriverRequired(List<PostResponse> allPosts) {
+        postList.clear();
+        Log.d(TAG, "filterPostsByDriverRequired: Filtering posts...");
+
+        for (PostResponse post : allPosts) {
+            Log.d(TAG, "Post ID: " + post.getPostId());
+            Log.d(TAG, "Car ID: " + post.getCarId());
+            Log.d(TAG, "Car Driver Required: " + post.isCarDriverRequired());
+            Log.d(TAG, "Features: " + post.getFeatures());
+
+            if ((isSelfDrive && !post.isCarDriverRequired()) || (!isSelfDrive && post.isCarDriverRequired())) {
+                postList.add(post);
+                // Lấy thông tin chủ xe từ userId
+                getUserProfileById(post.getUserId());
+            }
+        }
+
+        if (postList.isEmpty()) {
+            Log.d(TAG, "filterPostsByDriverRequired: No posts found matching criteria");
+        } else {
+            Log.d(TAG, "filterPostsByDriverRequired: Posts found = " + postList.size());
+        }
+    }
+
+    private void getUserProfileById(Long userId) {
+        String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
+        Log.d(TAG, "getUserProfileById: Fetching user profile for userId = " + userId);
+
+        apiService.getUserById(userId, token).enqueue(new Callback<UserProfileResponse>() {
+            @Override
+            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "getUserProfileById: User profile fetched successfully");
+                } else {
+                    Log.e(TAG, "getUserProfileById: Failed to load user profile, response code = " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+                Log.e(TAG, "getUserProfileById: Error fetching user profile - " + t.getMessage());
+            }
+        });
     }
 }
