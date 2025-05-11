@@ -30,10 +30,11 @@
 
         <!-- Địa chỉ -->
         <TextView
+            android:id="@+id/txtLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="123 Lê Văn Sỹ, Phường 13, Quận 3, TP.HCM"
+            android:text="Địa chỉ"
             android:textSize="14sp"
             android:textColor="#333333" />
 

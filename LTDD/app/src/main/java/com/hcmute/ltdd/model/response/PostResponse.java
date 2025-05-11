@@ -22,7 +22,7 @@ public class PostResponse {
     private String carImageUrl;
     private boolean carDriverRequired;
     private int carNumberOfRentals;
-    private List<String> carFeatures;
+    private List<String> features;
 
     private String createdAt;
 
@@ -30,7 +30,7 @@ public class PostResponse {
                         String dropoffTime, String description, String carName, String carBrand,
                         String carDescription, String carGearType, int carSeats, String carFuelType,
                         double carEnergyConsumption, String carImageUrl, boolean carDriverRequired,
-                        int carNumberOfRentals, List<String> carFeatures, String createdAt) {
+                        int carNumberOfRentals, List<String> features, String createdAt) {
         this.postId = postId;
         this.carId = carId;
         this.userId = userId;
@@ -48,7 +48,7 @@ public class PostResponse {
         this.carImageUrl = carImageUrl;
         this.carDriverRequired = carDriverRequired;
         this.carNumberOfRentals = carNumberOfRentals;
-        this.carFeatures = carFeatures;
+        this.features = features;
         this.createdAt = createdAt;
     }
 
@@ -189,12 +189,12 @@ public class PostResponse {
         this.carNumberOfRentals = carNumberOfRentals;
     }
 
-    public List<String> getCarFeatures() {
-        return carFeatures;
+    public List<String> getFeatures() {
+        return features;
     }
 
-    public void setCarFeatures(List<String> carFeatures) {
-        this.carFeatures = carFeatures;
+    public void setCarFeatures(List<String> Features) {
+        this.features = Features;
     }
 
     public String getCreatedAt() {

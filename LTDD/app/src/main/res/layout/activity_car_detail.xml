@@ -16,10 +16,11 @@
 
         <!-- Nút đóng -->
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:padding="10dp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_back"
             android:background="@android:color/transparent"
             android:contentDescription="Đóng" />
 
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Hyundai Accent"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="#000000" />
@@ -71,17 +72,18 @@
                 android:id="@+id/imgCar"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:layout_marginTop="60dp"/>
 
             <!-- Car Name -->
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"
-                android:text="xe abc"/>
+                android:text="Tên xe"/>
 
             <!-- Car Rating and Trips -->
             <LinearLayout
@@ -100,7 +102,7 @@
                     android:textSize="16sp"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="5dp"
-                    android:text="1 sao"/>
+                    android:text="5 sao"/>
 
                 <ImageView
                     android:layout_width="18dp"
@@ -114,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textSize="16sp"
-                    android:text="100 chuyến"/>
+                    android:text="0 chuyến"/>
             </LinearLayout>
 
             <!-- Container cho Thời gian thuê + Rental Details -->
@@ -136,8 +138,33 @@
             <include layout="@layout/item_description" />
             <include layout="@layout/item_divider" />
 
-            <!-- car amenities -->
-            <include layout="@layout/item_car_amenities" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tiện nghi xe"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#333333"
+                    android:paddingBottom="8dp" />
+
+                <GridLayout
+                    android:id="@+id/gridAmenities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3"
+                    android:alignmentMode="alignMargins"
+                    android:layout_marginTop="8dp"
+                    android:paddingHorizontal="16dp"/>
+
+            </LinearLayout>
             <include layout="@layout/item_divider" />
 
             <!-- Car location-->

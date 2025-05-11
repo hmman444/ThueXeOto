@@ -2,6 +2,7 @@ package com.hcmute.ltdd.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
@@ -18,6 +20,7 @@ import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.CarDetailActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,6 +47,13 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
         PostResponse postResponse = postList.get(position);
 
+        Log.d("CarAdapter", "onBindViewHolder - Position: " + position);
+        Log.d("CarAdapter", "Post ID: " + postResponse.getPostId());
+        Log.d("CarAdapter", "Car ID: " + postResponse.getCarId());
+        Log.d("CarAdapter", "Car Name: " + postResponse.getCarName());
+        Log.d("CarAdapter", "Features: " + postResponse.getFeatures());
+        Log.d("CarAdapter", "User ID: " + postResponse.getUserId());
+
         // Set tên xe
         holder.txtName.setText(postResponse.getCarName());
 
@@ -59,6 +69,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
                 .load(postResponse.getCarImageUrl())
                 .into(holder.imgCar);
 
+        Log.d("CarAdapter", "Car Image URL: " + postResponse.getCarImageUrl());
+
         // Lấy thông tin địa chỉ của người sở hữu xe từ API (dựa trên userId trong bài viết)
         String token = "Bearer " + SharedPrefManager.getInstance(context).getToken();
         ApiService apiService = RetrofitClient.getRetrofit(context).create(ApiService.class);
@@ -68,31 +80,58 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             @Override
             public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String address = response.body().getAddress(); // Lấy địa chỉ từ response
-                    holder.txtLocation.setText("Địa chỉ: " + address);  // Điền địa chỉ vào UI
+                    String address = response.body().getAddress();
+                    holder.txtLocation.setText("Địa chỉ: " + address);
+
+                    Log.d("CarAdapter", "User Address: " + address);
+
+                    holder.itemView.setOnClickListener(v -> {
+                        Log.d("CarAdapter", "Item Clicked - Post ID: " + postResponse.getPostId());
+
+                        Intent intent = new Intent(context, CarDetailActivity.class);
+                        intent.putExtra("carName", postResponse.getCarName());
+                        intent.putExtra("carImageUrl", postResponse.getCarImageUrl());
+                        intent.putExtra("carNumberOfRentals", postResponse.getCarNumberOfRentals());
+                        intent.putExtra("carLocation", address);
+                        intent.putExtra("carDescription", postResponse.getCarDescription());
+                        intent.putExtra("postDescription", postResponse.getDescription());
+                        intent.putExtra("carGearType", postResponse.getCarGearType());
+                        intent.putExtra("carSeats", postResponse.getCarSeats());
+                        intent.putExtra("carFuelType", postResponse.getCarFuelType());
+                        intent.putExtra("carEnergyConsumption", postResponse.getCarEnergyConsumption());
+                        intent.putStringArrayListExtra("carFeatures", new ArrayList<>(postResponse.getFeatures()));
+
+                        Log.d("CarAdapter", "Intent Data - Car Name: " + postResponse.getCarName());
+                        Log.d("CarAdapter", "Intent Data - Car Features: " + postResponse.getFeatures());
+                        Log.d("CarAdapter", "Intent Data - Car Image URL: " + postResponse.getCarImageUrl());
+                        Log.d("CarAdapter", "Intent Data - Number of Rentals: " + postResponse.getCarNumberOfRentals());
+                        Log.d("CarAdapter", "Intent Data - Price Per Day: " + postResponse.getPricePerDay());
+
+                        Log.d("CarAdapter", "Intent Data - Features: " + new ArrayList<>(postResponse.getFeatures()));
+
+                        context.startActivity(intent);
+                    });
+
                 } else {
+                    Log.w("CarAdapter", "Failed to load user address. Response Code: " + response.code());
                     holder.txtLocation.setText("Địa chỉ không có sẵn");
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+                Log.e("CarAdapter", "Failed to load user address: " + t.getMessage());
                 holder.txtLocation.setText("Lỗi kết nối");
             }
         });
 
         // Set số lần cho thuê
         holder.txtTrips.setText(postResponse.getCarNumberOfRentals() + " chuyến");
+        Log.d("CarAdapter", "Number of Rentals: " + postResponse.getCarNumberOfRentals());
 
         // Set giá thuê
         holder.txtPrice.setText(formatPrice(postResponse.getPricePerDay()));
-
-        // Xử lý sự kiện click vào item
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CarDetailActivity.class);
-            intent.putExtra("postId", postResponse.getPostId()); // Truyền postId qua chi tiết bài viết
-            context.startActivity(intent);
-        });
+        Log.d("CarAdapter", "Price Per Day: " + postResponse.getPricePerDay());
     }
 
     private String formatPrice(double price) {
