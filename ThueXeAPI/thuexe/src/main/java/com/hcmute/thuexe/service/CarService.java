@@ -89,8 +89,9 @@ public class CarService {
                 carId,
                 r.getRating(),
                 r.getComment(),
-                r.getUserId(),
-                r.getCreatedAt()
+                r.getName(),
+                r.getCreatedAt(),
+                r.getImageUrl()
             ))
             .collect(Collectors.toList());
     

@@ -6,7 +6,16 @@ public class ReviewDTO {
     private String comment;
     private double rating;
     private String createdAt;
-    private Long userId;
+    private String name;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Long getReviewId() {
         return reviewId;
@@ -48,11 +57,11 @@ public class ReviewDTO {
         this.createdAt = createdAt;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 }

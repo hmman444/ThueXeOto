@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/bg_section_card"
     android:padding="16dp"
@@ -161,22 +162,22 @@
 
         </LinearLayout>
 
-        <RadioGroup
-            android:id="@+id/rgDeliveryOptions"
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/cbPickup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Giao xe tận nơi"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
 
-            <RadioButton
-                android:id="@+id/rbPickup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tôi tự đến lấy xe - Quận 1, TP. Hồ Chí Minh"
-                android:buttonTint="@color/holo_light_orange"
-                android:textSize="16sp"
-                android:padding="12dp"
-                android:textColor="@android:color/black" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:backgroundTint="@null"
+            app:background="@null"
+            app:buttonTint="@null"
+            android:gravity="center_vertical" />
 
-        </RadioGroup>
     </LinearLayout>
 </LinearLayout>

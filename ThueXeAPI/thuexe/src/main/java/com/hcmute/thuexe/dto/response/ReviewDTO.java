@@ -5,16 +5,28 @@ public class ReviewDTO {
     private Long carId;
     private int rating;
     private String comment;
-    private Long userId;
+    private String name;
     private String createdAt;
+    private String imageUrl;
 
-    public ReviewDTO(Long reviewId, Long carId, int rating, String comment, Long userId, String createdAt) {
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    
+    public ReviewDTO(Long reviewId, Long carId, int rating, String comment, String name, String createdAt,
+            String imageUrl) {
         this.reviewId = reviewId;
         this.carId = carId;
         this.rating = rating;
         this.comment = comment;
-        this.userId = userId;
+        this.name = name;
         this.createdAt = createdAt;
+        this.imageUrl = imageUrl;
     }
 
     public Long getReviewId() {
@@ -49,13 +61,6 @@ public class ReviewDTO {
         this.comment = comment;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getCreatedAt() {
         return createdAt;
@@ -63,5 +68,13 @@ public class ReviewDTO {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

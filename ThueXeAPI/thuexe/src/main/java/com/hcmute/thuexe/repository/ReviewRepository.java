@@ -17,7 +17,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT AVG(r.rating) FROM Review r WHERE r.car.owner.userId = :ownerId")
     Double findAverageRatingByOwnerId(@Param("ownerId") Long ownerId);
 
-    @Query("SELECT new com.hcmute.thuexe.dto.response.ReviewDTO(r.reviewId, r.car.carId, r.rating, r.comment, r.user.userId, r.createdAt) " +
+    @Query("SELECT new com.hcmute.thuexe.dto.response.ReviewDTO(r.reviewId, r.car.carId, r.rating, r.comment, r.user.name, r.createdAt, r.user.imageUrl) " +
            "FROM Review r WHERE r.car.carId = :carId")
     List<ReviewDTO> findByCar_CarId_dto(Long carId);
     List<Review> findByCar_CarId(Long carId);

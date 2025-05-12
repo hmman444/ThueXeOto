@@ -17,25 +17,21 @@
 
     <!-- Danh sách đánh giá -->
     <LinearLayout
+        android:id="@+id/reviewContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Item đánh giá (tái sử dụng) -->
-        <include layout="@layout/item_review" />
-        <include layout="@layout/item_review" />
-        <include layout="@layout/item_review" />
-
-        <!-- Xem thêm -->
-        <Button
-            android:text="Xem thêm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_button_outline"
-            app:backgroundTint="@null"
-            android:textColor="#000000"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
-            android:foreground="?android:attr/selectableItemBackground" />
     </LinearLayout>
+    <!-- Xem thêm -->
+    <Button
+        android:text="Xem thêm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_outline"
+        app:backgroundTint="@null"
+        android:textColor="#000000"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:foreground="?android:attr/selectableItemBackground" />
 </LinearLayout>
