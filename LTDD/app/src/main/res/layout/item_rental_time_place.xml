@@ -170,7 +170,6 @@
             android:textSize="16sp"
             android:padding="12dp"
             android:textColor="@android:color/black"
-
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="?android:attr/selectableItemBackground"

@@ -47,7 +47,7 @@
         android:id="@+id/scrollView_bookingcar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="50dp"
+        android:paddingBottom="20dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -184,36 +184,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom">
 
-        <!-- Checkbox + Chính sách -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
 
-            <CheckBox
-                android:id="@+id/checkboxAgree_bookingcar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#00B14F"
-                android:checked="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tôi đồng ý với "
-                android:textSize="14sp"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/txtCancelPolicy_bookingcar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chính sách hủy chuyến của Mioto"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#00B14F" />
-        </LinearLayout>
 
         <!-- Nút gửi yêu cầu -->
         <Button

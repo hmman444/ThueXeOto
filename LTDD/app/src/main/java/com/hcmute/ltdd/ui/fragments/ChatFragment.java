@@ -23,6 +23,7 @@ import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.adapter.ConversationAdapter;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.UserSearchResponse;
 import com.hcmute.ltdd.ui.ChatActivity;
@@ -103,19 +104,24 @@ public class ChatFragment extends Fragment {
     private void loadConversations() {
         String token = SharedPrefManager.getInstance(getContext()).getToken();
         apiService.getConversations("Bearer " + token)
-                .enqueue(new Callback<List<ConversationResponse>>() {
+                .enqueue(new Callback<ApiResponse<List<ConversationResponse>>>() {
                     @Override
-                    public void onResponse(Call<List<ConversationResponse>> call, Response<List<ConversationResponse>> response) {
+                    public void onResponse(Call<ApiResponse<List<ConversationResponse>>> call, Response<ApiResponse<List<ConversationResponse>>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            allConversations = response.body();
-                            showConversationList(allConversations);
+                            ApiResponse<List<ConversationResponse>> apiResponse = response.body();
+                            if (apiResponse.isSuccess()) {
+                                allConversations = apiResponse.getData();
+                                showConversationList(allConversations);
+                            } else {
+                                Toast.makeText(getContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getContext(), "Không tải được danh sách hội thoại", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<ConversationResponse>> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<ConversationResponse>>> call, Throwable t) {
                         Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -123,17 +129,22 @@ public class ChatFragment extends Fragment {
 
     private void searchUsers(String keyword) {
         String token = "Bearer " + SharedPrefManager.getInstance(getContext()).getToken();
-        apiService.searchUsers(keyword, token).enqueue(new Callback<List<UserSearchResponse>>() {
+        apiService.searchUsers(keyword, token).enqueue(new Callback<ApiResponse<List<UserSearchResponse>>>() {
             @Override
-            public void onResponse(Call<List<UserSearchResponse>> call, Response<List<UserSearchResponse>> response) {
+            public void onResponse(Call<ApiResponse<List<UserSearchResponse>>> call, Response<ApiResponse<List<UserSearchResponse>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<ConversationResponse> result = buildConversationFromSearch(response.body());
-                    showConversationList(result);
+                    ApiResponse<List<UserSearchResponse>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        List<ConversationResponse> result = buildConversationFromSearch(apiResponse.getData());
+                        showConversationList(result);
+                    } else {
+                        Toast.makeText(getContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<UserSearchResponse>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<UserSearchResponse>>> call, Throwable t) {
                 Toast.makeText(getContext(), "Lỗi tìm kiếm: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

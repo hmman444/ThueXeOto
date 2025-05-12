@@ -49,16 +49,25 @@ public interface ApiService {
     Call<ApiResponse<String>> resetPassword(@Body ResetPasswordRequest request);
 
     @GET("/api/user/conversations")
-    Call<List<ConversationResponse>> getConversations(@Header("Authorization") String token);
+    Call<ApiResponse<List<ConversationResponse>>> getConversations(@Header("Authorization") String token);
 
     @GET("/api/user/messages/{conversationId}")
-    Call<List<MessageResponse>> getMessagesByConversation(@Path("conversationId") Long conversationId, @Header("Authorization") String token);
+    Call<ApiResponse<List<MessageResponse>>> getMessagesByConversation(
+            @Path("conversationId") Long conversationId,
+            @Header("Authorization") String token
+    );
 
     @POST("/api/user/message")
-    Call<MessageResponse> sendMessage(@Body MessageRequest messageRequest, @Header("Authorization") String token);
+    Call<ApiResponse<MessageResponse>> sendMessage(
+            @Body MessageRequest messageRequest,
+            @Header("Authorization") String token
+    );
 
-    @GET("api/user/search")
-    Call<List<UserSearchResponse>> searchUsers(@Query("keyword") String keyword, @Header("Authorization") String token);
+    @GET("/api/user/search")
+    Call<ApiResponse<List<UserSearchResponse>>> searchUsers(
+            @Query("keyword") String keyword,
+            @Header("Authorization") String token
+    );
 
     @POST("/api/user/cars/list")
     Call<ApiResponse<List<CarListResponse>>> searchCars(@Body SearchCarRequest request);

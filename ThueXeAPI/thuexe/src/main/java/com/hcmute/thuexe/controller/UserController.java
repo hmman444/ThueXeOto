@@ -91,10 +91,16 @@ public class UserController {
      * Gửi tin nhắn mới (TEXT hoặc POST)
      */
     @PostMapping("/message")
-    public MessageResponse sendMessage(@RequestBody MessageRequest request, Authentication authentication) {
-        MessageResponse response = messageService.sendMessage(request, authentication);
-        messagingTemplate.convertAndSend("/topic/conversations/" + response.getConversationId(), response);
-        return response;
+    public ResponseEntity<ApiResponse<MessageResponse>> sendMessage(@RequestBody MessageRequest request, Authentication authentication) {
+        try {
+            MessageResponse response = messageService.sendMessage(request, authentication);
+            messagingTemplate.convertAndSend("/topic/conversations/" + response.getConversationId(), response);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Gửi tin nhắn thành công", response));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi gửi tin nhắn", null));
+        }
     }
 
     /**
@@ -121,8 +127,17 @@ public class UserController {
      * Tìm kiếm người dùng theo tên hoặc email (loại trừ chính mình)
      */
     @GetMapping("/search")
-    public List<UserSearchResponse> searchUsers(String keyword, Authentication authentication) {
-        return userService.searchUsers(keyword, authentication);
+    public ResponseEntity<ApiResponse<List<UserSearchResponse>>> searchUsers(
+            @RequestParam String keyword, 
+            Authentication authentication) {
+        try {
+            List<UserSearchResponse> users = userService.searchUsers(keyword, authentication);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Tìm kiếm thành công", users));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi tìm kiếm người dùng", null));
+        }
     }
 
     /**
@@ -130,21 +145,29 @@ public class UserController {
      * Tìm kiếm xe theo điều kiện
      */
     @PostMapping("/cars/list")
-    public ApiResponse<List<CarListResponse>> searchCars(@RequestBody SearchCarRequest request, Authentication authentication) {
-        List<Car> cars = carService.searchCars(request);
-        if (cars.isEmpty()) {
-            return new ApiResponse<>(false, "Không tìm thấy xe nào");
+    public ResponseEntity<ApiResponse<List<CarListResponse>>> searchCars(@RequestBody SearchCarRequest request, Authentication authentication) {
+        try {
+            List<Car> cars = carService.searchCars(request);
+
+            if (cars.isEmpty()) {
+                return ResponseEntity.ok(new ApiResponse<>(false, "Không tìm thấy xe nào", null));
+            }
+
+            List<CarListResponse> response = cars.stream()
+                .map(car -> {
+                    Double avgRating = carService.getAvgRating(car.getCarId());
+                    Long tripCount = carService.getTripCount(car.getCarId());
+                    return new CarListResponse(car, avgRating != null ? avgRating : 0.0, tripCount != null ? tripCount : 0L);
+                })
+                .toList();
+
+            return ResponseEntity.ok(new ApiResponse<>(true, "Tìm kiếm thành công", response));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi tìm kiếm xe", null));
         }
-
-        List<CarListResponse> response = cars.stream()
-            .map(car -> {
-                Double avgRating = carService.getAvgRating(car.getCarId());
-                Long tripCount = carService.getTripCount(car.getCarId());
-                return new CarListResponse(car, avgRating != null ? avgRating : 0.0, tripCount != null ? tripCount : 0L);
-            })
-            .toList();
-
-        return new ApiResponse<>(true, "Tìm kiếm thành công", response);
     }
 
     /**
@@ -185,7 +208,7 @@ public class UserController {
      * Hủy đơn đặt xe
      */
     @PostMapping("/booking/cancel")
-    public ResponseEntity<?> cancelBooking(@RequestBody CancelBookingRequest request, Authentication authentication) {
+    public ResponseEntity<ApiResponse<String>> cancelBooking(@RequestBody CancelBookingRequest request, Authentication authentication) {
         try {
             if (authentication == null || authentication.getPrincipal() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -213,7 +236,7 @@ public class UserController {
      * Xác nhận đặt xe
      */
     @PostMapping("/booking/confirm")
-    public ResponseEntity<?> confirmBooking(
+    public ResponseEntity<ApiResponse<String>> confirmBooking(
             @RequestBody BookingRequest request,
             Authentication authentication) {
 
@@ -233,7 +256,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi không xác định", null));
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi xác nhận đặt xe", null));
         }
     }
 
@@ -242,7 +265,7 @@ public class UserController {
      * Lấy thông tin chi tiết của đơn đặt xe
      */
     @GetMapping("/booking/{bookingId}")
-    public ResponseEntity<?> getBookingDetail(
+    public ResponseEntity<ApiResponse<BookingDetailResponse>> getBookingDetail(
             @PathVariable Long bookingId,
             Authentication authentication) {
 
@@ -262,7 +285,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi không xác định", null));
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy thông tin booking", null));
         }
     }
 
@@ -271,7 +294,7 @@ public class UserController {
      * Cập nhật thông tin booking
      */
     @PutMapping("/booking/update")
-    public ResponseEntity<?> updateBooking(
+    public ResponseEntity<ApiResponse<String>> updateBooking(
             @RequestBody BookingUpdateRequest request,
             Authentication authentication) {
 
@@ -281,18 +304,20 @@ public class UserController {
         }
 
         String username = authentication.getPrincipal().toString();
-        User user = userRepository.findByAccount_Username(username)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-
         try {
+            User user = userRepository.findByAccount_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
             String response = bookingService.updateBooking(request, user.getUserId());
             return ResponseEntity.ok(new ApiResponse<>(true, "Cập nhật thành công", response));
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(false, "Lỗi khi cập nhật booking", null));
         }
     }
+
 
     @GetMapping("/booking-history")
     public ResponseEntity<ApiResponse<List<BookingHistoryResponse>>> getBookingHistory(Authentication authentication) {
@@ -312,31 +337,58 @@ public class UserController {
     }
 
     @PostMapping("/reviews/add")
-    public ApiResponse<String> addReview(@Valid @RequestBody ReviewRequest reviewRequest, Authentication authentication) {
-        reviewService.addReview(authentication, reviewRequest);
-        return new ApiResponse<>(true, "Đánh giá thành công");
+    public ResponseEntity<ApiResponse<String>> addReview(@Valid @RequestBody ReviewRequest reviewRequest, Authentication authentication) {
+        try {
+            reviewService.addReview(authentication, reviewRequest);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Đánh giá thành công", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi thêm đánh giá", null));
+        }
     }
 
+
     @PutMapping("/review/update/{reviewId}")
-    public ApiResponse<String> updateReview(@PathVariable Long reviewId,
-                                            @Valid @RequestBody ReviewRequest reviewRequest,
-                                            Authentication authentication) {
-        reviewService.updateReview(authentication, reviewId, reviewRequest);
-        return new ApiResponse<>(true, "Sửa đánh giá thành công");
+    public ResponseEntity<ApiResponse<String>> updateReview(@PathVariable Long reviewId,
+                                                            @Valid @RequestBody ReviewRequest reviewRequest,
+                                                            Authentication authentication) {
+        try {
+            reviewService.updateReview(authentication, reviewId, reviewRequest);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Sửa đánh giá thành công", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi sửa đánh giá", null));
+        }
     }
 
     @DeleteMapping("/review/delete/{reviewId}")
-    public ApiResponse<String> deleteReview(@PathVariable Long reviewId, Authentication authentication) {
-        reviewService.deleteReview(authentication, reviewId);
-        return new ApiResponse<>(true, "Xóa đánh giá thành công");
+    public ResponseEntity<ApiResponse<String>> deleteReview(@PathVariable Long reviewId, Authentication authentication) {
+        try {
+            reviewService.deleteReview(authentication, reviewId);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Xóa đánh giá thành công", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi xóa đánh giá", null));
+        }
     }
 
+
     @GetMapping("/review/car/{carId}")
-    public ApiResponse<List<Review>> getReviewsByCarId(@PathVariable Long carId) {
-        List<Review> reviews = reviewService.getReviewsByCarId(carId);
-        if (reviews.isEmpty()) {
-            return new ApiResponse<>(false, "Không có review cho xe này", null);
+    public ResponseEntity<ApiResponse<List<Review>>> getReviewsByCarId(@PathVariable Long carId) {
+        try {
+            List<Review> reviews = reviewService.getReviewsByCarId(carId);
+            if (reviews.isEmpty()) {
+                return ResponseEntity.ok(new ApiResponse<>(false, "Không có review cho xe này", null));
+            }
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy danh sách review thành công", reviews));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy danh sách review", null));
         }
-        return new ApiResponse<>(true, "Lấy danh sách review thành công", reviews);
     }
+
 }
