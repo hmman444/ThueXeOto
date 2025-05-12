@@ -1,7 +1,8 @@
 package com.hcmute.ltdd.data.remote;
-
+import com.hcmute.ltdd.model.User;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.AddCarRequest;
+import com.hcmute.ltdd.model.request.BookingPreviewRequest;
 import com.hcmute.ltdd.model.request.EditProfileRequest;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.LoginRequest;
@@ -16,6 +17,10 @@ import com.hcmute.ltdd.model.response.MessageResponse;
 import com.hcmute.ltdd.model.response.PostResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.model.response.UserSearchResponse;
+import com.hcmute.ltdd.model.request.SearchCarRequest;
+import com.hcmute.ltdd.model.response.CarDetailResponse;
+import com.hcmute.ltdd.model.response.CarListResponse;
+import com.hcmute.ltdd.model.response.BookingPreviewResponse;
 
 import java.util.List;
 
@@ -23,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -30,7 +36,8 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @GET("/api/user/profile")
-    Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token);
+
+    Call<ApiResponse<UserProfileResponse>> getUserProfile(@Header("Authorization") String token);
 
     @GET("/api/user/{userId}")
     Call<UserProfileResponse> getUserById(@Path("userId") Long userId, @Header("Authorization") String token);
@@ -51,16 +58,36 @@ public interface ApiService {
     Call<ApiResponse<String>> resetPassword(@Body ResetPasswordRequest request);
 
     @GET("/api/user/conversations")
-    Call<List<ConversationResponse>> getConversations(@Header("Authorization") String token);
+
+    Call<ApiResponse<List<ConversationResponse>>> getConversations(@Header("Authorization") String token);
 
     @GET("/api/user/messages/{conversationId}")
-    Call<List<MessageResponse>> getMessagesByConversation(@Path("conversationId") Long conversationId, @Header("Authorization") String token);
+
+    Call<ApiResponse<List<MessageResponse>>> getMessagesByConversation(
+            @Path("conversationId") Long conversationId,
+            @Header("Authorization") String token
+    );
 
     @POST("/api/user/message")
-    Call<MessageResponse> sendMessage(@Body MessageRequest messageRequest, @Header("Authorization") String token);
 
-    @GET("api/user/search")
-    Call<List<UserSearchResponse>> searchUsers(@Query("keyword") String keyword, @Header("Authorization") String token);
+    Call<ApiResponse<MessageResponse>> sendMessage(
+            @Body MessageRequest messageRequest,
+            @Header("Authorization") String token
+    );
+    @GET("/api/user/search")
+    Call<ApiResponse<List<UserSearchResponse>>> searchUsers(
+            @Query("keyword") String keyword,
+            @Header("Authorization") String token
+    );
+
+    @POST("/api/user/cars/list")
+    Call<ApiResponse<List<CarListResponse>>> searchCars(@Body SearchCarRequest request);
+
+    @GET("/api/user/car/{id}")
+    Call<ApiResponse<CarDetailResponse>> getCarDetail(@Path("id") Long carId);
+
+    @POST("/api/user/booking/preview")
+    Call<ApiResponse<BookingPreviewResponse>> bookingPreview(@Body BookingPreviewRequest request);
 
     @POST("/api/user/edit-profile")
     Call<ApiResponse<String>> editProfile(@Body EditProfileRequest request, @Header("Authorization") String token);

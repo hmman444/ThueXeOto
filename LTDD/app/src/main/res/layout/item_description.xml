@@ -10,6 +10,7 @@
 
     <!-- Tiêu đề mô tả xe -->
     <TextView
+        android:id="@+id/txtDescription_cardetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Mô tả xe"

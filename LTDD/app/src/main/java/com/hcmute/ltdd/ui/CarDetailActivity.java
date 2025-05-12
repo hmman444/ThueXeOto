@@ -1,133 +1,355 @@
 package com.hcmute.ltdd.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import androidx.core.graphics.ColorUtils;
-
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.hcmute.ltdd.R;
-import com.hcmute.ltdd.data.repository.FeatureRepository;
-import com.hcmute.ltdd.model.Feature;
+import com.hcmute.ltdd.model.response.CarDetailResponse;
+import com.hcmute.ltdd.model.response.ReviewDTO;
+import com.hcmute.ltdd.ui.fragments.DateRangePickerBottomSheet;
+import com.hcmute.ltdd.ui.fragments.LocationBottomSheet;
+import com.hcmute.ltdd.viewmodel.CarViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.core.graphics.ColorUtils;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class CarDetailActivity extends AppCompatActivity {
-
-    private TextView tvCarName, txtTrips, txtName, txtLocation, txtCarDescription, txtPostDescription,
-            tvGear, tvSeats, tvFuel, tvFuelConsumption;
-    private ImageView imgCar, backButton;
-    private static final String TAG = "CarDetailActivity";
-    private GridLayout gridAmenities;
+    private CarViewModel carViewModel;
+    private ImageView imgCar, imgOwnerImage;
+    private TextView txtName, txtRating, txtOwnerName, tvCarName,
+            txtOwnerTrips, txtOwnerRating, txtTrips, txtPickupLocation,
+            txtLocation, txtPrice, txtDescription, txtDropoffLocation,
+            txtGearType, txtSeats, txtFuelType, txtEnergyConsumption;
+    private LinearLayout pickupLocationLinearLayout;
+    private LinearLayout dropoffLocationLinearLayout;
+    private LinearLayout startTimeLinearLayout, endTimeLinearLayout;
+    private TextView txtPickupTime, txtReturnTime;
+    private Long carId;
+    private CheckBox cbPickup;
+    private GridLayout gridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_detail);
 
-        txtLocation = findViewById(R.id.txtLocation);
-        ScrollView scrollView = findViewById(R.id.scrollView);
-        LinearLayout layoutTopBar = findViewById(R.id.layoutTopBar);
+        initViews();
+        initViewModel();
 
-        backButton = findViewById(R.id.btnBack);
-        backButton.setOnClickListener(v -> finish());
+        // Handle ScrollView background color change
+        setupScrollViewBehavior();
 
-        tvCarName = findViewById(R.id.tvCarName);
-        imgCar = findViewById(R.id.imgCar);
-        txtTrips = findViewById(R.id.txtTrips);
-        txtName = findViewById(R.id.txtName);
-        txtCarDescription = findViewById(R.id.txtCarDescription);
-        txtPostDescription = findViewById(R.id.txtPostDescription);
-        tvGear = findViewById(R.id.gearText);
-        tvSeats = findViewById(R.id.seatsText);
-        tvFuel = findViewById(R.id.fuelText);
-        tvFuelConsumption = findViewById(R.id.fuelConsumptionText);
-        gridAmenities = findViewById(R.id.gridAmenities);
+        // Handle button clicks
+        setupListeners();
 
-        Intent intent = getIntent();
-        String carName = intent.getStringExtra("carName");
-        String carImageUrl = intent.getStringExtra("carImageUrl");
-        int carNumberOfRentals = intent.getIntExtra("carNumberOfRentals", 0);
-        String carLocation = intent.getStringExtra("carLocation");
-        String carDescription = intent.getStringExtra("carDescription");
-        String postDescription = intent.getStringExtra("postDescription");
-        String carGearType = getIntent().getStringExtra("carGearType");
-        int carSeats = getIntent().getIntExtra("carSeats", 0);
-        String carFuelType = getIntent().getStringExtra("carFuelType");
-        double carEnergyConsumption = getIntent().getDoubleExtra("carEnergyConsumption", 0);
-        ArrayList<String> carFeatures = intent.getStringArrayListExtra("carFeatures");
+        // Get Car ID from Intent
+        carId = getIntent().getLongExtra("carId", -1);
+        if (carId == -1) {
+            Toast.makeText(this, "Không tìm thấy xe", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
-        Log.d(TAG, "Car Name: " + carName);
-        Log.d(TAG, "Car Features: " + carFeatures);
+        // Fetch Car Detail
+        carViewModel.getCarDetail(this, carId);
+        observeViewModel();
+    }
 
-        tvCarName.setText(carName);
-        txtName.setText(carName);
-        txtTrips.setText(carNumberOfRentals + " chuyến");
-        txtLocation.setText("Vị trí: " + carLocation);
-        txtCarDescription.setText(carDescription);
-        txtPostDescription.setText(postDescription);
-        tvGear.setText(carGearType);
-        tvSeats.setText(carSeats + " chỗ");
-        tvFuel.setText(carFuelType);
-        tvFuelConsumption.setText(String.format("%.0f L/100km", carEnergyConsumption));
+    private void setupListeners() {
+        startTimeLinearLayout.setOnClickListener(v -> openDateRangePicker(true));
+        endTimeLinearLayout.setOnClickListener(v -> openDateRangePicker(false));
+        pickupLocationLinearLayout.setOnClickListener(v -> openLocationBottomSheet(true));
+        dropoffLocationLinearLayout.setOnClickListener(v -> openLocationBottomSheet(false));
+        findViewById(R.id.btnRentCar_cardetail).setOnClickListener(v -> {
+            String pickupTime = txtPickupTime.getText().toString();
+            String returnTime = txtReturnTime.getText().toString();
+            String dropoffLocation = txtDropoffLocation.getText().toString();
 
-        Glide.with(this).load(carImageUrl).into(imgCar);
+            if (dropoffLocation.equals("Chọn địa chỉ trả") ||
+                    (pickupTime.contains("10/04/2025") || returnTime.contains("10/04/2025"))) {
 
-        updateCarAmenities(carFeatures);
+                Toast.makeText(this, "Vui lòng chọn địa chỉ và thời gian nhận, trả xe hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        findViewById(R.id.btnRentCar).setOnClickListener(v -> {
-            Intent bookingIntent = new Intent(CarDetailActivity.this, BookingActivity.class);
-            startActivity(bookingIntent);
+            if (carViewModel.getCarDetailLiveData().getValue() != null) {
+                openBookingActivity(carViewModel.getCarDetailLiveData().getValue());
+            } else {
+                Toast.makeText(this, "Dữ liệu xe chưa sẵn sàng", Toast.LENGTH_SHORT).show();
+            }
+        });
+        cbPickup.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                txtPickupLocation.setEnabled(true);
+            } else {
+                txtPickupLocation.setEnabled(false);
+            }
         });
     }
 
-    private void updateCarAmenities(List<String> carFeatures) {
-        gridAmenities.removeAllViews();
 
-        Log.d(TAG, "GridLayout found: " + (gridAmenities != null));
-        Log.d(TAG, "carFeatures size: " + (carFeatures != null ? carFeatures.size() : "null"));
+    private void openDateRangePicker(boolean isPickup) {
+        DateRangePickerBottomSheet dateRangePicker = new DateRangePickerBottomSheet();
+        dateRangePicker.setDateRangePickerListener((selectedDate, selectedTime) -> {
+            String dayOfWeek = new java.text.SimpleDateFormat("EEEE", new Locale("vi", "VN")).format(selectedDate.getTime());
+            String formattedDate = new java.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedDate.getTime());
+            String summary = String.format("%s, %s, %s", dayOfWeek, formattedDate, selectedTime);
 
-        if (carFeatures != null && !carFeatures.isEmpty()) {
-            List<Feature> features = FeatureRepository.getFeatures();
-            Log.d(TAG, "Features size from repository: " + features.size());
+            if (isPickup) {
+                txtPickupTime.setText(summary);
+            } else {
+                txtReturnTime.setText(summary);
+            }
+        });
 
-            for (String featureName : carFeatures) {
-                boolean featureFound = false;
-                for (Feature feature : features) {
-                    if (featureName.equals(feature.getName())) {
-                        Log.d(TAG, "Inflating feature: " + featureName);
+        dateRangePicker.show(getSupportFragmentManager(), dateRangePicker.getTag());
+    }
 
-                        LinearLayout amenityLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.item_car_amenities, null);
-                        ImageView amenityImage = amenityLayout.findViewById(R.id.amenityImage);
-                        TextView amenityText = amenityLayout.findViewById(R.id.amenityText);
 
-                        amenityImage.setImageResource(feature.getIconResId());
-                        amenityText.setText(feature.getName());
+    private void openBookingActivity(CarDetailResponse carDetail) {
+        Intent intent = new Intent(CarDetailActivity.this, BookingActivity.class);
+        intent.putExtra("startDate", txtPickupTime.getText().toString());
+        intent.putExtra("endDate", txtReturnTime.getText().toString());
+        intent.putExtra("pickupLocation", txtPickupLocation.getText().toString());
+        intent.putExtra("dropoffLocation", txtDropoffLocation.getText().toString());
+        intent.putExtra("insuranceSelected", cbPickup.isChecked());
+        intent.putExtra("deliverySelected", cbPickup.isChecked());
+        intent.putExtra("driverRequired", cbPickup.isChecked());
+        carDetail.setReviews(null);
+        // Truyền nguyên đối tượng CarDetailResponse
+        intent.putExtra("carDetail", carDetail);
 
-                        gridAmenities.addView(amenityLayout);
-                        Log.d(TAG, "Feature added to GridLayout: " + featureName);
-                        featureFound = true;
+        startActivity(intent);
+    }
+
+    private void openLocationBottomSheet(boolean isPickup) {
+        LocationBottomSheet locationBottomSheet = new LocationBottomSheet();
+        locationBottomSheet.setLocationListener(location -> {
+            if (isPickup) {
+                txtPickupLocation.setText(location);
+            } else {
+                txtDropoffLocation.setText(location);
+            }
+        });
+        locationBottomSheet.show(getSupportFragmentManager(), locationBottomSheet.getTag());
+    }
+
+    private void initViews() {
+        imgCar = findViewById(R.id.imgCar_cardetail);
+        txtName = findViewById(R.id.txtName_cardetail);
+        txtRating = findViewById(R.id.txtRating_cardetail);
+        txtTrips = findViewById(R.id.txtTrips_cardetail);
+        txtLocation = findViewById(R.id.txtLocation_cardetail);
+        txtPrice = findViewById(R.id.txtCarPriceDetail_cardetail);
+        txtDescription = findViewById(R.id.txtDescription_cardetail);
+        tvCarName = findViewById(R.id.tvCarName);
+        txtOwnerName = findViewById(R.id.txtOwnerName);
+        imgOwnerImage = findViewById(R.id.imgOwnerImage);
+        txtOwnerRating = findViewById(R.id.txtOwnerRating);
+        txtOwnerTrips = findViewById(R.id.txtOwnerTrips);
+        txtPickupLocation = findViewById(R.id.txtPickupLocation);
+        txtDropoffLocation = findViewById(R.id.txtDropoffLocation);
+        pickupLocationLinearLayout = findViewById(R.id.pickupLocationLinearLayout);
+        dropoffLocationLinearLayout = findViewById(R.id.dropoffLocationLinearLayout);
+        startTimeLinearLayout = findViewById(R.id.startTimeLinearLayout);
+        endTimeLinearLayout = findViewById(R.id.endTimeLinearLayout);
+        txtPickupTime = findViewById(R.id.txtPickupTime);
+        txtReturnTime = findViewById(R.id.txtReturnTime);
+        txtGearType = findViewById(R.id.gearType_cardetail);
+        txtSeats = findViewById(R.id.seats_cardetail);
+        txtFuelType = findViewById(R.id.fuelType_cardetail);
+        txtEnergyConsumption = findViewById(R.id.energyConsumption_cardetail);
+        txtSeats = findViewById(R.id.seats_cardetail);
+        txtFuelType = findViewById(R.id.fuelType_cardetail);
+        txtEnergyConsumption = findViewById(R.id.energyConsumption_cardetail);
+        cbPickup = findViewById(R.id.cbPickup);
+        gridLayout = findViewById(R.id.gridAmenities);
+    }
+
+    private void initViewModel() {
+        carViewModel = new ViewModelProvider(this).get(CarViewModel.class);
+    }
+
+    private void observeViewModel() {
+        carViewModel.getCarDetailLiveData().observe(this, carDetail -> {
+            if (carDetail != null) {
+                updateUI(carDetail);
+            }
+        });
+
+        carViewModel.getErrorMessage().observe(this, message -> {
+            if (message != null) {
+                Toast.makeText(CarDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        carViewModel.getIsLoading().observe(this, isLoading -> {
+            // Show/hide progress bar based on isLoading
+        });
+    }
+
+    private void setupScrollViewBehavior() {
+        ScrollView scrollView = findViewById(R.id.scrollView_cardetail);
+        LinearLayout layoutTopBar = findViewById(R.id.layoutTopBar_cardetail);
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int scrollY = scrollView.getScrollY();
+            int imageHeight = imgCar.getHeight();
+
+            if (scrollY >= imageHeight) {
+                layoutTopBar.setBackgroundColor(Color.WHITE);
+            } else {
+                // Tạo hiệu ứng trong suốt mượt mà
+                float alpha = (float) scrollY / (float) imageHeight;
+                int colorWithAlpha = ColorUtils.setAlphaComponent(Color.WHITE, (int) (alpha * 255));
+                layoutTopBar.setBackgroundColor(colorWithAlpha);
+            }
+        });
+    }
+    private void updateUI(CarDetailResponse carDetail) {
+        Glide.with(this).load(carDetail.getImageUrl()).into(imgCar);
+        txtName.setText(carDetail.getName());
+        txtRating.setText(String.format("%.1f ", carDetail.getAvgRating()));
+        txtTrips.setText(String.format("%d chuyến", carDetail.getTripCount()));
+        txtLocation.setText(carDetail.getLocation());
+        txtPrice.setText(String.format("%.0fK/ngày", carDetail.getPrice()));
+        txtDescription.setText(carDetail.getDescription());
+        tvCarName.setText(carDetail.getName());
+        txtOwnerName.setText(carDetail.getOwnerName());
+        Glide.with(this).load(carDetail.getOwnerImage()).into(imgOwnerImage);
+        txtOwnerRating.setText(String.format("%.1f ", carDetail.getOwnerAvgRating()));
+        txtOwnerTrips.setText(String.format("%d chuyến", carDetail.getOwnerTripCount()));
+        txtGearType.setText(carDetail.getGearType());
+        txtSeats.setText(String.format("%d chỗ", carDetail.getSeats()));
+        txtFuelType.setText(carDetail.getFuelType());
+        txtEnergyConsumption.setText(String.format("%.1fL/100km", carDetail.getEnergyConsumption()));
+        txtPickupLocation.setText(carDetail.getLocation());
+        txtPickupLocation.setEnabled(false);
+        updateAmenitiesUI(carDetail);
+        addReviews(carDetail.getReviews());
+    }
+    private void updateAmenitiesUI(CarDetailResponse carDetail) {
+        gridLayout.removeAllViews();
+
+        if (carDetail.getHasEtc() != null && !carDetail.getHasEtc().isEmpty()) {
+            for (String amenity : carDetail.getHasEtc()) {
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                linearLayout.setGravity(Gravity.CENTER);
+                linearLayout.setPadding(8, 8, 8, 8);
+
+                ImageView imageView = new ImageView(this);
+                int sizeInDp = 40; // Kích thước bạn muốn theo dp
+                float scale = getResources().getDisplayMetrics().density;
+                int sizeInPx = (int) (sizeInDp * scale + 0.5f);
+
+                LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
+                imageView.setLayoutParams(imageParams);
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+                TextView textView = new TextView(this);
+                textView.setTextSize(15);
+                textView.setText(amenity);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                switch (amenity) {
+                    case "Camera ô tô":
+                        imageView.setImageResource(R.drawable.ic_camera);
                         break;
-                    }
+                    case "Lốp dự phòng":
+                        imageView.setImageResource(R.drawable.ic_spare_tire);
+                        break;
+                    case "Bluetooth":
+                        imageView.setImageResource(R.drawable.ic_bluetooth);
+                        break;
+                    case "Màn hình DVD":
+                        imageView.setImageResource(R.drawable.ic_dvd);
+                        break;
+                    case "Cửa sổ trời":
+                        imageView.setImageResource(R.drawable.ic_sunroof);
+                        break;
+                    case "ETC":
+                        imageView.setImageResource(R.drawable.ic_etc);
+                        break;
+                    case "Túi khí an toàn":
+                        imageView.setImageResource(R.drawable.ic_air_bag);
+                        break;
+                    case "Camera lùi":
+                        imageView.setImageResource(R.drawable.ic_camera_back);
+                        break;
+                    case "Bản đồ":
+                        imageView.setImageResource(R.drawable.ic_gps);
+                        break;
+                    case "Khe cắm USB":
+                        imageView.setImageResource(R.drawable.ic_usb);
+                        break;
                 }
-                if (!featureFound) {
-                    Log.d(TAG, "Feature not found in repository: " + featureName);
-                }
+
+                linearLayout.addView(imageView);
+                linearLayout.addView(textView);
+
+                int columnCount = 3;
+                int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+                int itemWidth = screenWidth / columnCount;
+
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.width = itemWidth;
+                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+                linearLayout.setLayoutParams(params);
+                gridLayout.addView(linearLayout);
             }
         } else {
-            Log.d(TAG, "carFeatures is empty or null.");
+            gridLayout.setVisibility(View.GONE);
         }
     }
+    private void addReviews(List<ReviewDTO> reviews) {
+        LinearLayout reviewContainer = findViewById(R.id.reviewContainer);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        reviewContainer.removeAllViews();
+
+        for (ReviewDTO review : reviews) {
+            View reviewView = inflater.inflate(R.layout.item_review, reviewContainer, false);
+
+            TextView tvName = reviewView.findViewById(R.id.tvName);
+            TextView tvDate = reviewView.findViewById(R.id.tvDate);
+            TextView tvContent = reviewView.findViewById(R.id.tvContent);
+            TextView tvStar = reviewView.findViewById(R.id.tvStarr); // nếu có ID riêng
+            ImageView imgAvatar = reviewView.findViewById(R.id.imgAvatar);
+
+            tvName.setText(review.getName());
+            tvDate.setText(review.getCreatedAt());
+            tvContent.setText(review.getComment());
+            tvStar.setText("★ " + review.getRating());
+
+            String imageUrl = review.getImageUrl();
+            Glide.with(this)
+                    .load(imageUrl != null && !imageUrl.isEmpty() ? imageUrl : R.drawable.avatar)
+                    .circleCrop()
+                    .into(imgAvatar);
+
+            reviewContainer.addView(reviewView);
+        }
+    }
+
 }

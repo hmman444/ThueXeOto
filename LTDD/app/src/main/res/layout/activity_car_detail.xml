@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <!-- AppBar -->
     <LinearLayout
-        android:id="@+id/layoutTopBar"
+        android:id="@+id/layoutTopBar_cardetail"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
@@ -16,9 +16,9 @@
 
         <!-- Nút đóng -->
         <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
             android:padding="10dp"
             android:src="@drawable/ic_back"
             android:background="@android:color/transparent"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Hyundai Accent"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="#000000" />
@@ -56,7 +56,7 @@
     </LinearLayout>
     <ScrollView
         android:layout_marginBottom="80dp"
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollView_cardetail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -69,20 +69,25 @@
 
             <!-- Car Image -->
             <ImageView
-                android:id="@+id/imgCar"
+
+                android:id="@+id/imgCar_cardetail"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+
                 android:scaleType="centerCrop"
                 android:layout_marginTop="60dp"/>
 
             <!-- Car Name -->
             <TextView
-                android:id="@+id/txtName"
+
+                android:id="@+id/txtName_cardetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"
+
                 android:text="Tên xe"/>
 
             <!-- Car Rating and Trips -->
@@ -96,12 +101,14 @@
                     android:src="@drawable/ic_star"
                     />
                 <TextView
-                    android:id="@+id/txtRating"
+
+                    android:id="@+id/txtRating_cardetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="5dp"
+
                     android:text="5 sao"/>
 
                 <ImageView
@@ -111,11 +118,13 @@
                     android:layout_marginStart="8dp"
                     />
                 <TextView
-                    android:id="@+id/txtTrips"
+
+                    android:id="@+id/txtTrips_cardetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textSize="16sp"
+
                     android:text="0 chuyến"/>
             </LinearLayout>
 
@@ -138,33 +147,7 @@
             <include layout="@layout/item_description" />
             <include layout="@layout/item_divider" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tiện nghi xe"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:paddingBottom="8dp" />
-
-                <GridLayout
-                    android:id="@+id/gridAmenities"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="3"
-                    android:alignmentMode="alignMargins"
-                    android:layout_marginTop="8dp"
-                    android:paddingHorizontal="16dp"/>
-
-            </LinearLayout>
+            <include layout="@layout/item_car_amenities" />
             <include layout="@layout/item_divider" />
 
             <!-- Car location-->
@@ -216,7 +199,8 @@
         android:elevation="8dp">
 
         <TextView
-            android:id="@+id/txtCarPriceDetail"
+
+            android:id="@+id/txtCarPriceDetail_cardetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -225,7 +209,8 @@
             android:textColor="#00C853" />
 
         <Button
-            android:id="@+id/btnRentCar"
+
+            android:id="@+id/btnRentCar_cardetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

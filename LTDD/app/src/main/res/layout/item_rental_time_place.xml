@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/bg_section_card"
     android:padding="16dp"
@@ -26,6 +27,7 @@
 
         <!-- Nhận xe -->
         <LinearLayout
+            android:id="@+id/startTimeLinearLayout"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,11 +49,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="#000"
-                android:text="21h00 T5, 10/04/2025" />
+                android:text="Thứ 5, 10/04/2025, 21:00" />
         </LinearLayout>
 
         <!-- Trả xe -->
         <LinearLayout
+            android:id="@+id/endTimeLinearLayout"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -73,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="#000"
-                android:text="20h00 T6, 11/04/2025" />
+                android:text="Thứ 5, 10/04/2025, 21:00" />
         </LinearLayout>
     </LinearLayout>
 
@@ -91,32 +94,89 @@
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginBottom="12dp" />
-
-        <RadioGroup
-            android:id="@+id/rgDeliveryOptions"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <RadioButton
-                android:id="@+id/rbPickup"
+            <!-- Địa điểm nhận xe -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tôi tự đến lấy xe - Quận 1, TP. Hồ Chí Minh"
-                android:buttonTint="@color/holo_light_orange"
-                android:textSize="16sp"
-                android:padding="12dp"
-                android:textColor="@android:color/black" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <RadioButton
-                android:id="@+id/rbDelivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tôi muốn được giao xe tận nơi\nRất tiếc, chủ xe không hỗ trợ giao xe tận nơi"
-                android:enabled="false"
-                android:textSize="16sp"
-                android:padding="12dp"
-                android:textColor="#888888" />
-        </RadioGroup>
+                <LinearLayout
+                    android:id="@+id/pickupLocationLinearLayout"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nhận xe tại"
+                        android:textStyle="bold"
+                        android:textColor="#555" />
+
+                    <TextView
+                        android:id="@+id/txtPickupLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="#000"
+                        android:text="Chọn địa chỉ nhận" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dropoffLocationLinearLayout"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card"
+                    android:padding="12dp"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trả xe tại"
+                        android:textStyle="bold"
+                        android:textColor="#555" />
+
+                    <TextView
+                        android:id="@+id/txtDropoffLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="#000"
+                        android:text="Chọn địa chỉ trả" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cbPickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giao xe tận nơi"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:backgroundTint="@null"
+            app:background="@null"
+            app:buttonTint="@null"
+            android:gravity="center_vertical" />
+
     </LinearLayout>
 </LinearLayout>

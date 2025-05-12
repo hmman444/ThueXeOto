@@ -2,7 +2,6 @@ package com.hcmute.ltdd.ui;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import com.hcmute.ltdd.adapter.MessageAdapter;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.ChatWebSocketClient;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
 import com.hcmute.ltdd.model.request.MessageRequest;
 import com.hcmute.ltdd.utils.SharedPrefManager;
@@ -117,21 +117,26 @@ public class ChatActivity extends AppCompatActivity {
 
     private void loadMessages() {
         String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
-        apiService.getMessagesByConversation(conversationId, token).enqueue(new Callback<List<MessageResponse>>() {
+        apiService.getMessagesByConversation(conversationId, token).enqueue(new Callback<ApiResponse<List<MessageResponse>>>() {
             @Override
-            public void onResponse(Call<List<MessageResponse>> call, Response<List<MessageResponse>> response) {
+            public void onResponse(Call<ApiResponse<List<MessageResponse>>> call, Response<ApiResponse<List<MessageResponse>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    messageList.clear();
-                    messageList.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-                    recyclerMessages.scrollToPosition(messageList.size() - 1);
+                    ApiResponse<List<MessageResponse>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        messageList.clear();
+                        messageList.addAll(apiResponse.getData());
+                        adapter.notifyDataSetChanged();
+                        recyclerMessages.scrollToPosition(messageList.size() - 1);
+                    } else {
+                        Toast.makeText(ChatActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(ChatActivity.this, "Không tải được tin nhắn", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<MessageResponse>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<MessageResponse>>> call, Throwable t) {
                 Toast.makeText(ChatActivity.this, "Lỗi mạng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -144,18 +149,23 @@ public class ChatActivity extends AppCompatActivity {
         String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
         MessageRequest request = new MessageRequest(receiverId, content);
 
-        apiService.sendMessage(request, token).enqueue(new Callback<MessageResponse>() {
+        apiService.sendMessage(request, token).enqueue(new Callback<ApiResponse<MessageResponse>>() {
             @Override
-            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+            public void onResponse(Call<ApiResponse<MessageResponse>> call, Response<ApiResponse<MessageResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    edtMessage.setText("");
+                    ApiResponse<MessageResponse> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        edtMessage.setText("");
+                    } else {
+                        Toast.makeText(ChatActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(ChatActivity.this, "Gửi tin nhắn thất bại", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<MessageResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<MessageResponse>> call, Throwable t) {
                 Toast.makeText(ChatActivity.this, "Lỗi mạng khi gửi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

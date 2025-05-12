@@ -188,30 +188,6 @@
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"/>
 
-                        <!-- Divider Line -->
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
-                            android:background="#D6D6D6" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="📅 Thời gian thuê"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/darker_gray"
-                            android:layout_marginTop="12dp"/>
-
-                        <TextView
-                            android:id="@+id/tvRentalTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="21:00 T7, 12/04 - 20:00 CN, 13/04"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
                 </ViewFlipper>
 

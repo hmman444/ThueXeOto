@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <!-- AppBar -->
     <LinearLayout
-        android:id="@+id/layoutTopBar"
+        android:id="@+id/layoutTopBar_bookingcar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
@@ -20,13 +20,13 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="10dp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_left_arrow"
             android:background="@android:color/transparent"
             android:contentDescription="Đóng" />
 
         <!-- Tên xe (trung tâm) -->
         <TextView
-            android:id="@+id/tvSection"
+            android:id="@+id/tvSection_bookingcar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,10 +44,10 @@
     <ScrollView
         android:layout_marginTop="56dp"
         android:layout_marginBottom="80dp"
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollView_bookingcar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="50dp"
+        android:paddingBottom="20dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -64,7 +64,7 @@
 
                 <!-- Ảnh xe bên trái -->
                 <ImageView
-                    android:id="@+id/imgCar"
+                    android:id="@+id/imgCar_booking"
                     android:layout_width="120dp"
                     android:layout_height="90dp"
                     android:scaleType="centerCrop"
@@ -79,7 +79,7 @@
 
                     <!-- Tên xe -->
                     <TextView
-                        android:id="@+id/txtName"
+                        android:id="@+id/txtName_bookingcar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TOYOTA VELOZ CROSS 2023"
@@ -90,10 +90,10 @@
 
                     <!-- Mã số xe -->
                     <TextView
-                        android:id="@+id/txtCode"
+                        android:id="@+id/txtBrand_bookingcar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mã số xe: K3DTW5"
+                        android:text="TOYOTA"
                         android:textSize="14sp"
                         android:layout_marginBottom="5dp"
                         android:textColor="#888888"
@@ -112,7 +112,7 @@
                             android:layout_height="16dp"
                             android:src="@drawable/ic_star" />
                         <TextView
-                            android:id="@+id/txtRating"
+                            android:id="@+id/txtRating_bookingcar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5.0"
@@ -134,7 +134,7 @@
                             android:src="@drawable/ic_luggage"
                             android:layout_marginStart="4dp" />
                         <TextView
-                            android:id="@+id/txtTrips"
+                            android:id="@+id/txtTrips_bookingcar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100+ chuyến"
@@ -158,10 +158,6 @@
             <include layout="@layout/item_owner_info" />
             <include layout="@layout/item_divider" />
 
-            <!-- mesage -->
-            <include layout="@layout/item_owner_message" />
-            <include layout="@layout/item_divider" />
-
             <!-- price summary -->
             <include layout="@layout/item_price_summary" />
             <include layout="@layout/item_divider" />
@@ -178,7 +174,7 @@
     </ScrollView>
     <!-- Button cố định ở dưới -->
     <LinearLayout
-        android:id="@+id/layoutBottomFixed"
+        android:id="@+id/layoutBottomFixed_bookingcar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -188,40 +184,11 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom">
 
-        <!-- Checkbox + Chính sách -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
 
-            <CheckBox
-                android:id="@+id/checkboxAgree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="#00B14F"
-                android:checked="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tôi đồng ý với "
-                android:textSize="14sp"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/txtCancelPolicy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chính sách hủy chuyến của Mioto"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#00B14F" />
-        </LinearLayout>
 
         <!-- Nút gửi yêu cầu -->
         <Button
-            android:id="@+id/btnRentCar"
+            android:id="@+id/btnRentCar_bookingcar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/orange_button"

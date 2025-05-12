@@ -37,13 +37,22 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_gear"
+                android:layout_marginBottom="10dp"
                 app:tint="@android:color/holo_orange_light" />
 
             <TextView
                 android:id="@+id/gearText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Truyền động"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/gearType_cardetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Số sàn"
+                android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -62,13 +71,21 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_seat"
+                android:layout_marginBottom="10dp"
                 app:tint="@android:color/holo_orange_light" />
-
             <TextView
                 android:id="@+id/seatsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Số ghế"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/seats_cardetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="5 chỗ"
+                android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -87,13 +104,21 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_fuel"
+                android:layout_marginBottom="10dp"
                 app:tint="@android:color/holo_orange_light" />
-
             <TextView
                 android:id="@+id/fuelText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Nhiên liệu"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/fuelType_cardetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Xăng"
+                android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -112,13 +137,21 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_engine"
+                android:layout_marginBottom="10dp"
                 app:tint="@android:color/holo_orange_light" />
-
             <TextView
                 android:id="@+id/fuelConsumptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Tiêu hao"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/energyConsumption_cardetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="5L/100km"
+                android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@android:color/black" />
         </LinearLayout>

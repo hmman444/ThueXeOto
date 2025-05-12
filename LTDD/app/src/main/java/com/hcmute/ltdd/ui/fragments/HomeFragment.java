@@ -16,9 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.CarListActivity;
 import com.hcmute.ltdd.ui.FavoritesActivity;
@@ -34,24 +37,29 @@ public class HomeFragment extends Fragment {
     private Button btnSelfDrive, btnWithDriver;
     private ViewFlipper viewFlipper;
     private ImageView iconHeart, iconNotify;
-    private TextView tvUsername, tvEmail;
+    private TextView tvUsername, tvEmail, tvLocation;
+    private ShapeableImageView imageAvatar;
+
+    private boolean driverRequired = false;
     private ApiService apiService;
-    private boolean isSelfDrive = true;  // Biến để xác định loại xe (xe tự lái hay có tài xế)
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
+    }
 
-        view.findViewById(R.id.btnFindCar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CarListActivity.class);
-                intent.putExtra("driverRequired", isSelfDrive);  // Gửi thông tin về lựa chọn xe
-                startActivity(intent);
-            }
-        });
-        // Ánh xạ các thành phần giao diện
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        setupListeners();
+        setActiveTab(btnSelfDrive, btnWithDriver);
+        loadUserProfile();
+    }
+
+    private void initViews(View view) {
         btnSelfDrive = view.findViewById(R.id.btnSelfDrive);
         btnWithDriver = view.findViewById(R.id.btnWithDriver);
         viewFlipper = view.findViewById(R.id.viewFlipper);
@@ -59,42 +67,35 @@ public class HomeFragment extends Fragment {
         iconNotify = view.findViewById(R.id.iconNotify);
         tvUsername = view.findViewById(R.id.tvUsername);
         tvEmail = view.findViewById(R.id.tvEmail);
-
+        imageAvatar = view.findViewById(R.id.imageAvatar);
+        tvLocation = view.findViewById(R.id.tvLocation);
         apiService = RetrofitClient.getRetrofit(requireContext()).create(ApiService.class);
-
-        // Xử lý sự kiện khi bấm vào nút "Xe tự lái"
-        btnSelfDrive.setOnClickListener(v -> {
-            viewFlipper.setDisplayedChild(0); // Hiển thị tab đầu tiên
-            setActiveTab(btnSelfDrive, btnWithDriver);
-            isSelfDrive = true;  // Chọn xe tự lái
-        });
-
-        // Xử lý sự kiện khi bấm vào nút "Xe có tài xế"
-        btnWithDriver.setOnClickListener(v -> {
-            viewFlipper.setDisplayedChild(1); // Hiển thị tab thứ hai
-            setActiveTab(btnWithDriver, btnSelfDrive);
-            isSelfDrive = false;  // Chọn xe có tài xế
-        });
-
-        iconHeart.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), FavoritesActivity.class);
-            startActivity(intent);
-        });
-
-        iconNotify.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), NotifyActivity.class);
-            startActivity(intent);
-        });
-
-        // Mặc định chọn tab "Xe tự lái"
-        setActiveTab(btnSelfDrive, btnWithDriver);
-
-        loadUserProfile();
-
-        return view;
     }
 
-    // Hàm đổi trạng thái tab được chọn
+    private void setupListeners() {
+        btnSelfDrive.setOnClickListener(v -> {
+            viewFlipper.setDisplayedChild(0);
+            setActiveTab(btnSelfDrive, btnWithDriver);
+            driverRequired = false;
+        });
+
+        btnWithDriver.setOnClickListener(v -> {
+            viewFlipper.setDisplayedChild(1);
+            setActiveTab(btnWithDriver, btnSelfDrive);
+            driverRequired = true;
+        });
+
+        iconHeart.setOnClickListener(v -> startActivity(new Intent(getActivity(), FavoritesActivity.class)));
+        iconNotify.setOnClickListener(v -> startActivity(new Intent(getActivity(), NotifyActivity.class)));
+
+        requireView().findViewById(R.id.btnFindCar).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CarListActivity.class);
+            intent.putExtra("location", tvLocation.getText().toString());
+            intent.putExtra("driverRequired", driverRequired);
+            startActivity(intent);
+        });
+    }
+
     private void setActiveTab(Button active, Button inactive) {
         active.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.tab_selected));
         active.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
@@ -104,24 +105,44 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadUserProfile() {
-        apiService.getUserProfile("Bearer " + SharedPrefManager.getInstance(requireContext()).getToken())
-                .enqueue(new Callback<UserProfileResponse>() {
+        String token = SharedPrefManager.getInstance(requireContext()).getToken();
+        apiService.getUserProfile("Bearer " + token)
+                .enqueue(new Callback<ApiResponse<UserProfileResponse>>() {
                     @Override
-                    public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+                    public void onResponse(Call<ApiResponse<UserProfileResponse>> call, Response<ApiResponse<UserProfileResponse>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            tvUsername.setText(response.body().getName());
-                            tvEmail.setText(response.body().getEmail());
+                            ApiResponse<UserProfileResponse> apiResponse = response.body();
+                            if (apiResponse.isSuccess()) {
+                                bindUserProfile(apiResponse.getData());
+                            } else {
+                                showToast(apiResponse.getMessage());
+                            }
                         } else {
-                            Toast.makeText(requireContext(), "Lỗi tải thông tin người dùng", Toast.LENGTH_SHORT).show();
+                            showToast("Lỗi tải thông tin người dùng");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<UserProfileResponse> call, Throwable t) {
-                        Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    public void onFailure(Call<ApiResponse<UserProfileResponse>> call, Throwable t) {
+                        showToast("Lỗi kết nối: " + t.getMessage());
                     }
                 });
     }
+
+
+    private void bindUserProfile(UserProfileResponse user) {
+        tvUsername.setText(user.getName());
+        tvEmail.setText(user.getEmail());
+        tvLocation.setText(user.getAddress());
+
+        String imageUrl = user.getImageUrl();
+        Glide.with(requireContext())
+                .load(imageUrl != null && !imageUrl.isEmpty() ? imageUrl : R.drawable.avatar)
+                .circleCrop()
+                .into(imageAvatar);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }
-
-

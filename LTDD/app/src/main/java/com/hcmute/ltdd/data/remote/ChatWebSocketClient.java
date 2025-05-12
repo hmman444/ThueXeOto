@@ -11,6 +11,7 @@ import okhttp3.WebSocketListener;
 public class ChatWebSocketClient {
     private WebSocket webSocket;
     private final String baseUrl = "ws://192.168.182.130:9099/ws-chat/websocket";
+    //private final String baseUrl = "ws://172.31.176.1:9099/ws-chat/websocket";
     private final long conversationId;
     private final ChatMessageListener listener;
 

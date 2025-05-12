@@ -1,141 +1,186 @@
 package com.hcmute.ltdd.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.adapter.CarAdapter;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
-import com.hcmute.ltdd.model.response.PostResponse;
-import com.hcmute.ltdd.model.response.UserProfileResponse;
-import com.hcmute.ltdd.utils.SharedPrefManager;
+import com.hcmute.ltdd.model.request.SearchCarRequest;
+import com.hcmute.ltdd.model.ApiResponse;
+import com.hcmute.ltdd.model.response.CarListResponse;
+import com.hcmute.ltdd.ui.fragments.FilterBottomSheet;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CarListActivity extends AppCompatActivity {
 
+    private AutoCompleteTextView actvDistrict;
     private RecyclerView recyclerView;
     private CarAdapter carAdapter;
-    private List<PostResponse> postList;
+    private ProgressBar progressBar;
+    private List<CarListResponse> carList = new ArrayList<>();
+    private ImageButton btnFilter, btnBack;
+    private String location;
+    private boolean driverRequired;
     private ApiService apiService;
-    private boolean isSelfDrive;
-    private ImageView backButton;
 
-    private static final String TAG = "CarListActivity";
+    private static final String[] DISTRICTS = {
+            "Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6",
+            "Quận 7", "Quận 8", "Quận 9", "Quận 10", "Quận 11",
+            "Quận 12", "Bình Thạnh", "Gò Vấp", "Phú Nhuận",
+            "Tân Bình", "Tân Phú", "Thủ Đức"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_list);
 
-        Log.d(TAG, "onCreate: CarListActivity started");
-
-        backButton = findViewById(R.id.btn_back);
-        backButton.setOnClickListener(v -> finish());
-
-        // Nhận thông tin lựa chọn xe tự lái hay xe có tài xế từ Intent
-        isSelfDrive = getIntent().getBooleanExtra("driverRequired", true);
-        Log.d(TAG, "onCreate: isSelfDrive = " + isSelfDrive);
-
-        // Khởi tạo RecyclerView
-        recyclerView = findViewById(R.id.rc_listCar);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Khởi tạo danh sách bài viết
-        postList = new ArrayList<>();
-        carAdapter = new CarAdapter(this, postList);
-        recyclerView.setAdapter(carAdapter);
-
-        // Lấy token và khởi tạo ApiService
-        String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
-        Log.d(TAG, "onCreate: Token = " + token);
+        Intent intent = getIntent();
+        location = intent.getStringExtra("location");
+        driverRequired = intent.getBooleanExtra("driverRequired", false);
 
         apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
 
-        // Gọi API để lấy danh sách bài viết
-        getPosts(token);
+        initViews();
+        setupRecyclerView();
+        setupEvents();
+
+        String district = extractDistrictFromLocation(location);
+        setupAutoCompleteDistrict();
+
+        SearchCarRequest initialRequest = new SearchCarRequest();
+        initialRequest.setLocation(district);
+        initialRequest.setDriverRequired(driverRequired);
+        searchCars(initialRequest);
     }
 
-    private void getPosts(String token) {
-        Log.d(TAG, "getPosts: Fetching posts...");
-        apiService.getAllPosts(token).enqueue(new Callback<List<PostResponse>>() {
+    private void initViews() {
+        actvDistrict = findViewById(R.id.actv_district);
+        progressBar = findViewById(R.id.progress_loading);
+        recyclerView = findViewById(R.id.rc_listCar);
+        btnFilter = findViewById(R.id.btn_filter);
+        btnBack = findViewById(R.id.btn_back_carlist);
+    }
+
+    private void setupAutoCompleteDistrict() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, DISTRICTS);
+        actvDistrict.setAdapter(adapter);
+
+        actvDistrict.setFocusable(true);
+        actvDistrict.setFocusableInTouchMode(true);
+        actvDistrict.setClickable(true);
+
+        // Lấy quận từ location
+        String district = extractDistrictFromLocation(location);
+        if (district != null) {
+            actvDistrict.setHint(district);
+        } else {
+            actvDistrict.setHint(DISTRICTS[0]); // Mặc định là Quận 1 nếu không tìm thấy
+        }
+
+        actvDistrict.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedDistrict = (String) parent.getItemAtPosition(position);
+            SearchCarRequest request = new SearchCarRequest();
+            request.setLocation(selectedDistrict);
+            request.setDriverRequired(driverRequired);
+            searchCars(request);
+        });
+    }
+
+
+    private String extractDistrictFromLocation(String location) {
+        if (location == null || location.isEmpty()) return null;
+
+        // Danh sách các quận cần tìm
+        String[] districts = {
+                "Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6",
+                "Quận 7", "Quận 8", "Quận 9", "Quận 10", "Quận 11", "Quận 12",
+                "Bình Thạnh", "Gò Vấp", "Phú Nhuận", "Tân Bình", "Tân Phú", "Thủ Đức"
+        };
+
+        for (String district : districts) {
+            if (location.contains(district)) {
+                return district;
+            }
+        }
+
+        return "Quận 1";
+    }
+
+    private void setupRecyclerView() {
+        carAdapter = new CarAdapter(this, carList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(carAdapter);
+    }
+
+    private void setupEvents() {
+        btnFilter.setOnClickListener(v -> openFilterBottomSheet());
+        btnBack.setOnClickListener(v -> finish());
+        actvDistrict.setOnClickListener(v -> actvDistrict.showDropDown());
+    }
+
+    private void openFilterBottomSheet() {
+        FilterBottomSheet filterBottomSheet = new FilterBottomSheet();
+        filterBottomSheet.setFilterListener(request -> {
+            String selectedDistrict = actvDistrict.getText().toString();
+            request.setLocation(selectedDistrict);
+            request.setDriverRequired(driverRequired);
+            searchCars(request);
+        });
+        filterBottomSheet.show(getSupportFragmentManager(), filterBottomSheet.getTag());
+    }
+
+    private void searchCars(SearchCarRequest request) {
+        showLoading(true);
+        Gson gson = new Gson();
+        Log.d("SearchCarRequest", gson.toJson(request));
+
+        apiService.searchCars(request).enqueue(new Callback<ApiResponse<List<CarListResponse>>>() {
             @Override
-            public void onResponse(Call<List<PostResponse>> call, Response<List<PostResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    postList.clear();
-                    List<PostResponse> allPosts = response.body();
-
-                    Log.d(TAG, "onResponse: Total posts received = " + allPosts.size());
-
-                    // Lọc danh sách bài viết theo driverRequired (tự lái hay có tài xế)
-                    filterPostsByDriverRequired(allPosts);
-
-                    // Cập nhật lại RecyclerView
+            public void onResponse(Call<ApiResponse<List<CarListResponse>>> call, Response<ApiResponse<List<CarListResponse>>> response) {
+                showLoading(false);
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    carList.clear();
+                    carList.addAll(response.body().getData());
                     carAdapter.notifyDataSetChanged();
                 } else {
-                    Log.e(TAG, "onResponse: Failed to load posts, response code = " + response.code());
-                    Toast.makeText(CarListActivity.this, "Không thể tải bài viết", Toast.LENGTH_SHORT).show();
+                    carList.clear();
+                    Toast.makeText(CarListActivity.this, "Không tìm thấy xe phù hợp", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<PostResponse>> call, Throwable t) {
-                Log.e(TAG, "onFailure: Error fetching posts - " + t.getMessage());
-                Toast.makeText(CarListActivity.this, "Lỗi tải bài viết: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ApiResponse<List<CarListResponse>>> call, Throwable t) {
+                showLoading(false);
+                Toast.makeText(CarListActivity.this, "Lỗi mạng hoặc server!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void filterPostsByDriverRequired(List<PostResponse> allPosts) {
-        postList.clear();
-        Log.d(TAG, "filterPostsByDriverRequired: Filtering posts...");
-
-        for (PostResponse post : allPosts) {
-            Log.d(TAG, "Post ID: " + post.getPostId());
-            Log.d(TAG, "Car ID: " + post.getCarId());
-            Log.d(TAG, "Car Driver Required: " + post.isCarDriverRequired());
-            Log.d(TAG, "Features: " + post.getFeatures());
-
-            if ((isSelfDrive && !post.isCarDriverRequired()) || (!isSelfDrive && post.isCarDriverRequired())) {
-                postList.add(post);
-                // Lấy thông tin chủ xe từ userId
-                getUserProfileById(post.getUserId());
-            }
-        }
-
-        if (postList.isEmpty()) {
-            Log.d(TAG, "filterPostsByDriverRequired: No posts found matching criteria");
-        } else {
-            Log.d(TAG, "filterPostsByDriverRequired: Posts found = " + postList.size());
-        }
-    }
-
-    private void getUserProfileById(Long userId) {
-        String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
-        Log.d(TAG, "getUserProfileById: Fetching user profile for userId = " + userId);
-
-        apiService.getUserById(userId, token).enqueue(new Callback<UserProfileResponse>() {
-            @Override
-            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d(TAG, "getUserProfileById: User profile fetched successfully");
-                } else {
-                    Log.e(TAG, "getUserProfileById: Failed to load user profile, response code = " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
-                Log.e(TAG, "getUserProfileById: Error fetching user profile - " + t.getMessage());
-            }
-        });
+    private void showLoading(boolean isLoading) {
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(isLoading ? View.GONE : View.VISIBLE);
     }
 }

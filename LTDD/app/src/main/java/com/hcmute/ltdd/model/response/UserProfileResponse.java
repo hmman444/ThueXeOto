@@ -5,12 +5,13 @@ public class UserProfileResponse {
     private String name;
     private String email;
     private String phone;
+    private String address;
+
     private String gender;
     private String birthdate;
     private String imageUrl;
     private String role;
     private String createdAt;
-    private String address;
 
     // Getter và Setter cho các trường
     public Long getUserId() {
