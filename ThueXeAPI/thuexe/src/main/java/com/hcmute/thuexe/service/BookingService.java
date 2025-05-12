@@ -41,7 +41,7 @@ public class BookingService {
         }
 
         double pricePerDay = car.getPrice();
-        double insuranceFee = request.isInsuranceSelected() ? 40_000 : 0;
+        double insuranceFee = request.isInsuranceSelected() ? 90_000 : 0;
         double deliveryFee = request.isDeliverySelected() ? 30_000 : 0;
         double driverRequired = request.getDriverRequired() ? (pricePerDay*20)/100 : 0;
         double total = (pricePerDay + insuranceFee) * days + deliveryFee + driverRequired;
@@ -68,9 +68,10 @@ public class BookingService {
         if (days <= 0) throw new RuntimeException("Ngày thuê không hợp lệ");
 
         double pricePerDay = car.getPrice();
-        double insuranceFee = request.isInsuranceSelected() ? 200_000 : 0;
+        double insuranceFee = request.isInsuranceSelected() ? 90_000 : 0;
         double deliveryFee = request.isDeliverySelected() ? 30_000 : 0;
-        double total = (pricePerDay + insuranceFee) * days + deliveryFee;
+        double driverRequired = request.getDriverRequired() ? (pricePerDay*20)/100 : 0;
+        double total = (pricePerDay + insuranceFee) * days + deliveryFee + driverRequired;
 
         Booking booking = new Booking();
         booking.setUser(user);

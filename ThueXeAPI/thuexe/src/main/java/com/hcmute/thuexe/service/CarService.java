@@ -56,7 +56,8 @@ public class CarService {
                 priceTo,
                 gearType,
                 fuelType,
-                driverRequired
+                driverRequired,
+                "Available"
         );
     }
 

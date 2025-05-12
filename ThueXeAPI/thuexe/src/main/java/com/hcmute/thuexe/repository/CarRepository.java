@@ -16,7 +16,8 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             "(:priceTo IS NULL OR c.price <= :priceTo) AND " +
             "(:gearType IS NULL OR c.gearType = :gearType) AND " +
             "(:fuelType IS NULL OR c.fuelType = :fuelType) AND " + 
-            "(:driverRequired = c.driverRequired)")
+            "(:driverRequired = c.driverRequired) AND " +
+            "(:status = c.status)")
     List<Car> searchCars(@Param("location") String location,
                          @Param("seats") Integer seats,
                          @Param("brand") String brand,
@@ -24,5 +25,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
                          @Param("priceTo") Double priceTo,
                          @Param("gearType") String gearType,
                          @Param("fuelType") String fuelType,
-                         @Param("driverRequired") Boolean driverRequired);
+                         @Param("driverRequired") Boolean driverRequired,
+                         @Param("status") String status);
 }
