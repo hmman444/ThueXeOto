@@ -50,7 +50,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="10dp"
-            android:src="@drawable/ic_heart"
+            android:src="@drawable/ic_unheart"
             android:background="@android:color/transparent"
             android:contentDescription="Yêu thích" />
     </LinearLayout>
