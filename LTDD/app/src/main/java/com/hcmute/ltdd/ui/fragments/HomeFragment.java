@@ -21,6 +21,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.CarListActivity;
 import com.hcmute.ltdd.ui.FavoritesActivity;
@@ -106,22 +107,28 @@ public class HomeFragment extends Fragment {
     private void loadUserProfile() {
         String token = SharedPrefManager.getInstance(requireContext()).getToken();
         apiService.getUserProfile("Bearer " + token)
-                .enqueue(new Callback<UserProfileResponse>() {
+                .enqueue(new Callback<ApiResponse<UserProfileResponse>>() {
                     @Override
-                    public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+                    public void onResponse(Call<ApiResponse<UserProfileResponse>> call, Response<ApiResponse<UserProfileResponse>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            bindUserProfile(response.body());
+                            ApiResponse<UserProfileResponse> apiResponse = response.body();
+                            if (apiResponse.isSuccess()) {
+                                bindUserProfile(apiResponse.getData());
+                            } else {
+                                showToast(apiResponse.getMessage());
+                            }
                         } else {
                             showToast("Lỗi tải thông tin người dùng");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<UserProfileResponse>> call, Throwable t) {
                         showToast("Lỗi kết nối: " + t.getMessage());
                     }
                 });
     }
+
 
     private void bindUserProfile(UserProfileResponse user) {
         tvUsername.setText(user.getName());

@@ -89,9 +89,9 @@ public class DateRangePickerBottomSheet extends BottomSheetDialogFragment {
         if (date == null) return time;
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", new Locale("vi", "VN"));
         String dayOfWeek = dayFormat.format(date.getTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String formattedDate = dateFormat.format(date.getTime());
-        return String.format("%s, ngày %s, %s", dayOfWeek, formattedDate, time);
+        return String.format("%s, %s, %s", dayOfWeek, formattedDate, time);
     }
 
     interface TimeSelectedCallback {

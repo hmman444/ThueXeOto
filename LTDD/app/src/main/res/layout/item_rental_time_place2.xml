@@ -49,7 +49,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txtPickUpTime"
+                android:id="@+id/txtPickUpTime2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="21h00 T6, 11/04/2025"
@@ -94,7 +94,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txtReturnTime"
+                android:id="@+id/txtReturnTime2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20h00 T7, 12/04/2025"
@@ -108,60 +108,86 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        >
 
+        <!-- Pickup Location -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_location" />
-
-            <TextView
-                android:id="@+id/txtLocationLabel"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nhận xe tại địa chỉ của xe"
-                android:textSize="14sp"
-                android:textColor="#888888"
-                android:layout_marginStart="4dp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/txtAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quận 4, TP. Hồ Chí Minh"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_marginTop="4dp" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_location"
+                    />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhận xe"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/txtPickupLocation2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Xem bản đồ"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_chevron_right"
-                android:layout_marginStart="4dp"/>
+                android:text="Quận 4, TP. Hồ Chí Minh"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
+        <!-- Drop-off Location -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_location"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trả xe"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtDropoffLocation2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quận 4, TP. Hồ Chí Minh"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

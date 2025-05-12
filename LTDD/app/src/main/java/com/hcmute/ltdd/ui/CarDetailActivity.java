@@ -36,7 +36,7 @@ import java.util.Locale;
 
 public class CarDetailActivity extends AppCompatActivity {
     private CarViewModel carViewModel;
-    private ImageView imgCar;
+    private ImageView imgCar, imgOwnerImage;
     private TextView txtName, txtRating, txtOwnerName, tvCarName,
             txtOwnerTrips, txtOwnerRating, txtTrips, txtPickupLocation,
             txtLocation, txtPrice, txtDescription, txtDropoffLocation,
@@ -80,7 +80,24 @@ public class CarDetailActivity extends AppCompatActivity {
         endTimeLinearLayout.setOnClickListener(v -> openDateRangePicker(false));
         pickupLocationLinearLayout.setOnClickListener(v -> openLocationBottomSheet(true));
         dropoffLocationLinearLayout.setOnClickListener(v -> openLocationBottomSheet(false));
-        findViewById(R.id.btnRentCar_cardetail).setOnClickListener(v -> openBookingActivity());
+        findViewById(R.id.btnRentCar_cardetail).setOnClickListener(v -> {
+            String pickupTime = txtPickupTime.getText().toString();
+            String returnTime = txtReturnTime.getText().toString();
+            String dropoffLocation = txtDropoffLocation.getText().toString();
+
+            if (dropoffLocation.equals("Chọn địa chỉ trả") ||
+                    (pickupTime.contains("10/04/2025") || returnTime.contains("10/04/2025"))) {
+
+                Toast.makeText(this, "Vui lòng chọn địa chỉ và thời gian nhận, trả xe hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (carViewModel.getCarDetailLiveData().getValue() != null) {
+                openBookingActivity(carViewModel.getCarDetailLiveData().getValue());
+            } else {
+                Toast.makeText(this, "Dữ liệu xe chưa sẵn sàng", Toast.LENGTH_SHORT).show();
+            }
+        });
         cbPickup.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 txtPickupLocation.setEnabled(true);
@@ -95,8 +112,8 @@ public class CarDetailActivity extends AppCompatActivity {
         DateRangePickerBottomSheet dateRangePicker = new DateRangePickerBottomSheet();
         dateRangePicker.setDateRangePickerListener((selectedDate, selectedTime) -> {
             String dayOfWeek = new java.text.SimpleDateFormat("EEEE", new Locale("vi", "VN")).format(selectedDate.getTime());
-            String formattedDate = new java.text.SimpleDateFormat("dd/MM", Locale.getDefault()).format(selectedDate.getTime());
-            String summary = String.format("%s, ngày %s, %s", dayOfWeek, formattedDate, selectedTime);
+            String formattedDate = new java.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedDate.getTime());
+            String summary = String.format("%s, %s, %s", dayOfWeek, formattedDate, selectedTime);
 
             if (isPickup) {
                 txtPickupTime.setText(summary);
@@ -109,8 +126,19 @@ public class CarDetailActivity extends AppCompatActivity {
     }
 
 
-    private void openBookingActivity() {
+    private void openBookingActivity(CarDetailResponse carDetail) {
         Intent intent = new Intent(CarDetailActivity.this, BookingActivity.class);
+        intent.putExtra("startDate", txtPickupTime.getText().toString());
+        intent.putExtra("endDate", txtReturnTime.getText().toString());
+        intent.putExtra("pickupLocation", txtPickupLocation.getText().toString());
+        intent.putExtra("dropoffLocation", txtDropoffLocation.getText().toString());
+        intent.putExtra("insuranceSelected", cbPickup.isChecked());
+        intent.putExtra("deliverySelected", cbPickup.isChecked());
+        intent.putExtra("driverRequired", cbPickup.isChecked());
+        carDetail.setReviews(null);
+        // Truyền nguyên đối tượng CarDetailResponse
+        intent.putExtra("carDetail", carDetail);
+
         startActivity(intent);
     }
 
@@ -135,9 +163,10 @@ public class CarDetailActivity extends AppCompatActivity {
         txtPrice = findViewById(R.id.txtCarPriceDetail_cardetail);
         txtDescription = findViewById(R.id.txtDescription_cardetail);
         tvCarName = findViewById(R.id.tvCarName);
-        txtOwnerName = findViewById(R.id.txtOwnerName_cardetail);
-        txtOwnerRating = findViewById(R.id.txtOwnerRating_cardetail);
-        txtOwnerTrips = findViewById(R.id.txtOwnerTrips_cardetail);
+        txtOwnerName = findViewById(R.id.txtOwnerName);
+        imgOwnerImage = findViewById(R.id.imgOwnerImage);
+        txtOwnerRating = findViewById(R.id.txtOwnerRating);
+        txtOwnerTrips = findViewById(R.id.txtOwnerTrips);
         txtPickupLocation = findViewById(R.id.txtPickupLocation);
         txtDropoffLocation = findViewById(R.id.txtDropoffLocation);
         pickupLocationLinearLayout = findViewById(R.id.pickupLocationLinearLayout);
@@ -207,6 +236,7 @@ public class CarDetailActivity extends AppCompatActivity {
         txtDescription.setText(carDetail.getDescription());
         tvCarName.setText(carDetail.getName());
         txtOwnerName.setText(carDetail.getOwnerName());
+        Glide.with(this).load(carDetail.getOwnerImage()).into(imgOwnerImage);
         txtOwnerRating.setText(String.format("%.1f ", carDetail.getOwnerAvgRating()));
         txtOwnerTrips.setText(String.format("%d chuyến", carDetail.getOwnerTripCount()));
         txtGearType.setText(carDetail.getGearType());

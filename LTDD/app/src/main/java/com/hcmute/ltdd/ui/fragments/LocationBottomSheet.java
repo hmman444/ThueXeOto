@@ -76,7 +76,7 @@ public class LocationBottomSheet extends BottomSheetDialogFragment {
                 return;
             }
 
-            String fullAddress = selectedDistrict + ", " + detailedAddress;
+            String fullAddress = detailedAddress + ", " + selectedDistrict;
 
             if (listener != null) {
                 listener.onLocationSelected(fullAddress);

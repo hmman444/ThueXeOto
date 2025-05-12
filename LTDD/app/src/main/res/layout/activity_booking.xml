@@ -20,7 +20,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="10dp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_left_arrow"
             android:background="@android:color/transparent"
             android:contentDescription="Đóng" />
 
@@ -64,7 +64,7 @@
 
                 <!-- Ảnh xe bên trái -->
                 <ImageView
-                    android:id="@+id/imgCar_bookingcar"
+                    android:id="@+id/imgCar_booking"
                     android:layout_width="120dp"
                     android:layout_height="90dp"
                     android:scaleType="centerCrop"
@@ -90,10 +90,10 @@
 
                     <!-- Mã số xe -->
                     <TextView
-                        android:id="@+id/txtCode_bookingcar"
+                        android:id="@+id/txtBrand_bookingcar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mã số xe: K3DTW5"
+                        android:text="TOYOTA"
                         android:textSize="14sp"
                         android:layout_marginBottom="5dp"
                         android:textColor="#888888"
@@ -156,10 +156,6 @@
 
             <!-- Info User -->
             <include layout="@layout/item_owner_info" />
-            <include layout="@layout/item_divider" />
-
-            <!-- mesage -->
-            <include layout="@layout/item_owner_message" />
             <include layout="@layout/item_divider" />
 
             <!-- price summary -->

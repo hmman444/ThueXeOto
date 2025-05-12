@@ -25,6 +25,7 @@ public class CarDetailResponse {
 
     // Owner stats
     private String ownerName;
+    private String ownerImage;
     private double ownerAvgRating;
     private long ownerTripCount;
 
@@ -34,10 +35,11 @@ public class CarDetailResponse {
     public CarDetailResponse() {
     }
 
+
     public CarDetailResponse(Long id, String name, String brand, String description, String gearType, int seats,
             String fuelType, double energyConsumption, List<String> hasEtc, String location, double price,
             String imageUrl, String status, boolean driverRequired, String createdAt, double avgRating, long tripCount,
-            String ownerName, double ownerAvgRating, long ownerTripCount, List<ReviewDTO> reviews) {
+            String ownerName, String ownerImage, double ownerAvgRating, long ownerTripCount, List<ReviewDTO> reviews) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -56,10 +58,13 @@ public class CarDetailResponse {
         this.avgRating = avgRating;
         this.tripCount = tripCount;
         this.ownerName = ownerName;
+        this.ownerImage = ownerImage;
         this.ownerAvgRating = ownerAvgRating;
         this.ownerTripCount = ownerTripCount;
         this.reviews = reviews;
     }
+
+
 
     public Long getId() {
         return id;
@@ -227,6 +232,18 @@ public class CarDetailResponse {
 
     public void setReviews(List<ReviewDTO> reviews) {
         this.reviews = reviews;
+    }
+
+
+
+    public String getOwnerImage() {
+        return ownerImage;
+    }
+
+
+
+    public void setOwnerImage(String ownerImage) {
+        this.ownerImage = ownerImage;
     }
 
 }

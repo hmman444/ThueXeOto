@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.AccountActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
@@ -51,22 +52,28 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserProfile() {
         String token = "Bearer " + SharedPrefManager.getInstance(requireContext()).getToken();
-        apiService.getUserProfile(token).enqueue(new Callback<UserProfileResponse>() {
+        apiService.getUserProfile(token).enqueue(new Callback<ApiResponse<UserProfileResponse>>() {
             @Override
-            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+            public void onResponse(Call<ApiResponse<UserProfileResponse>> call, Response<ApiResponse<UserProfileResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    UserProfileResponse profile = response.body();
-                    tvUsername.setText(profile.getName());
+                    ApiResponse<UserProfileResponse> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        UserProfileResponse profile = apiResponse.getData();
+                        tvUsername.setText(profile.getName());
 
-                    String phone = profile.getPhone();
-                    if (phone == null || phone.trim().isEmpty()) {
-                        tvPhone.setText("Chưa liên kết số điện thoại");
-                    } else {
-                        // Đổi 0377179132 → +84 377179132
-                        if (phone.startsWith("0") && phone.length() > 1) {
-                            phone = "+84 " + phone.substring(1);
+                        String phone = profile.getPhone();
+                        if (phone == null || phone.trim().isEmpty()) {
+                            tvPhone.setText("Chưa liên kết số điện thoại");
+                        } else {
+                            // Đổi 0377179132 → +84 377179132
+                            if (phone.startsWith("0") && phone.length() > 1) {
+                                phone = "+84 " + phone.substring(1);
+                            }
+                            tvPhone.setText(phone);
                         }
-                        tvPhone.setText(phone);
+
+                    } else {
+                        Toast.makeText(requireContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(requireContext(), "Không lấy được thông tin người dùng", Toast.LENGTH_SHORT).show();
@@ -74,9 +81,10 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<UserProfileResponse>> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }

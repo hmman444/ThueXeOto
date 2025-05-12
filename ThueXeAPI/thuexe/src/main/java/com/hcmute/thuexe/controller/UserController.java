@@ -58,17 +58,32 @@ public class UserController {
      * Lấy thông tin người dùng hiện tại (username từ token)
      */
     @GetMapping("/profile")
-    public UserProfileResponse getProfile(Authentication authentication) {
-        return userService.getProfile(authentication);
+    public ResponseEntity<ApiResponse<UserProfileResponse>> getProfile(Authentication authentication) {
+        try {
+            UserProfileResponse profile = userService.getProfile(authentication);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy thông tin người dùng thành công", profile));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy thông tin người dùng", null));
+        }
     }
+
 
     /**
      * API: GET /api/user/conversations
      * Lấy tất cả đoạn hội thoại của user đang login
      */
     @GetMapping("/conversations")
-    public List<ConversationResponse> getAllConversations(Authentication authentication) {
-        return conversationService.getAllConversationsForUser(authentication);
+    public ResponseEntity<ApiResponse<List<ConversationResponse>>> getAllConversations(Authentication authentication) {
+        try {
+            List<ConversationResponse> conversations = conversationService.getAllConversationsForUser(authentication);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy danh sách hội thoại thành công", conversations));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy danh sách hội thoại", null));
+        }
     }
 
     /**
@@ -87,10 +102,18 @@ public class UserController {
      * Lấy danh sách tin nhắn trong một đoạn hội thoại
      */
     @GetMapping("/messages/{conversationId}")
-    public List<MessageResponse> getMessagesByConversation(
+    public ResponseEntity<ApiResponse<List<MessageResponse>>> getMessagesByConversation(
             @PathVariable Long conversationId,
             Authentication authentication) {
-        return messageService.getMessagesByConversation(conversationId, authentication);
+
+        try {
+            List<MessageResponse> messages = messageService.getMessagesByConversation(conversationId, authentication);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy danh sách tin nhắn thành công", messages));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy tin nhắn", null));
+        }
     }
 
     /**
@@ -146,8 +169,15 @@ public class UserController {
      * Xem trước thông tin đặt xe
      */
     @PostMapping("/booking/preview")
-    public ResponseEntity<BookingPreviewResponse> preview(@RequestBody BookingRequest request) {
-        return ResponseEntity.ok(bookingService.previewBooking(request));
+    public ResponseEntity<ApiResponse<BookingPreviewResponse>> preview(@RequestBody BookingRequest request) {
+        try {
+            BookingPreviewResponse response = bookingService.previewBooking(request);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy thông tin xem trước thành công", response));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi xem trước thông tin đặt xe", null));
+        }
     }
 
     /**
@@ -265,11 +295,20 @@ public class UserController {
     }
 
     @GetMapping("/booking-history")
-    public List<BookingHistoryResponse> getBookingHistory(Authentication authentication) {
-        String username = authentication.getPrincipal().toString();
-        User user = userRepository.findByAccount_Username(username)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
-        return bookingService.getBookingHistoryByUserId(user.getUserId());
+    public ResponseEntity<ApiResponse<List<BookingHistoryResponse>>> getBookingHistory(Authentication authentication) {
+        try {
+            String username = authentication.getPrincipal().toString();
+            User user = userRepository.findByAccount_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
+            List<BookingHistoryResponse> history = bookingService.getBookingHistoryByUserId(user.getUserId());
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy lịch sử đặt xe thành công", history));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy lịch sử đặt xe", null));
+        }
     }
 
     @PostMapping("/reviews/add")

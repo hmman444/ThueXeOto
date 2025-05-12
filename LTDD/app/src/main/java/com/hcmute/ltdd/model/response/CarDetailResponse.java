@@ -1,8 +1,9 @@
 package com.hcmute.ltdd.model.response;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CarDetailResponse {
+public class CarDetailResponse implements Serializable {
     private Long id;
     private String name;
     private String brand;
@@ -25,6 +26,16 @@ public class CarDetailResponse {
 
     // Owner stats
     private String ownerName;
+    private String ownerImage;
+
+    public String getOwnerImage() {
+        return ownerImage;
+    }
+
+    public void setOwnerImage(String ownerImage) {
+        this.ownerImage = ownerImage;
+    }
+
     private double ownerAvgRating;
     private long ownerTripCount;
 

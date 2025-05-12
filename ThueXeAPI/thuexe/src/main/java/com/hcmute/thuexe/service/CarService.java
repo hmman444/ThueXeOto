@@ -117,6 +117,7 @@ public class CarService {
         response.setAvgRating(avgRating != null ? avgRating : 0.0);
         response.setTripCount(tripCount != null ? tripCount : 0L);
         response.setOwnerName(car.getOwner().getName());
+        response.setOwnerImage(car.getOwner().getImageUrl());
         response.setOwnerAvgRating(ownerAvgRating != null ? ownerAvgRating : 0.0);
         response.setOwnerTripCount(ownerTripCount != null ? ownerTripCount : 0L);
         response.setReviews(reviews);

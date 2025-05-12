@@ -1,6 +1,6 @@
 package com.hcmute.ltdd.model.response;
 
-public class ReviewDTO {
+public class ReviewDTO  {
     private Long reviewId;
     private Long carId;
     private String comment;

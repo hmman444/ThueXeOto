@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.hcmute.ltdd.R;
 import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
+import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
@@ -67,34 +68,41 @@ public class AccountActivity extends AppCompatActivity {
 
     private void loadUserProfile() {
         String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
-        apiService.getUserProfile(token).enqueue(new Callback<UserProfileResponse>() {
+        apiService.getUserProfile(token).enqueue(new Callback<ApiResponse<UserProfileResponse>>() {
             @Override
-            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+            public void onResponse(Call<ApiResponse<UserProfileResponse>> call, Response<ApiResponse<UserProfileResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    UserProfileResponse user = response.body();
+                    ApiResponse<UserProfileResponse> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        UserProfileResponse user = apiResponse.getData();
 
-                    tvUsername.setText(user.getName());
-                    tvJoinDate.setText("Ngày tham gia: " + formatDate(user.getCreatedAt()));
+                        tvUsername.setText(user.getName());
+                        tvJoinDate.setText("Ngày tham gia: " + formatDate(user.getCreatedAt()));
 
-                    valueBirth = user.getBirthdate();
-                    valueGender = user.getGender();
-                    valuePhone = user.getPhone();
-                    valueEmail = user.getEmail();
+                        valueBirth = user.getBirthdate();
+                        valueGender = user.getGender();
+                        valuePhone = user.getPhone();
+                        valueEmail = user.getEmail();
 
-                    updateVerification(iconBirth, statusBirth, valueBirth);
-                    updateVerification(iconGender, statusGender, valueGender);
-                    updateVerification(iconPhone, statusPhone, valuePhone);
+                        updateVerification(iconBirth, statusBirth, valueBirth);
+                        updateVerification(iconGender, statusGender, valueGender);
+                        updateVerification(iconPhone, statusPhone, valuePhone);
+
+                    } else {
+                        Toast.makeText(AccountActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(AccountActivity.this, "Không tải được thông tin", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<UserProfileResponse>> call, Throwable t) {
                 Toast.makeText(AccountActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void updateVerification(ImageView iconView, TextView statusView, String fieldValue) {
         if (fieldValue != null && !fieldValue.trim().isEmpty()) {
