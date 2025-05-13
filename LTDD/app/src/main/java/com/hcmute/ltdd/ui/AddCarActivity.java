@@ -37,6 +37,7 @@ import com.hcmute.ltdd.utils.CloudinaryManager;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -46,8 +47,8 @@ import retrofit2.Response;
 
 public class AddCarActivity extends AppCompatActivity {
 
-    private EditText edtCarName, edtBrand, edtEnergyConsumption, edtDescription;
-    private Spinner spnGearType, spnFuelType;
+    private EditText edtCarName, edtBrand, edtEnergyConsumption, edtDescription, edtDetailLocation, edtPrice;
+    private Spinner spnGearType, spnFuelType, spnLocation;
     private CheckBox cbDriverRequired;
     private Button btnRegisterCar;
     private ImageView ivSelectImage, ivSelectFeatures, ivPreviewImage;
@@ -115,21 +116,35 @@ public class AddCarActivity extends AppCompatActivity {
         ivSelectFeatures = findViewById(R.id.ivSelectFeatures);
         tvSelectedFeatures = findViewById(R.id.tvSelectedFeatures);
         ivPreviewImage = findViewById(R.id.ivPreviewImage);
+        edtPrice = findViewById(R.id.edtPrice);
+        edtDetailLocation = findViewById(R.id.edtDetailLocation);
+        spnLocation = findViewById(R.id.spnLocation);
 
         // Dữ liệu cho Gear Type
         List<String> gearTypes = new ArrayList<>();
-        gearTypes.add("Số sàn");
-        gearTypes.add("Số tự động");
+        gearTypes.add("Manual");
+        gearTypes.add("Automatic");
 
         // Dữ liệu cho Fuel Type
         List<String> fuelTypes = new ArrayList<>();
-        fuelTypes.add("Điện");
-        fuelTypes.add("Dầu Diesel");
-        fuelTypes.add("Xăng");
+        fuelTypes.add("Gasoline");
+        fuelTypes.add("Diesel");
+        fuelTypes.add("Electric");
+
+        List<String> district = new ArrayList<>(Arrays.asList(
+                "Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6",
+                "Quận 7", "Quận 8", "Quận 9", "Quận 10", "Quận 11",
+                "Quận 12", "Bình Thạnh", "Gò Vấp", "Phú Nhuận",
+                "Tân Bình", "Tân Phú", "Thủ Đức"
+        ));
 
         ArrayAdapter<String> gearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gearTypes);
         gearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnGearType.setAdapter(gearAdapter);
+
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, district);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnLocation.setAdapter(locationAdapter);
 
         ArrayAdapter<String> fuelAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fuelTypes);
         fuelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -183,6 +198,8 @@ public class AddCarActivity extends AppCompatActivity {
         String brand = edtBrand.getText().toString().trim();
         String description = edtDescription.getText().toString().trim();
         String gearType = spnGearType.getSelectedItem().toString();
+        String location = edtDetailLocation.getText().toString().trim() + ", " + spnLocation.getSelectedItem().toString();
+        double price = Double.parseDouble(edtPrice.getText().toString().trim());
         int seats = Integer.parseInt(((EditText) findViewById(R.id.spnSeats)).getText().toString().trim());
         String fuelType = spnFuelType.getSelectedItem().toString();
         double energyConsumption = Double.parseDouble(edtEnergyConsumption.getText().toString().trim());
@@ -214,7 +231,7 @@ public class AddCarActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String requestId, Map resultData) {
                     imageUrl = (String) resultData.get("secure_url");
-                    proceedToRegister(name, brand, description, gearType, seats, fuelType, energyConsumption, driverRequired, selectedFeatures, imageUrl, token);
+                    proceedToRegister(name, brand, description, gearType, seats, fuelType, energyConsumption, driverRequired, location, price, selectedFeatures, imageUrl, token);
                 }
 
                 @Override
@@ -227,16 +244,30 @@ public class AddCarActivity extends AppCompatActivity {
             });
         } else {
             // Nếu đã có `imageUrl`, tiến hành đăng ký
-            proceedToRegister(name, brand, description, gearType, seats, fuelType, energyConsumption, driverRequired, selectedFeatures, imageUrl, token);
+            proceedToRegister(name, brand, description, gearType, seats, fuelType, energyConsumption, driverRequired, location, price, selectedFeatures, imageUrl, token);
         }
     }
 
     private void proceedToRegister(String name, String brand, String description, String gearType, int seats,
                                    String fuelType, double energyConsumption, boolean driverRequired,
+                                   String location, double price,
                                    List<String> features, String imageUrl, String token) {
 
-        AddCarRequest request = new AddCarRequest(name, brand, description, gearType, seats, fuelType,
-                energyConsumption, imageUrl, driverRequired, features);
+        AddCarRequest request = new AddCarRequest(
+                features,
+                price,
+                location,
+                driverRequired,
+                imageUrl,
+                energyConsumption,
+                fuelType,
+                seats,
+                gearType,
+                description,
+                brand,
+                name
+        );
+
 
         apiService.addCar(request, token).enqueue(new Callback<ApiResponse<String>>() {
             @Override

@@ -9,7 +9,7 @@ public class Car {
     private String description;
     private String gearType; // "Manual" or "Automatic"
     private int seats;
-    private String fuelType; // "Gasoline", "Diesel", "EV"
+    private String fuelType; // "Gasoline", "Diesel", "Electric"
     private int energyConsumption;
     private String[] hasEtc;
     private String location;

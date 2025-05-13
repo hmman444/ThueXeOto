@@ -12,20 +12,43 @@ public class AddCarRequest {
     private double energyConsumption;
     private String imageUrl;
     private boolean driverRequired;
+    private String location;
+    private double price;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     private List<String> features;
 
-    public AddCarRequest(String name, String brand, String description, String gearType, int seats, String fuelType,
-                         double energyConsumption, String imageUrl, boolean driverRequired, List<String> features) {
-        this.name = name;
-        this.brand = brand;
-        this.description = description;
-        this.gearType = gearType;
-        this.seats = seats;
-        this.fuelType = fuelType;
-        this.energyConsumption = energyConsumption;
-        this.imageUrl = imageUrl;
-        this.driverRequired = driverRequired;
+    public AddCarRequest(List<String> features, double price, String location,
+                         boolean driverRequired, String imageUrl, double energyConsumption,
+                         String fuelType, int seats, String gearType, String description,
+                         String brand, String name) {
         this.features = features;
+        this.price = price;
+        this.location = location;
+        this.driverRequired = driverRequired;
+        this.imageUrl = imageUrl;
+        this.energyConsumption = energyConsumption;
+        this.fuelType = fuelType;
+        this.seats = seats;
+        this.gearType = gearType;
+        this.description = description;
+        this.brand = brand;
+        this.name = name;
     }
 
     public String getBrand() {

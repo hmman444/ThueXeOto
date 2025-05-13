@@ -21,7 +21,7 @@ public class NotifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notify);
 
         // Ánh xạ
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack_notify);
         tabUnread = findViewById(R.id.tabUnread);
         tabRead = findViewById(R.id.tabRead);
         underlineUnread = findViewById(R.id.underlineUnread);
