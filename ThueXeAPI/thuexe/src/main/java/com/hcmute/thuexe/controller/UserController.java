@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,7 @@ import com.hcmute.thuexe.dto.request.EditProfileRequest;
 import com.hcmute.thuexe.dto.request.MessageRequest;
 import com.hcmute.thuexe.dto.request.ReviewRequest;
 import com.hcmute.thuexe.dto.request.SearchCarRequest;
+import com.hcmute.thuexe.dto.request.UpdateStatusRequest;
 import com.hcmute.thuexe.dto.response.BookingDetailResponse;
 import com.hcmute.thuexe.dto.response.BookingHistoryResponse;
 import com.hcmute.thuexe.dto.response.BookingPreviewResponse;
@@ -316,6 +318,10 @@ public class UserController {
             User user = userRepository.findByAccount_Username(username)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
+            // Thực hiện cập nhật trạng thái trước khi trả về booking detail
+            bookingService.updateBookingStatusOnView(bookingId);
+
+            // Sau đó trả về chi tiết booking
             BookingDetailResponse response = bookingService.getBookingDetail(bookingId, user.getUserId());
             return ResponseEntity.ok(new ApiResponse<>(true, "Lấy thông tin booking thành công", response));
 
@@ -325,6 +331,7 @@ public class UserController {
                     .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy thông tin booking", null));
         }
     }
+
 
     /**
      * API: PUT /api/user/booking/update
@@ -352,6 +359,31 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(false, "Lỗi khi cập nhật booking", null));
+        }
+    }
+
+    @PatchMapping("/booking/update-status")
+    public ResponseEntity<ApiResponse<String>> updateBookingStatus(
+            @RequestBody UpdateStatusRequest request,
+            Authentication authentication) {
+
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(false, "Chưa xác thực người dùng", null));
+        }
+
+        try {
+            String username = authentication.getPrincipal().toString();
+            User user = userRepository.findByAccount_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
+            bookingService.updateBookingStatus(request, user.getUserId());
+            return ResponseEntity.ok(new ApiResponse<>(true, "Cập nhật trạng thái thành công", "Success"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi cập nhật trạng thái", null));
         }
     }
 
@@ -395,8 +427,13 @@ public class UserController {
         }
     }
     
-    @PostMapping("/reviews/add")
+    @PostMapping("/review/add")
     public ResponseEntity<ApiResponse<String>> addReview(@Valid @RequestBody ReviewRequest reviewRequest, Authentication authentication) {
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(false, "Chưa xác thực người dùng", null));
+        }
+
         try {
             reviewService.addReview(authentication, reviewRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Đánh giá thành công", null));

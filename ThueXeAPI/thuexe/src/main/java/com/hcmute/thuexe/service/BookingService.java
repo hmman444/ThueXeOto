@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.hcmute.thuexe.dto.request.BookingRequest;
 import com.hcmute.thuexe.dto.request.BookingUpdateRequest;
 import com.hcmute.thuexe.dto.request.CancelBookingRequest;
+import com.hcmute.thuexe.dto.request.UpdateStatusRequest;
 import com.hcmute.thuexe.dto.response.BookingDetailResponse;
 import com.hcmute.thuexe.dto.response.BookingHistoryResponse;
 import com.hcmute.thuexe.dto.response.BookingPreviewResponse;
@@ -159,6 +160,39 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
+    @Transactional
+    public void updateBookingStatus(UpdateStatusRequest request, Long userId) {
+        Booking booking = bookingRepository.findById(request.getBookingId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
+
+        String status = request.getStatus();
+        String reason = request.getReason();
+
+        // Kiểm tra trạng thái hiện tại
+        String currentStatus = booking.getStatus();
+
+        // Nếu đã bị hủy, không thực hiện cập nhật
+        if ("Cancelled_by_user".equals(currentStatus) || "Cancelled_by_owner".equals(currentStatus)) {
+            return;
+        }
+
+        // Cập nhật trạng thái theo yêu cầu từ phía người dùng
+        if ("Pending".equals(currentStatus)) {
+            if ("Cancelled_by_user".equals(status) && booking.getUser().getUserId().equals(userId)) {
+                booking.setStatus("Cancelled_by_user");
+                booking.setCancelReason(reason);
+            } else if ("Cancelled_by_owner".equals(status) && booking.getCar().getOwner().getUserId().equals(userId)) {
+                booking.setStatus("Cancelled_by_owner");
+                booking.setCancelReason(reason);
+            } else if ("Confirmed".equals(status) && booking.getCar().getOwner().getUserId().equals(userId)) {
+                booking.setStatus("Confirmed");
+            }
+        }
+
+        bookingRepository.save(booking);
+    }
+
+
     public BookingDetailResponse getBookingDetail(Long bookingId, Long userId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
@@ -178,6 +212,7 @@ public class BookingService {
         response.setDeliverySelected(booking.isDeliverySelected());
 
         if (booking.getCar() != null) {
+            response.setCarId(booking.getCar().getCarId().intValue());
             response.setCarName(booking.getCar().getName());
             response.setCarImageUrl(booking.getCar().getImageUrl());
             response.setCarPrice(booking.getCar().getPrice());
@@ -202,6 +237,42 @@ public class BookingService {
         }
 
         return response;
+    }
+    @Transactional
+    public void updateBookingStatusOnView(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startDate = booking.getStartDate();
+        LocalDateTime endDate = booking.getEndDate();
+        String currentStatus = booking.getStatus();
+
+        // Nếu booking đã bị hủy, không cập nhật gì
+        if ("Cancelled_by_user".equals(currentStatus) || "Cancelled_by_owner".equals(currentStatus)) {
+            return;
+        }
+
+        // Nếu trạng thái là "Pending"
+        if ("Pending".equals(currentStatus)) {
+            if (now.isAfter(startDate) && now.isBefore(endDate)) {
+                booking.setStatus("InProgress");
+            } else if (now.isAfter(endDate)) {
+                booking.setStatus("Complete");
+            }
+        }
+
+        // Nếu trạng thái là "Confirmed"
+        if ("Confirmed".equals(currentStatus) && now.isAfter(startDate) && now.isBefore(endDate)) {
+            booking.setStatus("InProgress");
+        }
+
+        // Nếu trạng thái là "InProgress" và thời gian kết thúc đã qua
+        if ("InProgress".equals(currentStatus) && now.isAfter(endDate)) {
+            booking.setStatus("Complete");
+        }
+
+        bookingRepository.save(booking);
     }
 
 

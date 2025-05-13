@@ -18,7 +18,14 @@ public class BookingDetailResponse {
     private Boolean deliverySelected;
     private Boolean driverRequired;
 
+    private int carId;
     private String carName;
+    public int getCarId() {
+        return carId;
+    }
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
     private String carImageUrl;
     private Double carPrice;
 

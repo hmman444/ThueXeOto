@@ -40,10 +40,10 @@ public class ReviewService {
         String username = authentication.getName();
 
         User user = userRepository.findByAccount_Username(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng"));
 
         Car car = carRepository.findById(request.getCarId())
-                .orElseThrow(() -> new ResourceNotFoundException("Car not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xe"));
 
         Review review = new Review();
         review.setUser(user);
