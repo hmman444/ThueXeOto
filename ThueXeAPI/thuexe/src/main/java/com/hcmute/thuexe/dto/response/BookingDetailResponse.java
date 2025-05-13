@@ -40,6 +40,13 @@ public class BookingDetailResponse {
     private String ownerName;
     private String ownerPhone;
     private String ownerImageUrl;
+    private ReviewDTO review;
+    public ReviewDTO getReview() {
+        return review;
+    }
+    public void setReview(ReviewDTO review) {
+        this.review = review;
+    }
     public Long getBookingId() {
         return bookingId;
     }

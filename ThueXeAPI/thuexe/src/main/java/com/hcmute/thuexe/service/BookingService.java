@@ -3,6 +3,7 @@ package com.hcmute.thuexe.service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -14,11 +15,14 @@ import com.hcmute.thuexe.dto.request.UpdateStatusRequest;
 import com.hcmute.thuexe.dto.response.BookingDetailResponse;
 import com.hcmute.thuexe.dto.response.BookingHistoryResponse;
 import com.hcmute.thuexe.dto.response.BookingPreviewResponse;
+import com.hcmute.thuexe.dto.response.ReviewDTO;
 import com.hcmute.thuexe.model.Booking;
 import com.hcmute.thuexe.model.Car;
+import com.hcmute.thuexe.model.Review;
 import com.hcmute.thuexe.model.User;
 import com.hcmute.thuexe.repository.BookingRepository;
 import com.hcmute.thuexe.repository.CarRepository;
+import com.hcmute.thuexe.repository.ReviewRepository;
 import com.hcmute.thuexe.repository.UserRepository;
 import java.time.Duration;
 
@@ -32,6 +36,7 @@ public class BookingService {
     private final CarRepository carRepository;
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     public BookingPreviewResponse previewBooking(BookingRequest request) {
         Car car = carRepository.findById(request.getCarId())
@@ -236,6 +241,8 @@ public class BookingService {
             response.setRenterImageUrl(renter.getImageUrl());
         }
 
+        ReviewDTO review = reviewRepository.findByBookingId(bookingId);
+        response.setReview(review);
         return response;
     }
     @Transactional

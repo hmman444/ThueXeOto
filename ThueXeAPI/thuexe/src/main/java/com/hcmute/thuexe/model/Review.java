@@ -17,6 +17,18 @@ public class Review {
     @JoinColumn(name = "car_id", referencedColumnName = "carId")
     private Car car;
 
+    @ManyToOne
+    @JoinColumn(name = "booking_id", referencedColumnName = "bookingId")
+    private Booking booking;
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
     private Integer rating;
     private String comment;
     private String createdAt;

@@ -2,9 +2,11 @@ package com.hcmute.thuexe.service;
 
 import com.hcmute.thuexe.dto.request.ReviewRequest;
 import com.hcmute.thuexe.exception.ResourceNotFoundException;
+import com.hcmute.thuexe.model.Booking;
 import com.hcmute.thuexe.model.Car;
 import com.hcmute.thuexe.model.Review;
 import com.hcmute.thuexe.model.User;
+import com.hcmute.thuexe.repository.BookingRepository;
 import com.hcmute.thuexe.repository.CarRepository;
 import com.hcmute.thuexe.repository.ReviewRepository;
 import com.hcmute.thuexe.repository.UserRepository;
@@ -29,6 +31,9 @@ public class ReviewService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BookingRepository bookingRepository;
+
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public List<Review> getReviewsByCarId(Long carId) {
@@ -45,14 +50,20 @@ public class ReviewService {
         Car car = carRepository.findById(request.getCarId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xe"));
 
+        Booking booking = bookingRepository.findById(request.getBookingId())
+            .orElseThrow(() -> new RuntimeException("Booking not found"));
+
         Review review = new Review();
         review.setUser(user);
         review.setCar(car);
+        review.setBooking(booking);
         review.setRating(request.getRating());
         review.setComment(request.getComment());
         review.setCreatedAt(LocalDateTime.now().format(DATE_FORMATTER));
 
         reviewRepository.save(review);
+        booking.setStatus("Reviewed");
+        bookingRepository.save(booking);
     }
 
     @Transactional

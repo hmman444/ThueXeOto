@@ -8,12 +8,29 @@ public class ReviewDTO {
     private String name;
     private String createdAt;
     private String imageUrl;
+    private Long bookingId;
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
+    }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    public ReviewDTO(int rating, Long bookingId, String comment, String createdAt, String name, String imageUrl) {
+        this.bookingId = bookingId;
+        this.rating = rating;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.name = name;
         this.imageUrl = imageUrl;
     }
 
