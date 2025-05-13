@@ -16,6 +16,15 @@ public class BookingDetailResponse {
     private Boolean insuranceSelected;
     private Boolean deliverySelected;
     private Boolean driverRequired;
+    private ReviewDTO review;
+
+    public ReviewDTO getReview() {
+        return review;
+    }
+
+    public void setReview(ReviewDTO review) {
+        this.review = review;
+    }
 
     private int carId;
 

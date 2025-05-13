@@ -2,11 +2,13 @@ package com.hcmute.ltdd.model.request;
 
 public class ReviewRequest {
     private int carId;
+    private Long bookingId;
     private Integer rating;
     private String comment;
 
-    public ReviewRequest(int carId, Integer rating, String comment) {
+    public ReviewRequest(int carId, Long bookingId, Integer rating, String comment) {
         this.carId = carId;
+        this.bookingId = bookingId;
         this.rating = rating;
         this.comment = comment;
     }
@@ -17,6 +19,14 @@ public class ReviewRequest {
 
     public void setCarId(int carId) {
         this.carId = carId;
+    }
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
     public Integer getRating() {

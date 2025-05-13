@@ -100,33 +100,23 @@ public class BookingViewModel extends ViewModel {
             }
         });
     }
-    public void submitReview(Context context, int carId, Integer rating, String comment) {
-        isLoading.setValue(true);
+    public void submitReview(Context context, int carId, long bookingId, Integer rating, String comment) {
+        ReviewRequest request = new ReviewRequest(carId, bookingId, rating, comment);
 
-        ReviewRequest request = new ReviewRequest(carId, rating, comment);
         ApiService apiService = RetrofitClient.getRetrofit(context).create(ApiService.class);
-
         apiService.submitReview(request).enqueue(new Callback<ApiResponse<String>>() {
             @Override
             public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
-                isLoading.setValue(false);
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse<String> apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
-                        Toast.makeText(context, "Đã gửi đánh giá", Toast.LENGTH_SHORT).show();
-                    } else {
-                        errorMessage.setValue(apiResponse.getMessage());
-                    }
+                    Toast.makeText(context, "Đã gửi đánh giá", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<String>> call, Throwable t) {
-                isLoading.setValue(false);
-                errorMessage.setValue("Lỗi kết nối: " + t.getMessage());
+                Toast.makeText(context, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
 }

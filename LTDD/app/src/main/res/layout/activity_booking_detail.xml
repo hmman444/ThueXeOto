@@ -105,7 +105,12 @@
             <include layout="@layout/item_info_user"/>
             <include layout="@layout/item_divider"/>
             <include layout="@layout/item_price_summary"/>
-
+            <LinearLayout
+                android:id="@+id/reviewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="12dp"/>
             <!-- Nút Xác nhận (chỉ hiển thị với chủ xe khi Pending) -->
             <Button
                 android:id="@+id/btnConfirm"

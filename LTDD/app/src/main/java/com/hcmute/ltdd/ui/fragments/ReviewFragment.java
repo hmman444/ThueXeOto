@@ -24,9 +24,17 @@ public class ReviewFragment extends DialogFragment {
     private Button btnSubmit;
     private BookingViewModel bookingViewModel;
     private int carId;
+    private long bookingId;
+    private ReviewCallback callback;
 
-    public ReviewFragment(int carId) {
+    public interface ReviewCallback {
+        void onReviewSubmitted();
+    }
+
+    public ReviewFragment(int carId, long bookingId, ReviewCallback callback) {
         this.carId = carId;
+        this.bookingId = bookingId;
+        this.callback = callback;
     }
 
     @Nullable
@@ -46,8 +54,11 @@ public class ReviewFragment extends DialogFragment {
                 return;
             }
 
-            bookingViewModel.submitReview(getContext(), carId, rating, feedback);
+            bookingViewModel.submitReview(getContext(), carId, bookingId, rating, feedback);
             dismiss();
+            if (callback != null) {
+                callback.onReviewSubmitted();  // Gọi callback để load lại dữ liệu
+            }
         });
 
         return view;
