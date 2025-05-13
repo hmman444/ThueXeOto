@@ -1,6 +1,7 @@
 package com.hcmute.ltdd.ui.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.hcmute.ltdd.data.remote.ApiService;
 import com.hcmute.ltdd.data.remote.RetrofitClient;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.response.BookingHistoryResponse;
+import com.hcmute.ltdd.ui.BookingDetailActivity;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class TripFragment extends Fragment {
     private RecyclerView rvContent;
     private BookingHistoryAdapter adapter;
     private ApiService apiService;
+    private String currentTab = "trips";
 
     @Nullable
     @Override
@@ -60,6 +63,13 @@ public class TripFragment extends Fragment {
         adapter = new BookingHistoryAdapter();
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(bookingId -> {
+            Intent intent = new Intent(getContext(), BookingDetailActivity.class);
+            intent.putExtra("bookingId", bookingId);
+            intent.putExtra("tab", currentTab); // Truyền thêm tab hiện tại
+            startActivity(intent);
+        });
     }
 
     private void setupListeners() {
@@ -76,6 +86,7 @@ public class TripFragment extends Fragment {
 
 
     private void setActiveTab(boolean isTrips) {
+        currentTab = isTrips ? "trips" : "orders";
         tabTrips.setTextColor(getResources().getColor(isTrips ? android.R.color.holo_orange_dark : android.R.color.darker_gray));
         tabOrders.setTextColor(getResources().getColor(!isTrips ? android.R.color.holo_orange_dark : android.R.color.darker_gray));
         indicatorTrips.setVisibility(isTrips ? View.VISIBLE : View.INVISIBLE);

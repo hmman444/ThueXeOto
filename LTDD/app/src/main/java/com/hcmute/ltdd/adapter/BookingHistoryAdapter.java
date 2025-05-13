@@ -25,6 +25,16 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
 
     private List<BookingHistoryResponse> bookingHistoryList = new ArrayList<>();
 
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Long bookingId);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     public void setBookingHistoryList(List<BookingHistoryResponse> list) {
         if (list != null) {
             bookingHistoryList = list;
@@ -46,6 +56,11 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
         BookingHistoryResponse booking = bookingHistoryList.get(position);
         holder.bindData(booking);
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(booking.getBookingId());
+            }
+        });
     }
 
     @Override
@@ -93,23 +108,17 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         }
         private String calculateTotalDays(String startDate, String endDate) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
             try {
                 LocalDateTime start = LocalDateTime.parse(startDate, formatter);
                 LocalDateTime end = LocalDateTime.parse(endDate, formatter);
-
                 Duration duration = Duration.between(start, end);
-
                 // Số ngày (bao gồm cả phần thập phân)
                 double days = duration.toHours() / 24.0;
-
                 if (days % 1 == 0) {
                     return String.format(Locale.getDefault(), "%.0f ngày", days);
                 } else {
                     return String.format(Locale.getDefault(), "%.1f ngày", days);
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return "Không xác định";

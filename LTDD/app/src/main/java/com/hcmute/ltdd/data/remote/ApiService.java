@@ -1,5 +1,4 @@
 package com.hcmute.ltdd.data.remote;
-import com.hcmute.ltdd.model.User;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.AddCarRequest;
 import com.hcmute.ltdd.model.request.BookingPreviewRequest;
@@ -10,12 +9,14 @@ import com.hcmute.ltdd.model.request.MessageRequest;
 import com.hcmute.ltdd.model.request.PostRequest;
 import com.hcmute.ltdd.model.request.RegisterRequest;
 import com.hcmute.ltdd.model.request.ResetPasswordRequest;
+import com.hcmute.ltdd.model.request.ReviewRequest;
+import com.hcmute.ltdd.model.request.UpdateStatusRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
+import com.hcmute.ltdd.model.response.BookingDetailResponse;
 import com.hcmute.ltdd.model.response.BookingHistoryResponse;
 import com.hcmute.ltdd.model.response.CarResponse;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
-import com.hcmute.ltdd.model.response.PostResponse;
 import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.model.response.UserSearchResponse;
 import com.hcmute.ltdd.model.request.SearchCarRequest;
@@ -29,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -112,8 +113,12 @@ public interface ApiService {
 
     @GET("/api/user/my-bookings")
     Call<ApiResponse<List<BookingHistoryResponse>>> getMyBookings();
-    @GET("/api/booking/{bookingId}")
+    @GET("/api/user/booking/{bookingId}")
     Call<ApiResponse<BookingDetailResponse>> getBookingDetail(@Path("bookingId") Long bookingId);
+    @PATCH("/api/user/booking/update-status")
+    Call<ApiResponse<String>> updateBookingStatus(@Body UpdateStatusRequest request);
+    @POST("/api/user/review/add")
+    Call<ApiResponse<String>> submitReview(@Body ReviewRequest request);
 
 
 }
