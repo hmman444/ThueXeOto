@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.edtPassword);
         confirmPasswordEditText = findViewById(R.id.edtConfirmPassword);
         registerButton = findViewById(R.id.btnRegister);
-        backButton = findViewById(R.id.btnBack);
+        backButton = findViewById(R.id.btnBack_regiter);
 
         apiService = RetrofitClient.getRetrofit(this).create(ApiService.class);
 

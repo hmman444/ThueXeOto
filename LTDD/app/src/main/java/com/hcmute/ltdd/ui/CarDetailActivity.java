@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ public class CarDetailActivity extends AppCompatActivity {
     private Long carId;
     private CheckBox cbPickup;
     private GridLayout gridLayout;
+    private ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class CarDetailActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+        btnBack.setOnClickListener(v -> finish());
         startTimeLinearLayout.setOnClickListener(v -> openDateRangePicker(true));
         endTimeLinearLayout.setOnClickListener(v -> openDateRangePicker(false));
         pickupLocationLinearLayout.setOnClickListener(v -> openLocationBottomSheet(true));
@@ -184,6 +187,7 @@ public class CarDetailActivity extends AppCompatActivity {
         txtEnergyConsumption = findViewById(R.id.energyConsumption_cardetail);
         cbPickup = findViewById(R.id.cbPickup);
         gridLayout = findViewById(R.id.gridAmenities);
+        btnBack = findViewById(R.id.btnBack_cardetail);
     }
 
     private void initViewModel() {
@@ -295,13 +299,28 @@ public class CarDetailActivity extends AppCompatActivity {
                         imageView.setImageResource(R.drawable.ic_air_bag);
                         break;
                     case "Camera lùi":
-                        imageView.setImageResource(R.drawable.ic_camera_back);
+                        imageView.setImageResource(R.drawable.ic_camera_rear);
                         break;
                     case "Bản đồ":
                         imageView.setImageResource(R.drawable.ic_gps);
                         break;
                     case "Khe cắm USB":
                         imageView.setImageResource(R.drawable.ic_usb);
+                        break;
+                    case "Camera cặp lề":
+                        imageView.setImageResource(R.drawable.ic_camera_side);
+                        break;
+                    case "Camera hành trình":
+                        imageView.setImageResource(R.drawable.ic_camera_dash);
+                        break;
+                    case "Cảm biến lốp":
+                        imageView.setImageResource(R.drawable.ic_tire_sensor);
+                        break;
+                    case "Cảm biến va chạm":
+                        imageView.setImageResource(R.drawable.ic_collision_sensor);
+                        break;
+                    case "Ghế trẻ em":
+                        imageView.setImageResource(R.drawable.ic_child_seat);
                         break;
                 }
 

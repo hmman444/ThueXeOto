@@ -149,27 +149,31 @@ public class PostActivity extends AppCompatActivity {
         rvMyCars.setLayoutManager(new LinearLayoutManager(this));
 
         String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();
-        apiService.getMyCars(token).enqueue(new Callback<List<CarResponse>>() {
+        apiService.getMyCars(token).enqueue(new Callback<ApiResponse<List<CarResponse>>>() {
             @Override
-            public void onResponse(Call<List<CarResponse>> call, Response<List<CarResponse>> response) {
+            public void onResponse(Call<ApiResponse<List<CarResponse>>> call, Response<ApiResponse<List<CarResponse>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<CarResponse> carList = response.body();
+                    ApiResponse<List<CarResponse>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        List<CarResponse> carList = apiResponse.getData();
 
-                    MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
-                        selectedCarId = car.getCarId();
-                        tvSelectedCar.setText(car.getName());
-                        dialog.dismiss();
-                    });
+                        MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
+                            selectedCarId = car.getCarId();
+                            tvSelectedCar.setText(car.getName());
+                            dialog.dismiss();
+                        });
 
-                    rvMyCars.setAdapter(adapter);
-
+                        rvMyCars.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(PostActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(PostActivity.this, "Không tải được danh sách xe", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CarResponse>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<CarResponse>>> call, Throwable t) {
                 Toast.makeText(PostActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -177,6 +181,7 @@ public class PostActivity extends AppCompatActivity {
         dialog.setContentView(dialogView);
         dialog.show();
     }
+
 
     private void postNewCar(PostRequest request) {
         String token = "Bearer " + SharedPrefManager.getInstance(this).getToken();

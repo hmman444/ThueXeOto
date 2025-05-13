@@ -21,7 +21,7 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
         // Ánh xạ
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack_favorite);
         tabSelfDrive = findViewById(R.id.tabSelfDrive);
         tabWithDriver = findViewById(R.id.tabWithDriver);
         underlineSelfDrive = findViewById(R.id.underlineSelfDrive);

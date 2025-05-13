@@ -35,7 +35,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_otp);
 
-        backButton = findViewById(R.id.btnBack);
+        backButton = findViewById(R.id.btnBack_verify);
         otpEditText = findViewById(R.id.edtOtp);
         verifyOtpButton = findViewById(R.id.btnVerifyOtp);
         verifyTitleTextView = findViewById(R.id.tvVerifyTitle);

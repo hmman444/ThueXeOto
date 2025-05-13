@@ -120,26 +120,28 @@ public class ProfileFragment extends Fragment {
         rvMyCars.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         String token = "Bearer " + SharedPrefManager.getInstance(requireContext()).getToken();
-        apiService.getMyCars(token).enqueue(new Callback<List<CarResponse>>() {
+        apiService.getMyCars(token).enqueue(new Callback<ApiResponse<List<CarResponse>>>() {
             @Override
-            public void onResponse(Call<List<CarResponse>> call, Response<List<CarResponse>> response) {
+            public void onResponse(Call<ApiResponse<List<CarResponse>>> call, Response<ApiResponse<List<CarResponse>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<CarResponse> carList = response.body();
-
-                    MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
-                        Toast.makeText(requireContext(), "Đã chọn xe: " + car.getName(), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    });
-
-                    rvMyCars.setAdapter(adapter);
-
+                    ApiResponse<List<CarResponse>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        List<CarResponse> carList = apiResponse.getData();
+                        MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
+                            Toast.makeText(requireContext(), "Đã chọn xe: " + car.getName(), Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        });
+                        rvMyCars.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(requireContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(requireContext(), "Không tải được danh sách xe", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CarResponse>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<CarResponse>>> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -147,4 +149,5 @@ public class ProfileFragment extends Fragment {
         dialog.setContentView(dialogView);
         dialog.show();
     }
+
 }

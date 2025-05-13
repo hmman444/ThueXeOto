@@ -40,7 +40,10 @@ public interface ApiService {
     Call<ApiResponse<UserProfileResponse>> getUserProfile(@Header("Authorization") String token);
 
     @GET("/api/user/{userId}")
-    Call<UserProfileResponse> getUserById(@Path("userId") Long userId, @Header("Authorization") String token);
+    Call<ApiResponse<UserProfileResponse>> getUserById(
+            @Path("userId") Long userId,
+            @Header("Authorization") String token
+    );
 
     @POST("/api/auth/register")
     Call<ApiResponse<String>> register(@Body RegisterRequest request);
@@ -58,7 +61,6 @@ public interface ApiService {
     Call<ApiResponse<String>> resetPassword(@Body ResetPasswordRequest request);
 
     @GET("/api/user/conversations")
-
     Call<ApiResponse<List<ConversationResponse>>> getConversations(@Header("Authorization") String token);
 
     @GET("/api/user/messages/{conversationId}")
@@ -89,6 +91,9 @@ public interface ApiService {
     @POST("/api/user/booking/preview")
     Call<ApiResponse<BookingPreviewResponse>> bookingPreview(@Body BookingPreviewRequest request);
 
+    @POST("/api/user/booking/confirm")
+    Call<ApiResponse<String>> confirmBooking(@Body BookingPreviewRequest request);
+
     @POST("/api/user/edit-profile")
     Call<ApiResponse<String>> editProfile(@Body EditProfileRequest request, @Header("Authorization") String token);
 
@@ -96,11 +101,9 @@ public interface ApiService {
     Call<ApiResponse<String>> addCar(@Body AddCarRequest request, @Header("Authorization") String token);
 
     @GET("/api/user/my-cars")
-    Call<List<CarResponse>> getMyCars(@Header("Authorization") String token);
+    Call<ApiResponse<List<CarResponse>>> getMyCars(@Header("Authorization") String token);
 
     @POST("/api/user/create-post")
     Call<ApiResponse<String>> createPost(@Body PostRequest request, @Header("Authorization") String token);
 
-    @GET("/api/user/posts")
-    Call<List<PostResponse>> getAllPosts(@Header("Authorization") String token);
 }
