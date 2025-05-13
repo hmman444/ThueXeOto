@@ -11,6 +11,7 @@ import com.hcmute.ltdd.model.request.PostRequest;
 import com.hcmute.ltdd.model.request.RegisterRequest;
 import com.hcmute.ltdd.model.request.ResetPasswordRequest;
 import com.hcmute.ltdd.model.request.VerifyOtpRequest;
+import com.hcmute.ltdd.model.response.BookingHistoryResponse;
 import com.hcmute.ltdd.model.response.CarResponse;
 import com.hcmute.ltdd.model.response.ConversationResponse;
 import com.hcmute.ltdd.model.response.MessageResponse;
@@ -105,5 +106,14 @@ public interface ApiService {
 
     @POST("/api/user/create-post")
     Call<ApiResponse<String>> createPost(@Body PostRequest request, @Header("Authorization") String token);
+
+    @GET("/api/user/booking-history")
+    Call<ApiResponse<List<BookingHistoryResponse>>> getBookingHistory();
+
+    @GET("/api/user/my-bookings")
+    Call<ApiResponse<List<BookingHistoryResponse>>> getMyBookings();
+    @GET("/api/booking/{bookingId}")
+    Call<ApiResponse<BookingDetailResponse>> getBookingDetail(@Path("bookingId") Long bookingId);
+
 
 }
