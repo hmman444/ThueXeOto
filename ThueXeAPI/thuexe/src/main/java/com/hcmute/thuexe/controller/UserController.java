@@ -311,8 +311,8 @@ public class UserController {
                     .body(new ApiResponse<>(false, "Chưa xác thực người dùng", null));
         }
 
-        String username = authentication.getPrincipal().toString();
         try {
+            String username = authentication.getPrincipal().toString();
             User user = userRepository.findByAccount_Username(username)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
@@ -355,13 +355,15 @@ public class UserController {
         }
     }
 
-
+    /**
+     * API: /api/booking-history - Lấy lịch sử đặt xe của người thuê xe
+     */
     @GetMapping("/booking-history")
     public ResponseEntity<ApiResponse<List<BookingHistoryResponse>>> getBookingHistory(Authentication authentication) {
         try {
             String username = authentication.getPrincipal().toString();
             User user = userRepository.findByAccount_Username(username)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+                    .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
 
             List<BookingHistoryResponse> history = bookingService.getBookingHistoryByUserId(user.getUserId());
             return ResponseEntity.ok(new ApiResponse<>(true, "Lấy lịch sử đặt xe thành công", history));
@@ -373,6 +375,26 @@ public class UserController {
         }
     }
 
+    /**
+     * API: /api/my-bookings - Lấy danh sách xe được thuê của chủ xe
+     */
+    @GetMapping("/my-bookings")
+    public ResponseEntity<ApiResponse<List<BookingHistoryResponse>>> getMyBookings(Authentication authentication) {
+        try {
+            String username = authentication.getPrincipal().toString();
+            User user = userRepository.findByAccount_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
+
+            List<BookingHistoryResponse> myBookings = bookingService.getMyBookingsByOwnerId(user.getUserId());
+            return ResponseEntity.ok(new ApiResponse<>(true, "Lấy danh sách xe đã đăng ký thành công", myBookings));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy danh sách xe đã đăng ký", null));
+        }
+    }
+    
     @PostMapping("/reviews/add")
     public ResponseEntity<ApiResponse<String>> addReview(@Valid @RequestBody ReviewRequest reviewRequest, Authentication authentication) {
         try {
@@ -460,5 +482,6 @@ public class UserController {
                     .body(new ApiResponse<>(false, "Đã xảy ra lỗi khi lấy danh sách xe", null));
         }
     }
+
 
 }

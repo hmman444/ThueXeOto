@@ -19,6 +19,7 @@ import com.hcmute.thuexe.model.User;
 import com.hcmute.thuexe.repository.BookingRepository;
 import com.hcmute.thuexe.repository.CarRepository;
 import com.hcmute.thuexe.repository.UserRepository;
+import java.time.Duration;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,17 @@ public class BookingService {
         Car car = carRepository.findById(request.getCarId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy xe"));
 
-        long days = ChronoUnit.DAYS.between(request.getStartDate(), request.getEndDate());
-        if (days <= 0) {
-            throw new RuntimeException("Phạm vi ngày không hợp lệ");
+        LocalDateTime start = request.getStartDate();
+        LocalDateTime end = request.getEndDate();
+
+        if (!end.isAfter(start)) {
+            throw new RuntimeException("Ngày thuê không hợp lệ");
         }
+
+        // Tính số phút giữa 2 thời điểm
+        long minutes = Duration.between(start, end).toMinutes();
+        // Tính số ngày dưới dạng số thực (VD: 3.5 ngày)
+        double days = minutes / 1440.0;
 
         double pricePerDay = car.getPrice();
         double insuranceFee = request.isInsuranceSelected() ? 90_000 : 0;
@@ -49,7 +57,7 @@ public class BookingService {
         double payLater = total - deposit;
 
         return new BookingPreviewResponse(
-            pricePerDay, insuranceFee, deliveryFee, (int) days,
+            pricePerDay, insuranceFee, deliveryFee, days,
             total, 0, total,
             deposit, payLater, driverRequired,
             "Bạn cần thanh toán giữ chỗ và cung cấp giấy tờ hợp lệ khi nhận xe"
@@ -64,32 +72,68 @@ public class BookingService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
-        long days = ChronoUnit.DAYS.between(request.getStartDate(), request.getEndDate());
-        if (days <= 0) throw new RuntimeException("Ngày thuê không hợp lệ");
+        LocalDateTime start = request.getStartDate();
+        LocalDateTime end = request.getEndDate();
+
+        if (!end.isAfter(start)) {
+            throw new RuntimeException("Ngày thuê không hợp lệ");
+        }
+
+        // Tính số phút giữa 2 thời điểm
+        long minutes = Duration.between(start, end).toMinutes();
+        // Tính số ngày dưới dạng số thực (VD: 3.5 ngày)
+        double days = minutes / 1440.0;
 
         double pricePerDay = car.getPrice();
         double insuranceFee = request.isInsuranceSelected() ? 90_000 : 0;
         double deliveryFee = request.isDeliverySelected() ? 30_000 : 0;
-        double driverRequired = request.getDriverRequired() ? (pricePerDay*20)/100 : 0;
-        double total = (pricePerDay + insuranceFee) * days + deliveryFee + driverRequired;
+        double driverFee = request.getDriverRequired() ? (pricePerDay * 0.2) : 0;
+
+        // Tổng chi phí
+        double total = (pricePerDay + insuranceFee) * days + deliveryFee + driverFee;
 
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setCar(car);
-        booking.setStartDate(request.getStartDate());
-        booking.setEndDate(request.getEndDate());
+        booking.setStartDate(start);
+        booking.setEndDate(end);
         booking.setPickupLocation(request.getPickupLocation());
         booking.setDropoffLocation(request.getDropoffLocation());
         booking.setInsuranceSelected(request.isInsuranceSelected());
         booking.setDeliverySelected(request.isDeliverySelected());
-        booking.setTotalPrice(total);
         booking.setDriverRequired(request.getDriverRequired());
+        booking.setTotalPrice(total);
         booking.setStatus("Pending");
         booking.setCreatedAt(LocalDateTime.now());
         booking.setUpdatedAt(LocalDateTime.now());
 
         bookingRepository.save(booking);
         return booking.getBookingId();
+    }
+
+    /**
+     * Lấy Booking theo ownerId (Chủ xe)
+     */
+    public List<BookingHistoryResponse> getMyBookingsByOwnerId(Long ownerId) {
+        List<Booking> bookings = bookingRepository.findByCarOwnerId(ownerId);
+
+        return bookings.stream()
+                .map(booking -> new BookingHistoryResponse(
+                        booking.getBookingId(),
+                        booking.getCar().getName(),
+                        booking.getCar().getImageUrl(),
+                        booking.getStartDate(),
+                        booking.getEndDate(),
+                        booking.getTotalPrice(),
+                        booking.getPickupLocation(),
+                        booking.getDropoffLocation(),
+                        booking.getStatus(),
+                        booking.isInsuranceSelected(),
+                        booking.isDeliverySelected(),
+                        booking.getDriverRequired(),
+                        booking.getCancelReason()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -119,10 +163,6 @@ public class BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
 
-        if (!booking.getUser().getUserId().equals(userId)) {
-            throw new RuntimeException("Không có quyền xem thông tin booking này");
-        }
-
         BookingDetailResponse response = new BookingDetailResponse();
         response.setBookingId(booking.getBookingId());
         response.setStartDate(booking.getStartDate());
@@ -141,6 +181,24 @@ public class BookingService {
             response.setCarName(booking.getCar().getName());
             response.setCarImageUrl(booking.getCar().getImageUrl());
             response.setCarPrice(booking.getCar().getPrice());
+
+            // Owner Information
+            User owner = booking.getCar().getOwner();
+            if (owner != null) {
+                response.setOwnerId(owner.getUserId());
+                response.setOwnerName(owner.getName());
+                response.setOwnerPhone(owner.getPhone());
+                response.setOwnerImageUrl(owner.getImageUrl());
+            }
+        }
+
+        // Renter Information
+        User renter = booking.getUser();
+        if (renter != null) {
+            response.setRenterId(renter.getUserId());
+            response.setRenterName(renter.getName());
+            response.setRenterPhone(renter.getPhone());
+            response.setRenterImageUrl(renter.getImageUrl());
         }
 
         return response;
@@ -168,24 +226,29 @@ public class BookingService {
         return "Booking đã được cập nhật thành công";
     }
 
+    /**
+     * Lấy Booking theo userId (Người thuê xe)
+     */
     public List<BookingHistoryResponse> getBookingHistoryByUserId(Long userId) {
         List<Booking> bookings = bookingRepository.findByUser_UserId(userId);
 
-        return bookings.stream().map(booking -> new BookingHistoryResponse(
-                booking.getBookingId(),
-                booking.getCar().getName(),
-                booking.getCar().getImageUrl(),
-                booking.getStartDate(),
-                booking.getEndDate(),
-                booking.getTotalPrice(),
-                booking.getPickupLocation(),
-                booking.getDropoffLocation(),
-                booking.getStatus(),
-                booking.isInsuranceSelected(),
-                booking.getDriverRequired(),
-                booking.isDeliverySelected(),
-                booking.getCancelReason()
-        )).collect(Collectors.toList());
+        return bookings.stream()
+                .map(booking -> new BookingHistoryResponse(
+                        booking.getBookingId(),
+                        booking.getCar().getName(),
+                        booking.getCar().getImageUrl(),
+                        booking.getStartDate(),
+                        booking.getEndDate(),
+                        booking.getTotalPrice(),
+                        booking.getPickupLocation(),
+                        booking.getDropoffLocation(),
+                        booking.getStatus(),
+                        booking.isInsuranceSelected(),
+                        booking.isDeliverySelected(),
+                        booking.getDriverRequired(),
+                        booking.getCancelReason()
+                ))
+                .collect(Collectors.toList());
     }
 
 }

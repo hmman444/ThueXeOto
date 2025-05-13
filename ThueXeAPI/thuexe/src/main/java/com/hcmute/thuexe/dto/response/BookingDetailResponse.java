@@ -1,6 +1,5 @@
 package com.hcmute.thuexe.dto.response;
 
-
 import java.time.LocalDateTime;
 
 public class BookingDetailResponse {
@@ -19,16 +18,21 @@ public class BookingDetailResponse {
     private Boolean deliverySelected;
     private Boolean driverRequired;
 
-    public Boolean getDriverRequired() {
-        return driverRequired;
-    }
-    public void setDriverRequired(Boolean driverRequired) {
-        this.driverRequired = driverRequired;
-    }
     private String carName;
     private String carImageUrl;
     private Double carPrice;
 
+    // Renter Information
+    private Long renterId;
+    private String renterName;
+    private String renterPhone;
+    private String renterImageUrl;
+
+    // Owner Information
+    private Long ownerId;
+    private String ownerName;
+    private String ownerPhone;
+    private String ownerImageUrl;
     public Long getBookingId() {
         return bookingId;
     }
@@ -101,6 +105,12 @@ public class BookingDetailResponse {
     public void setDeliverySelected(Boolean deliverySelected) {
         this.deliverySelected = deliverySelected;
     }
+    public Boolean getDriverRequired() {
+        return driverRequired;
+    }
+    public void setDriverRequired(Boolean driverRequired) {
+        this.driverRequired = driverRequired;
+    }
     public String getCarName() {
         return carName;
     }
@@ -119,5 +129,54 @@ public class BookingDetailResponse {
     public void setCarPrice(Double carPrice) {
         this.carPrice = carPrice;
     }
-    
+    public Long getRenterId() {
+        return renterId;
+    }
+    public void setRenterId(Long renterId) {
+        this.renterId = renterId;
+    }
+    public String getRenterName() {
+        return renterName;
+    }
+    public void setRenterName(String renterName) {
+        this.renterName = renterName;
+    }
+    public String getRenterPhone() {
+        return renterPhone;
+    }
+    public void setRenterPhone(String renterPhone) {
+        this.renterPhone = renterPhone;
+    }
+    public String getRenterImageUrl() {
+        return renterImageUrl;
+    }
+    public void setRenterImageUrl(String renterImageUrl) {
+        this.renterImageUrl = renterImageUrl;
+    }
+    public Long getOwnerId() {
+        return ownerId;
+    }
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+    public String getOwnerName() {
+        return ownerName;
+    }
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+    public String getOwnerPhone() {
+        return ownerPhone;
+    }
+    public void setOwnerPhone(String ownerPhone) {
+        this.ownerPhone = ownerPhone;
+    }
+    public String getOwnerImageUrl() {
+        return ownerImageUrl;
+    }
+    public void setOwnerImageUrl(String ownerImageUrl) {
+        this.ownerImageUrl = ownerImageUrl;
+    }
+
+
 }

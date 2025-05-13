@@ -4,7 +4,7 @@ public class BookingPreviewResponse {
     private double rentalPricePerDay;
     private double insuranceFeePerDay;
     private double deliveryFee;
-    private int totalDays;
+    private double totalDays;
 
     private double totalBeforeDiscount;
     private double discountAmount;
@@ -25,7 +25,7 @@ public class BookingPreviewResponse {
 
 
     public BookingPreviewResponse(double rentalPricePerDay, double insuranceFeePerDay, double deliveryFee,
-            int totalDays, double totalBeforeDiscount, double discountAmount, double totalPrice, double depositAmount,
+            double totalDays, double totalBeforeDiscount, double discountAmount, double totalPrice, double depositAmount,
             double payLaterAmount, double driverRequired, String policyNote) {
         this.rentalPricePerDay = rentalPricePerDay;
         this.insuranceFeePerDay = insuranceFeePerDay;
@@ -64,11 +64,11 @@ public class BookingPreviewResponse {
         this.deliveryFee = deliveryFee;
     }
 
-    public int getTotalDays() {
+    public double getTotalDays() {
         return totalDays;
     }
 
-    public void setTotalDays(int totalDays) {
+    public void setTotalDays(double totalDays) {
         this.totalDays = totalDays;
     }
 
