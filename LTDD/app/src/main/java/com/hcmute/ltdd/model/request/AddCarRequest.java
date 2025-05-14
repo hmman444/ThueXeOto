@@ -1,5 +1,7 @@
 package com.hcmute.ltdd.model.request;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class AddCarRequest {
@@ -31,6 +33,7 @@ public class AddCarRequest {
         this.price = price;
     }
 
+    @SerializedName("hasEtc")
     private List<String> features;
 
     public AddCarRequest(List<String> features, double price, String location,
