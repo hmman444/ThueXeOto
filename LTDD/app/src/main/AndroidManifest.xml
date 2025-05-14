@@ -17,9 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LTDD"
+        android:usesCleartextTraffic="true"
         tools:replace="android:fullBackupContent, android:appComponentFactory"
         tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:enableOnBackInvokedCallback="true">
+        <activity
+            android:name=".ui.EditCarActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.PostActivity"
             android:exported="false" />

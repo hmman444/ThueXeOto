@@ -2,6 +2,7 @@ package com.hcmute.ltdd.data.remote;
 import com.hcmute.ltdd.model.ApiResponse;
 import com.hcmute.ltdd.model.request.AddCarRequest;
 import com.hcmute.ltdd.model.request.BookingPreviewRequest;
+import com.hcmute.ltdd.model.request.EditCarRequest;
 import com.hcmute.ltdd.model.request.EditProfileRequest;
 import com.hcmute.ltdd.model.request.ForgotPasswordRequest;
 import com.hcmute.ltdd.model.request.LoginRequest;
@@ -32,6 +33,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -120,5 +122,6 @@ public interface ApiService {
     @POST("/api/user/review/add")
     Call<ApiResponse<String>> submitReview(@Body ReviewRequest request);
 
-
+    @PUT("/api/user/edit-car/{carId}")
+    Call<ApiResponse<String>> updateCar(@Path("carId") Long carId, @Body EditCarRequest request);
 }
