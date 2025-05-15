@@ -25,7 +25,9 @@ public class ReviewDTO {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-    public ReviewDTO(int rating, Long bookingId, String comment, String createdAt, String name, String imageUrl) {
+    public ReviewDTO(Long reviewId, int rating, Long bookingId, String comment, String createdAt, String name, String imageUrl) {
+        this.reviewId = reviewId;
+        this.carId = carId;
         this.bookingId = bookingId;
         this.rating = rating;
         this.comment = comment;

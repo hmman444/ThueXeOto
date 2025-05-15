@@ -23,7 +23,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByCar_CarId(Long carId);
     List<Review> findByUser_UserId(Long userId);
 
-    @Query("SELECT new com.hcmute.thuexe.dto.response.ReviewDTO(r.rating, r.booking.bookingId, r.comment, r.createdAt, r.user.name, r.user.imageUrl) " +
+    @Query("SELECT new com.hcmute.thuexe.dto.response.ReviewDTO(r.reviewId, r.rating, r.booking.bookingId, r.comment, r.createdAt, r.user.name, r.user.imageUrl) " +
        "FROM Review r WHERE r.booking.bookingId = :bookingId")
     ReviewDTO findByBookingId(@Param("bookingId") Long bookingId);
 }

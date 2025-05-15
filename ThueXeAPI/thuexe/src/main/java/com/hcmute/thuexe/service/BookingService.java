@@ -193,6 +193,9 @@ public class BookingService {
                 booking.setStatus("Confirmed");
             }
         }
+        if("Reviewed".equals(currentStatus)){
+            booking.setStatus("Completed");
+        }
 
         bookingRepository.save(booking);
     }
