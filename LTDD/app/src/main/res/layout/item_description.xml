@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mô tả"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Nội dung mô tả xe -->
+    <TextView
+        android:id="@+id/txtDescription_cardetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mitsubishi Mirage 2017, xe sạch sẽ, tiết kiệm xăng, máy lạnh tốt, bản đồ Vietmaps dẫn đường, camera 360, cam hành trình, màn hình Android xem Youtube, nghe nhạc."
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:layout_marginBottom="12dp" />
+</LinearLayout>

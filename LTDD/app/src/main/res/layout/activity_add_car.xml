@@ -1,0 +1,442 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.AddCarActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký xe"
+            android:textSize="40sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="0dp"/>
+
+        <!-- Label Tên xe -->
+        <TextView
+            android:id="@+id/tvCarNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên xe"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Nhập tên xe -->
+        <EditText
+            android:id="@+id/edtCarName"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:hint="Nhập tên xe"
+            android:background="@drawable/bg_edittext"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCarNameLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/llBrandPriceLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/edtCarName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tvBrandLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hãng xe"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tvPriceLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_marginRight="22dp"
+                android:text="Giá thuê (VNĐ)"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <!-- Hãng xe và Giá trong cùng một hàng -->
+        <LinearLayout
+            android:id="@+id/llBrandPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/llBrandPriceLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp">
+
+            <!-- Nhập hãng xe -->
+            <EditText
+                android:id="@+id/edtBrand"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2"
+                android:hint="Hãng xe"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"/>
+
+            <!-- Khoảng cách giữa 2 ô -->
+            <View
+                android:layout_width="12dp"
+                android:layout_height="0dp" />
+
+            <!-- Nhập giá -->
+            <EditText
+                android:id="@+id/edtPrice"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Giá"
+                android:inputType="numberDecimal"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llLocationLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/llBrandPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quận"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_marginRight="138dp"
+                android:text="Địa chỉ chi tiết"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/llLocationLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <!-- Combobox Loại hộp số -->
+            <Spinner
+                android:id="@+id/spnLocation"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"/>
+
+            <!-- Khoảng cách giữa 2 ô -->
+            <View
+                android:layout_width="20dp"
+                android:layout_height="0dp"/>
+
+            <EditText
+                android:id="@+id/edtDetailLocation"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2"
+                android:hint="Hãng xe"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <!-- Label Hộp số -->
+        <TextView
+            android:id="@+id/tvGearType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hộp số"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/llLocation"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Label Số chỗ ngồi -->
+        <TextView
+            android:id="@+id/tvSeats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số chỗ ngồi"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@id/tvGearType"
+            app:layout_constraintStart_toEndOf="@id/tvGearType"
+            android:layout_marginStart="190dp"/>
+
+        <!-- Hộp số và Số chỗ ngồi trong cùng một hàng -->
+        <LinearLayout
+            android:id="@+id/llGearSeats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvGearType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <!-- Combobox Loại hộp số -->
+            <Spinner
+                android:id="@+id/spnGearType"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"/>
+
+            <!-- Khoảng cách giữa 2 ô -->
+            <View
+                android:layout_width="20dp"
+                android:layout_height="0dp"/>
+
+            <!-- Số chỗ ngồi (dạng combobox) -->
+            <AutoCompleteTextView
+                android:id="@+id/spnSeats"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:hint="Chỗ"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"
+                android:inputType="number"/>
+        </LinearLayout>
+
+        <!-- Label Loại nhiên liệu -->
+        <TextView
+            android:id="@+id/tvFuelType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loại nhiên liệu"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/llGearSeats"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Label Tiêu thụ năng lượng -->
+        <TextView
+            android:id="@+id/tvEnergyConsumption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiêu thụ"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@id/tvFuelType"
+            app:layout_constraintStart_toEndOf="@id/tvFuelType"
+            android:layout_marginStart="140dp"/>
+
+        <!-- Loại nhiên liệu và Tiêu thụ năng lượng trong cùng một hàng -->
+        <LinearLayout
+            android:id="@+id/llFuelEnergy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvFuelType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <!-- Combobox Loại nhiên liệu -->
+            <Spinner
+                android:id="@+id/spnFuelType"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"/>
+
+            <!-- Khoảng cách giữa 2 ô -->
+            <View
+                android:layout_width="20dp"
+                android:layout_height="0dp"/>
+
+            <!-- Tiêu thụ năng lượng -->
+            <EditText
+                android:id="@+id/edtEnergyConsumption"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:hint="Mức tiêu thụ"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"
+                android:inputType="numberDecimal"/>
+        </LinearLayout>
+
+        <!-- Chọn tài xế -->
+        <CheckBox
+            android:id="@+id/cbDriverRequired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yêu cầu tài xế"
+            app:backgroundTint="@null"
+            android:textColor="@android:color/black"
+            app:background="@null"
+            app:buttonTint="@null"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintTop_toBottomOf="@id/llFuelEnergy"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Tính năng và nút chọn tính năng trong cùng một hàng -->
+        <LinearLayout
+            android:id="@+id/llFeatures"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cbDriverRequired"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <!-- Khu vực hiển thị tính năng đã chọn (Không chỉnh sửa) -->
+            <TextView
+                android:id="@+id/tvSelectedFeatures"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:text="Chưa chọn tính năng"
+                android:textColor="@android:color/black"/>
+
+            <!-- Khoảng cách giữa 2 ô -->
+            <View
+                android:layout_width="8dp"
+                android:layout_height="0dp"/>
+
+            <!-- Icon chọn tính năng (ImageView) -->
+            <ImageView
+                android:id="@+id/ivSelectFeatures"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_setting"
+                android:contentDescription="Chọn tính năng"/>
+        </LinearLayout>
+
+        <!-- LinearLayout chứa phần hiển thị ảnh và chọn ảnh -->
+        <LinearLayout
+            android:id="@+id/llSelectImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/llFeatures"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+
+            <!-- Khu vực hiển thị ảnh đã chọn -->
+            <ImageView
+                android:id="@+id/ivPreviewImage"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_edittext"
+                android:src="@drawable/avatar"
+                android:contentDescription="Ảnh đã chọn"/>
+
+            <!-- Khoảng cách giữa 2 ô -->
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+
+            <!-- Nút chọn ảnh -->
+            <ImageView
+                android:id="@+id/ivSelectImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_image"
+                android:contentDescription="Chọn ảnh"/>
+        </LinearLayout>
+
+        <!-- Label Mô tả xe -->
+        <TextView
+            android:id="@+id/tvDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mô tả xe"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/llSelectImage"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Mô tả xe -->
+        <EditText
+            android:id="@+id/edtDescription"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:hint="Nhập tả xe"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:gravity="top"
+            app:layout_constraintTop_toBottomOf="@id/tvDescriptionLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Nút Đăng ký xe -->
+        <Button
+            android:id="@+id/btnRegisterCar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="Đăng ký xe"
+            android:background="@drawable/orange_button"
+            android:textColor="@android:color/black"
+            android:textSize="19sp"
+            app:backgroundTint="@null"
+            app:layout_constraintTop_toBottomOf="@id/edtDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
