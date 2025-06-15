@@ -2,6 +2,7 @@ package com.hcmute.ltdd.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class BookingActivity extends AppCompatActivity {
     private boolean insuranceSelected, deliverySelected, driverRequired;
     private CarDetailResponse carDetail;
     private ImageView imageCar, imgOwnerImage;
+    private Button btnRentCar;
     private final SimpleDateFormat inputFormat = new SimpleDateFormat("EEEE, dd/MM/yyyy, HH:mm", Locale.getDefault());
     private final SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 
@@ -81,6 +83,12 @@ public class BookingActivity extends AppCompatActivity {
         txtDropoffLocation = findViewById(R.id.txtDropoffLocation2);
         txtPickUpTime = findViewById(R.id.txtPickUpTime2);
         txtReturnTime = findViewById(R.id.txtReturnTime2);
+
+        btnRentCar = findViewById(R.id.btnRentCar_bookingcar);
+        btnRentCar.setOnClickListener(v -> {
+            sendBookingConfirmRequest();
+        });
+
     }
 
     private void receiveIntentData() {
@@ -151,7 +159,7 @@ public class BookingActivity extends AppCompatActivity {
             txtRentalPrice.setText(String.format("%.0f VND/ngày", data.getRentalPricePerDay()));
             txtInsuranceFee.setText(String.format("%.0f VND/ngày", data.getInsuranceFeePerDay()));
             txtDeliveryFee.setText(String.format("%.0f VND", data.getDeliveryFee()));
-            txtTotalDays.setText(String.valueOf(data.getTotalDays()));
+            txtTotalDays.setText(String.format("%.1f", data.getTotalDays()));
             txtTotalPrice.setText(String.format("%.0f VND", data.getTotalPrice()));
             txtDriverFee.setText(String.format("%.0f VND", data.getDriverRequired()));
         }
@@ -202,4 +210,47 @@ public class BookingActivity extends AppCompatActivity {
             }
         });
     }
+    private void sendBookingConfirmRequest() {
+        String startDateFormatted = convertToApiFormat(startDate);
+        String endDateFormatted = convertToApiFormat(endDate);
+
+        if (startDateFormatted == null || endDateFormatted == null) {
+            Toast.makeText(this, "Lỗi định dạng thời gian", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        BookingPreviewRequest bookingRequest = new BookingPreviewRequest(
+                carDetail.getId(),
+                startDateFormatted,
+                endDateFormatted,
+                pickupLocation,
+                dropoffLocation,
+                insuranceSelected,
+                deliverySelected,
+                driverRequired
+        );
+
+        apiService.confirmBooking(bookingRequest).enqueue(new Callback<ApiResponse<String>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<String> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        Toast.makeText(BookingActivity.this, "Đặt xe thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(BookingActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(BookingActivity.this, "Không thể xác nhận đặt xe. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<String>> call, Throwable t) {
+                Toast.makeText(BookingActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

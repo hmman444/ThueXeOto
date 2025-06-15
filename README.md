@@ -27,40 +27,11 @@
 
 ---
 
-## 📝 Tiến độ thực hiện
-### 📅 Tuần 7: Khởi tạo dự án
-- [x] Tạo repo Git & cấu hình `.gitignore`
-- [x] Làm UI trang Login/Register
-- [x] Làm UI trang main application
-- [x] Viết API Login/Register bằng java mail gửi OTP
-
-### 📅 Tuần 8: Xây dựng Backend
-- [x] Hoàn thiện cơ bản cơ sở dữ liệu cho hệ thống
-- [x] Viết API cho các tính năng cơ bản hệ thống (lấy thông tin 1 xe, list xe, user, list users)
-- [ ] 
-- [ ] 
-
-### 📅 Tuần 9: Xây dựng Android App
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-
-### 📅 Tuần 10: Hoàn thiện & Deploy
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-
----
-
 ## ⚙️ Hướng dẫn cài đặt
-### 1️⃣ Cài đặt Backend
 ```bash
 # Clone repo
 git clone https://github.com/Huynh-Minh-Man-04042004/LTDD
-...
-```
+
 ---
 
 ## 👨‍🎓 Thành viên nhóm

@@ -5,17 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:padding="12dp"
     tools:context=".ui.RegisterActivity">
 
     <!-- Nút quay lại -->
     <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:id="@+id/btnBack_regiter"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_back"
         android:scaleType="centerInside"
+        android:padding="16dp"
         android:contentDescription="Quay lại"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
         android:textSize="40sp"
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintTop_toBottomOf="@id/btnBack_regiter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>

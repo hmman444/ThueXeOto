@@ -2,6 +2,7 @@ package com.hcmute.ltdd.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.hcmute.ltdd.model.response.UserProfileResponse;
 import com.hcmute.ltdd.ui.AccountActivity;
 import com.hcmute.ltdd.ui.AddCarActivity;
 import com.hcmute.ltdd.ui.PostActivity;
+import com.hcmute.ltdd.ui.EditCarActivity;
 import com.hcmute.ltdd.utils.SharedPrefManager;
 
 import java.util.List;
@@ -120,26 +122,31 @@ public class ProfileFragment extends Fragment {
         rvMyCars.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         String token = "Bearer " + SharedPrefManager.getInstance(requireContext()).getToken();
-        apiService.getMyCars(token).enqueue(new Callback<List<CarResponse>>() {
+        apiService.getMyCars(token).enqueue(new Callback<ApiResponse<List<CarResponse>>>() {
             @Override
-            public void onResponse(Call<List<CarResponse>> call, Response<List<CarResponse>> response) {
+            public void onResponse(Call<ApiResponse<List<CarResponse>>> call, Response<ApiResponse<List<CarResponse>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<CarResponse> carList = response.body();
-
-                    MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
-                        Toast.makeText(requireContext(), "Đã chọn xe: " + car.getName(), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    });
-
-                    rvMyCars.setAdapter(adapter);
-
+                    ApiResponse<List<CarResponse>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        List<CarResponse> carList = apiResponse.getData();
+                        MyCarsAdapter adapter = new MyCarsAdapter(carList, car -> {
+                            Log.e("Đã chọn xe có id", "ID: " + car.getCarId());
+                            Intent intent = new Intent(requireContext(), EditCarActivity.class);
+                            intent.putExtra("carId", car.getCarId().longValue()); // Chuyển sang Long
+                            startActivity(intent);
+                            dialog.dismiss();
+                        });
+                        rvMyCars.setAdapter(adapter);
+                    } else {
+                        Toast.makeText(requireContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(requireContext(), "Không tải được danh sách xe", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CarResponse>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<CarResponse>>> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -147,4 +154,5 @@ public class ProfileFragment extends Fragment {
         dialog.setContentView(dialogView);
         dialog.show();
     }
+
 }
