@@ -11,11 +11,25 @@
 - Quản lý danh mục xe, loại xe, hợp đồng thuê.
 - Quản lý thông tin khách hàng.
 
-## 🛠 Công nghệ sử dụng
-- **Ngôn ngữ lập trình:** Java
-- **Backend:** Servlet, JSP, JDBC
-- **Frontend:** HTML, CSS, JavaScript, Bootstrap
-- **Cơ sở dữ liệu:** MySQL
+## 🔧 Công nghệ sử dụng
+### 💻 Backend:
+- **Ngôn ngữ:** Java (Spring Boot)
+- **Framework:** Spring Boot
+- **Database:** MySQL
+- **ORM:** Spring Data JPA (Hibernate)
+- **API:** RESTful API
+- **Bảo mật:** Spring Security
+- **Test API:** Postman
+
+### 🎮 Frontend (Android App):
+- **Ngôn ngữ:** Java
+- **Framework:** Android SDK
+- **Networking:** Retrofit2
+- **UI:** XML + View Binding
+- **Quản lý dữ liệu:** Room Database / SharedPreferences
+- **Kiến trúc:** MVVM
+
+---
 
 ## 📷 Demo giao diện
 ![Trang chủ](images/home.png)
@@ -36,3 +50,8 @@
 ## 📄 Tài liệu
 - [Báo cáo đầy đủ (PDF)](docs/BaoCaoDuAn.pdf)
 - [Slide thuyết trình (PPTX)](docs/SlideThuyetTrinh.pptx)
+
+
+- **Email:** nsndman0404@gmail.com  
+- **GitHub:** [LTDD](https://github.com/hmman444/LTDD)  
+- **Facebook:** [Mẫn](https://www.facebook.com/man.huynh.5283)  
