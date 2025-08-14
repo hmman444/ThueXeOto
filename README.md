@@ -86,8 +86,7 @@
 4. Chạy dự án trên Apache Tomcat.
 
 ## 📄 Tài liệu
-- [Báo cáo của dự án](docs/BaoCao.pdf)
-- [Figma của dự án](docs/BaoCao.fig)
+- [Báo cáo của dự án](docs/BaoCao.docx)
 
 ## 📬 Liên hệ
 - **Email:** nsndman0404@gmail.com  
